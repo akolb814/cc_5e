@@ -1,0 +1,292 @@
+{
+    "name": "",
+    "race": {
+        "title": "Human",
+        "features": ""
+    },
+    "background": {
+        "title": "Criminal",
+        "features": ""
+    },
+    "alignment": "NG",
+    "experience": "0",
+    "speed": 30,
+    "classes": [{
+                "class": "Rogue",
+                "level": 1,
+                "hitDie": 8,
+                "features": ""
+                }],
+    "ability_scores": {
+        "STR": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        },
+        "DEX": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        },
+        "CON": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        },
+        "INT": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        },
+        "WIS": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        },
+        "CHA": {
+            "score": 16,
+            "bonus": 3,
+            "save": 3
+        }
+    },
+    "current_hit_dice": 1,
+    "current_hp": 0,
+    "max_hp": 0,
+    "ac": 16,
+    "proficiency_bonus": 2,
+    "initiative": 0,
+    "save_proficiencies": ["DEX", "INT"],
+    "skills": [{
+               "skill": "Acrobatics",
+               "attribute": "DEX",
+               "proficient": true
+               }, {
+               "skill": "Animal Handling",
+               "attribute": "WIS",
+               "proficient": false
+               }, {
+               "skill": "Arcana",
+               "attribute": "INT",
+               "proficient": false
+               }, {
+               "skill": "Athletics",
+               "attribute": "STR",
+               "proficient": false
+               }, {
+               "skill": "Deception",
+               "attribute": "CHA",
+               "proficient": true
+               }, {
+               "skill": "History",
+               "attribute": "INT",
+               "proficient": false
+               }, {
+               "skill": "Insight",
+               "attribute": "WIS",
+               "proficient": false
+               }, {
+               "skill": "Intimidation",
+               "attribute": "CHA",
+               "proficient": false
+               }, {
+               "skill": "Investigation",
+               "attribute": "INT",
+               "proficient": false
+               }, {
+               "skill": "Medicine",
+               "attribute": "WIS",
+               "proficient": false
+               }, {
+               "skill": "Nature",
+               "attribute": "INT",
+               "proficient": false
+               }, {
+               "skill": "Perception",
+               "attribute": "WIS",
+               "proficient": false
+               }, {
+               "skill": "Performance",
+               "attribute": "CHA",
+               "proficient": false
+               }, {
+               "skill": "Persuasion",
+               "attribute": "CHA",
+               "proficient": false
+               }, {
+               "skill": "Religion",
+               "attribute": "INT",
+               "proficient": false
+               }, {
+               "skill": "Sleight of Hand",
+               "attribute": "DEX",
+               "proficient": true
+               }, {
+               "skill": "Stealth",
+               "attribute": "DEX",
+               "proficient": true
+               }, {
+               "skill": "Survival",
+               "attribute": "WIS",
+               "proficient": false
+               }],
+    "weapon_proficiencies": "Simple, Rapier",
+    "armor_proficiencies": "Medium",
+    "tool_proficiencies": "Thieves' Tools",
+    "languages": "Common, Elven, Dwarven",
+    "personality_traits": "a",
+    "ideals": "b",
+    "bonds": "c",
+    "flaws": "d",
+    "notes": "e",
+    "equipment": {
+        "currency": {
+            "platinum": 0,
+            "gold": 10,
+            "electrum": 0,
+            "silver": 0,
+            "copper": 0
+        },
+        "weapons": [{
+                    "name": "club",
+                    "range": "5 ft.",
+                    "category": "simple",
+                    "properties": ["Light"],
+                    "attack_bonus": {
+                        "ability": "STR",
+                        "magic_bonus": 0,
+                        "misc_bonus": 0
+                    },
+                    "damage": {
+                        "damage_type": "bludgeoning",
+                        "mod_damage": true,
+                        "magic_bonus": 0,
+                        "misc_bonus": 0,
+                        "die_number": 1,
+                        "die_type": 4,
+                        "extra_die": false,
+                        "extra_die_number": 0,
+                        "extra_die_type": 0
+                    },
+                    "description": "",
+                    "cost": "1 sp",
+                    "weight": "2 lb.",
+                    "quantity": 1
+                    }],
+        "armor": [{
+                  "name": "Studded Leather",
+                  "value": 12,
+                  "mod": "DEX",
+                  "max_dex": 0,
+                  "magic_bonus": 0,
+                  "misc_bonus": 0,
+                  "description": "",
+                  "cost": "10 gp",
+                  "quantity": 1,
+                  "weight": "13 lb.",
+                  "str_requirement": 0,
+                  "stealth_disadvantage": false,
+                  "equipped": true
+                  },
+                  {
+                  "name": "Shield",
+                  "value": 2,
+                  "mod": "",
+                  "max_dex": 0,
+                  "magic_bonus": 0,
+                  "misc_bonus": 0,
+                  "description": "",
+                  "cost": "10 gp",
+                  "quantity": 1,
+                  "weight": "3 lb.",
+                  "str_requirement": 0,
+                  "stealth_disadvantage": false,
+                  "equipped": false
+                  }],
+        "tools": [{
+                  "name": "Thieves' Tools",
+                  "description": "This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make to disarm traps or open locks.",
+                  "cost": "25 gp",
+                  "weight": "1 lb",
+                  "quantity": 1,
+                  "proficient": true,
+                  "ability":"DEX"
+                  }],
+        "other": [{
+                  "name": "Travel Rations",
+                  "description": "",
+                  "weight": "15 lb. (0.5 lb. each)",
+                  "cost": "10 gp",
+                  "quantity": 30
+                  },
+                  {
+                  "name": "Potion of Healing",
+                  "description": "blah blah blah",
+                  "weight": "1 lb.",
+                  "cost": "50 gp",
+                  "quantity": 1
+                  }]
+    },
+    "spellcasting": {
+        "spell_ability": "INT",
+        "spell_attack_misc_bonus": 0,
+        "spell_dc_misc_bonus": 0,
+        "caster_level": 1,
+        "spells": [{
+                   "level": 0,
+                   "remaining_slots": 0,
+                   "total_slots": 0,
+                   "prepared_spells": [{
+                              "name": "Light",
+                              "school": "Evocation",
+                              "casting_time": "1 action",
+                              "range": "Touch",
+                              "components": "V, M (a firefly or phosphorescent moss)",
+                              "duration": "1 hour",
+                              "concentration": false,
+                              "description": "You touch one object that is no larger than 10 feet in any dimension. Until the spell ends, the object sheds bright light in a 20-foot radius and dim light for an additional 20 feet. The light can be colored as you like. Completely covering the object with something opaque blocks the light. The spell ends if you cast it again or dismiss it as an action.\n\nIf you target an object held or worn by a hostile creature, that creature must succeed on a Dexterity saving throw to avoid the spell.",
+                              "higher_level": ""
+                              }]
+                   }, {
+                   "level": 1,
+                   "remaining_slots": 1,
+                   "total_slots": 1,
+                   "prepared_spells": [{
+                                       "name": "Absorb Elements",
+                                       "school": "Abjuration",
+                                       "casting_time": "Special",
+                                       "range": "Self",
+                                       "components": "S",
+                                       "duration": "1 round",
+                                       "concentration": false,
+                                       "description": "Reaction, which you take when you take acid, cold, fire, lightning, or thunder damage\n\nThe spell captures some of the incoming energy, lessening its effect on you and storing it for your next melee attack. You have resistance to the triggering damage type until the start of your next turn. Also, the first time you hit with a melee attack on your next turn, the target takes an extra 1d6 damage of the triggering type, and the spell ends.",
+                                       "higher_level": "When you cast this spell using a spell slot of 2nd level or higher, the extra damage increases by 1d6 for each slot level above 1st."
+                                       },
+                                       {
+                                       "name": "Bless",
+                                       "school": "Enchantment",
+                                       "casting_time": "1 action",
+                                       "range": "30 ft.",
+                                       "components": "V, S, M (a sprinkling of holy water)",
+                                       "duration": "Up to 1 minute",
+                                       "concentration": true,
+                                       "description": "You bless up to three creatures of your choice within range. Whenever a target makes an attack roll or a saving throw before the spell ends, the target can roll a d4 and add the number rolled to the attack roll or saving throw.",
+                                       "higher_level": "When you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st."
+                                       },
+                                       ]
+                   }]
+    },
+    "resources": {
+        "martial": {
+            "name":"Sneak Attack",
+            "current_value":2,
+            "max_value":2,
+            "die_type":6
+        },
+        "spellcasting": {
+            "name":"Sorc. Points",
+            "current_value":2,
+            "max_value":2,
+            "die_type":0
+        }
+    }
+}
