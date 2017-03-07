@@ -847,7 +847,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6i-lr-SQz">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+5" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6i-lr-SQz">
                                         <rect key="frame" x="65" y="32" width="42" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="42" id="L6X-Vu-20O"/>
@@ -1769,12 +1769,12 @@
                     <navigationItem key="navigationItem" id="D8L-7B-MzL">
                         <barButtonItem key="leftBarButtonItem" title="Item" id="v8G-M6-3Gj">
                             <connections>
-                                <action selector="leftActionWithButton:" destination="49e-Tb-3d3" id="vd5-m2-dXa"/>
+                                <action selector="leftActionWithButton:" destination="49e-Tb-3d3" id="TZL-wy-5AO"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="vr5-zT-RX9">
                             <connections>
-                                <action selector="rightActionWithButton:" destination="49e-Tb-3d3" id="P6v-u9-z5Z"/>
+                                <action selector="rightActionWithButton:" destination="49e-Tb-3d3" id="kBO-Br-tIu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

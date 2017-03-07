@@ -17,10 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // Load the character file
         character.loadCharacter(filename: "character")
+        // Set the character name
         character.name = "Rogue Man"
+        // Save the new character content
         character.saveCharacter(filename: "character")
-        print(character.name)
         
         return true
     }
