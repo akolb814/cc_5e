@@ -9,9 +9,9 @@ PODS:
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.5.1)
-  - FMDB (~> 2.5)
-  - SDWebImage (~> 3.8)
+  - Alamofire
+  - FMDB
+  - SDWebImage
   - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -20,6 +20,6 @@ SPEC CHECKSUMS:
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 3711b9e35b93ed3cd2eec3cfa51390cb68a5ad76
+PODFILE CHECKSUM: ed3264d25527ee92efbedcd4ab0b9938920414f8
 
 COCOAPODS: 1.1.1
