@@ -14,14 +14,12 @@ class CharacterViewController: UITabBarController {
     @IBOutlet weak var rightButton: UIBarButtonItem!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var character = Character()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        character.loadCharacterFromJson(filename: "character.json")
-        navigationItem.title = character.name
+        navigationItem.title = Character.Selected.name
     }
 
     override func didReceiveMemoryWarning() {

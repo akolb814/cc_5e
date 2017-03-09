@@ -10,19 +10,27 @@ import Foundation
 import UIKit
 
 class CharacterViewCell: UITableViewCell {
-    @IBOutlet weak var characterNameLabel: UILabel!
-    @IBOutlet weak var characterImage: UIImageView!
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var characterImageView: UIImageView!
+    
+    var character : Character! = Character()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        characterNameLabel.text = "Rogue Man"
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+    
+    func update(characterIn: Character) {
+        self.character = characterIn
+        nameLabel.text = characterIn.name
+        characterImageView.image = character.image
     }
 
 }
