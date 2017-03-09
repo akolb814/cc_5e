@@ -119,6 +119,20 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var hpEffectValue = 0
+    var character: Character = Character()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
+        
+        skillsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+        
+        character.loadCharacterFromJson(filename: "character.json")
+        
+        self.setAbilityScores()
+        self.setMiscDisplayData()
+    }
     
     func setMiscDisplayData() {
         let firstClass: JSON = appDelegate.character.classes[0] 
@@ -224,17 +238,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         // Skills
         skillsView.layer.borderWidth = 1.0
         skillsView.layer.borderColor = UIColor.black.cgColor
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
-        
-        skillsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-        
-        self.setAbilityScores()
-        self.setMiscDisplayData()
     }
     
     func setAbilityScores() {

@@ -67,7 +67,7 @@ class Character {
     var martialResource: JSON = [:]
     var spellcastingResource: JSON = [:]
     
-    func loadCharacter(filename: String) {
+    func loadCharacterFromJson(filename: String) {
         if let path = Bundle.main.path(forResource: filename, ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
@@ -152,7 +152,7 @@ class Character {
         spellcastingResource = (resources["spellcasting"])
     }
     
-    func saveCharacter(filename: String) {
+    func saveCharacterToJson(filename: String) {
         // Update the character dict based on properties
         character["name"].string = name
         character["classes"] = classes

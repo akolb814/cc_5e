@@ -54,7 +54,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         equipmentTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
-        equipmentDict = appDelegate.character.equipment
+        equipmentDict = Character.Selected.equipment
         allEquipment = equipmentDict["weapons"]
         do {
             allEquipment = try allEquipment.merged(with: equipmentDict["armor"])
@@ -296,34 +296,34 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 let abilityType: String = attackBonusDict["ability"].string!
                 switch abilityType {
                 case "STR":
-                    attackBonus += appDelegate.character.strBonus //Add STR bonus
+                    attackBonus += Character.Selected.strBonus //Add STR bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.strBonus
+                        damageBonus += Character.Selected.strBonus
                     }
                 case "DEX":
-                    attackBonus += appDelegate.character.dexBonus //Add DEX bonus
+                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.dexBonus
+                        damageBonus += Character.Selected.dexBonus
                     }
                 case "CON":
-                    attackBonus += appDelegate.character.conBonus //Add CON bonus
+                    attackBonus += Character.Selected.conBonus //Add CON bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.conBonus
+                        damageBonus += Character.Selected.conBonus
                     }
                 case "INT":
-                    attackBonus += appDelegate.character.intBonus //Add INT bonus
+                    attackBonus += Character.Selected.intBonus //Add INT bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.intBonus
+                        damageBonus += Character.Selected.intBonus
                     }
                 case "WIS":
-                    attackBonus += appDelegate.character.wisBonus //Add WIS bonus
+                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.wisBonus
+                        damageBonus += Character.Selected.wisBonus
                     }
                 case "CHA":
-                    attackBonus += appDelegate.character.chaBonus //Add CHA bonus
+                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
                     if modDamage! {
-                        damageBonus += appDelegate.character.chaBonus
+                        damageBonus += Character.Selected.chaBonus
                     }
                 default: break
                 }
@@ -407,23 +407,23 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 var toolValue = 0
                 if tool["proficient"].bool! {
-                    toolValue += appDelegate.character.proficiencyBonus
+                    toolValue += Character.Selected.proficiencyBonus
                 }
                 
                 let abilityType: String = tool["ability"].string!
                 switch abilityType {
                 case "STR":
-                    toolValue += appDelegate.character.strBonus //Add STR bonus
+                    toolValue += Character.Selected.strBonus //Add STR bonus
                 case "DEX":
-                    toolValue += appDelegate.character.dexBonus //Add DEX bonus
+                    toolValue += Character.Selected.dexBonus //Add DEX bonus
                 case "CON":
-                    toolValue += appDelegate.character.conBonus //Add CON bonus
+                    toolValue += Character.Selected.conBonus //Add CON bonus
                 case "INT":
-                    toolValue += appDelegate.character.intBonus //Add INT bonus
+                    toolValue += Character.Selected.intBonus //Add INT bonus
                 case "WIS":
-                    toolValue += appDelegate.character.wisBonus //Add WIS bonus
+                    toolValue += Character.Selected.wisBonus //Add WIS bonus
                 case "CHA":
-                    toolValue += appDelegate.character.chaBonus //Add CHA bonus
+                    toolValue += Character.Selected.chaBonus //Add CHA bonus
                 default: break
                 }
                 
@@ -469,34 +469,34 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     let abilityType: String = attackBonusDict["ability"].string!
                     switch abilityType {
                     case "STR":
-                        attackBonus += appDelegate.character.strBonus //Add STR bonus
+                        attackBonus += Character.Selected.strBonus //Add STR bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.strBonus
+                            damageBonus += Character.Selected.strBonus
                         }
                     case "DEX":
-                        attackBonus += appDelegate.character.dexBonus //Add DEX bonus
+                        attackBonus += Character.Selected.dexBonus //Add DEX bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.dexBonus
+                            damageBonus += Character.Selected.dexBonus
                         }
                     case "CON":
-                        attackBonus += appDelegate.character.conBonus //Add CON bonus
+                        attackBonus += Character.Selected.conBonus //Add CON bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.conBonus
+                            damageBonus += Character.Selected.conBonus
                         }
                     case "INT":
-                        attackBonus += appDelegate.character.intBonus //Add INT bonus
+                        attackBonus += Character.Selected.intBonus //Add INT bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.intBonus
+                            damageBonus += Character.Selected.intBonus
                         }
                     case "WIS":
-                        attackBonus += appDelegate.character.wisBonus //Add WIS bonus
+                        attackBonus += Character.Selected.wisBonus //Add WIS bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.wisBonus
+                            damageBonus += Character.Selected.wisBonus
                         }
                     case "CHA":
-                        attackBonus += appDelegate.character.chaBonus //Add CHA bonus
+                        attackBonus += Character.Selected.chaBonus //Add CHA bonus
                         if modDamage! {
-                            damageBonus += appDelegate.character.chaBonus
+                            damageBonus += Character.Selected.chaBonus
                         }
                     default: break
                     }
@@ -578,23 +578,23 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     var toolValue = 0
                     if equipment["proficient"].bool! {
-                        toolValue += appDelegate.character.proficiencyBonus
+                        toolValue += Character.Selected.proficiencyBonus
                     }
                     
                     let abilityType: String = equipment["ability"].string!
                     switch abilityType {
                     case "STR":
-                        toolValue += appDelegate.character.strBonus //Add STR bonus
+                        toolValue += Character.Selected.strBonus //Add STR bonus
                     case "DEX":
-                        toolValue += appDelegate.character.dexBonus //Add DEX bonus
+                        toolValue += Character.Selected.dexBonus //Add DEX bonus
                     case "CON":
-                        toolValue += appDelegate.character.conBonus //Add CON bonus
+                        toolValue += Character.Selected.conBonus //Add CON bonus
                     case "INT":
-                        toolValue += appDelegate.character.intBonus //Add INT bonus
+                        toolValue += Character.Selected.intBonus //Add INT bonus
                     case "WIS":
-                        toolValue += appDelegate.character.wisBonus //Add WIS bonus
+                        toolValue += Character.Selected.wisBonus //Add WIS bonus
                     case "CHA":
-                        toolValue += appDelegate.character.chaBonus //Add CHA bonus
+                        toolValue += Character.Selected.chaBonus //Add CHA bonus
                     default: break
                     }
                     

@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FMDB.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-cc_swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,12 +27,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>251BAD17812F7EBF6532EACF66F941C3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>277511FF726CE42753FE5C9EF1E2742F</key>
+		<key>445FF0245CEE4050AD1DC8A8C655C85F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,12 +37,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C98632339A0E86732E5FED9305B9DC37</key>
+		<key>8F91D149BEAF398BE35DD439033E629D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F37E3A79F8829E6EFE3F174CACC1516E</key>
+		<key>E290EC24D65265ACEBEB364D5D4FD53F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

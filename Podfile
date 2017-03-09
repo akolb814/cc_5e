@@ -3,8 +3,7 @@ use_frameworks!
 
 target ‘cc_swift’ do
     pod 'SwiftyJSON'
-    pod 'FMDB'
     pod 'SDWebImage'
-    pod 'Alamofire'
+    pod 'Alamofire', '~> 4.4'
 end
 

@@ -1,25 +1,20 @@
 PODS:
-  - Alamofire (3.5.1)
-  - FMDB (2.6.2):
-    - FMDB/standard (= 2.6.2)
-  - FMDB/standard (2.6.2)
+  - Alamofire (4.4.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
-  - Alamofire
-  - FMDB
+  - Alamofire (~> 4.4)
   - SDWebImage
   - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
-  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: ed3264d25527ee92efbedcd4ab0b9938920414f8
+PODFILE CHECKSUM: da3d2b0194b1dbb1692f83eeefaf6e2e4d8fa3c0
 
 COCOAPODS: 1.1.1

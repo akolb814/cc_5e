@@ -8,19 +8,20 @@
 
 import UIKit
 
-class TabViewController: UITabBarController {
+class CharacterViewController: UITabBarController {
     
     @IBOutlet weak var leftButton: UIBarButtonItem!
     @IBOutlet weak var rightButton: UIBarButtonItem!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var character = Character()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         
-        navigationItem.title = appDelegate.character.name
+        // Do any additional setup after loading the view.
+        character.loadCharacterFromJson(filename: "character.json")
+        navigationItem.title = character.name
     }
 
     override func didReceiveMemoryWarning() {
