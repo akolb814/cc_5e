@@ -59,75 +59,93 @@
     "skills": [{
                "skill": "Acrobatics",
                "attribute": "DEX",
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Animal Handling",
                "attribute": "WIS",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Arcana",
                "attribute": "INT",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Athletics",
                "attribute": "STR",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Deception",
                "attribute": "CHA",
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "History",
                "attribute": "INT",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Insight",
                "attribute": "WIS",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Intimidation",
                "attribute": "CHA",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Investigation",
                "attribute": "INT",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Medicine",
                "attribute": "WIS",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Nature",
                "attribute": "INT",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Perception",
                "attribute": "WIS",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Performance",
                "attribute": "CHA",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Persuasion",
                "attribute": "CHA",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Religion",
                "attribute": "INT",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Sleight of Hand",
                "attribute": "DEX",
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Stealth",
                "attribute": "DEX",
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Survival",
                "attribute": "WIS",
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }],
     "weapon_proficiencies": "Simple, Rapier",
     "armor_proficiencies": "Medium",
