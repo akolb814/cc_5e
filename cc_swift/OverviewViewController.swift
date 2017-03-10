@@ -1034,7 +1034,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         profLabel.font = UIFont.systemFont(ofSize: 10)
         profLabel.textAlignment = NSTextAlignment.center
         profLabel.numberOfLines = 2
-        profLabel.tag = 1111
+        profLabel.tag = 1102
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
@@ -1044,7 +1044,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         profField.textColor = UIColor.darkGray
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.darkGray.cgColor
-        profField.tag = 1102
+        profField.tag = 1103
         tempView.addSubview(profField)
         
         let dexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-45, y: 25, width: 90, height: 30))
@@ -1052,7 +1052,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         dexLabel.font = UIFont.systemFont(ofSize: 10)
         dexLabel.textAlignment = NSTextAlignment.center
         dexLabel.numberOfLines = 2
-        dexLabel.tag = 1112
+        dexLabel.tag = 1104
         tempView.addSubview(dexLabel)
         
         let dexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
@@ -1060,7 +1060,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         dexField.textAlignment = NSTextAlignment.center
         dexField.layer.borderWidth = 1.0
         dexField.layer.borderColor = UIColor.black.cgColor
-        dexField.tag = 1103
+        dexField.tag = 1105
         tempView.addSubview(dexField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+15, y: 25, width: 90, height: 30))
@@ -1068,7 +1068,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 1113
+        miscLabel.tag = 1106
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
@@ -1076,40 +1076,40 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 1104
+        miscField.tag = 1107
         tempView.addSubview(miscField)
         
         let alertLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-90, y:85, width:120, height:30))
         alertLabel.text = "Alert Feat"
         alertLabel.textAlignment = NSTextAlignment.right
-        alertLabel.tag = 1105
+        alertLabel.tag = 1108
         tempView.addSubview(alertLabel)
         
         let alertSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
         alertSwitch.isOn = false
-        alertSwitch.tag = 1106
+        alertSwitch.tag = 1109
         tempView.addSubview(alertSwitch)
         
         let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
         halfProfLabel.text = "Half Proficiency"
         halfProfLabel.textAlignment = NSTextAlignment.right
-        halfProfLabel.tag = 1107
+        halfProfLabel.tag = 1110
         tempView.addSubview(halfProfLabel)
         
         let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
         halfProfSwitch.isOn = false
-        halfProfSwitch.tag = 1108
+        halfProfSwitch.tag = 1111
         tempView.addSubview(halfProfSwitch)
         
         let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
         roundUpLabel.text = "Round Up"
         roundUpLabel.textAlignment = NSTextAlignment.right
-        roundUpLabel.tag = 1109
+        roundUpLabel.tag = 1112
         tempView.addSubview(roundUpLabel)
         
         let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
         roundUpSwitch.isOn = false
-        roundUpSwitch.tag = 1110
+        roundUpSwitch.tag = 1113
         tempView.addSubview(roundUpSwitch)
         
         if halfProfSwitch.isOn {
@@ -1211,7 +1211,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         baseLabel.font = UIFont.systemFont(ofSize: 10)
         baseLabel.textAlignment = NSTextAlignment.center
         baseLabel.numberOfLines = 2
-        baseLabel.tag = 1306
+        baseLabel.tag = 1302
         tempView.addSubview(baseLabel)
         
         let baseField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:65, width:40, height:30))
@@ -1219,7 +1219,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         baseField.textAlignment = NSTextAlignment.center
         baseField.layer.borderWidth = 1.0
         baseField.layer.borderColor = UIColor.black.cgColor
-        baseField.tag = 1302
+        baseField.tag = 1303
         tempView.addSubview(baseField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-5, y: 35, width: 90, height: 30))
@@ -1227,7 +1227,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 1307
+        miscLabel.tag = 1304
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:65, width:40, height:30))
@@ -1235,13 +1235,13 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 1303
+        miscField.tag = 1305
         tempView.addSubview(miscField)
         
         let movementLabel = UILabel.init(frame: CGRect.init(x:10, y:100, width:tempView.frame.size.width-20, height:30))
         movementLabel.text = "Movement Type"
         movementLabel.textAlignment = NSTextAlignment.center
-        movementLabel.tag = 1304
+        movementLabel.tag = 1306
         tempView.addSubview(movementLabel)
         
         let movementType = UISegmentedControl.init(frame: CGRect.init(x:10, y:135, width:tempView.frame.size.width-20, height:30))
@@ -1252,7 +1252,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         movementType.insertSegment(withTitle:"Swim", at:4, animated:false)
         movementType.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         movementType.selectedSegmentIndex = 0
-        movementType.tag = 1305
+        movementType.tag = 1307
         tempView.addSubview(movementType)
         
         view.addSubview(tempView)

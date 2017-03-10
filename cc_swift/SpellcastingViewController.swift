@@ -237,7 +237,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         profLabel.font = UIFont.systemFont(ofSize: 10)
         profLabel.textAlignment = NSTextAlignment.center
         profLabel.numberOfLines = 2
-        profLabel.tag = 111
+        profLabel.tag = 102
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:60, width:40, height:30))
@@ -247,14 +247,14 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         profField.textColor = UIColor.darkGray
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.darkGray.cgColor
-        profField.tag = 102
+        profField.tag = 103
         tempView.addSubview(profField)
         
         let attributeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-45, y: 30, width: 90, height: 30))
         attributeLabel.font = UIFont.systemFont(ofSize: 10)
         attributeLabel.textAlignment = NSTextAlignment.center
         attributeLabel.numberOfLines = 2
-        attributeLabel.tag = 112
+        attributeLabel.tag = 104
         tempView.addSubview(attributeLabel)
         
         let attributeField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:60, width:40, height:30))
@@ -263,7 +263,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         attributeField.textColor = UIColor.darkGray
         attributeField.layer.borderWidth = 1.0
         attributeField.layer.borderColor = UIColor.darkGray.cgColor
-        attributeField.tag = 103
+        attributeField.tag = 105
         tempView.addSubview(attributeField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+15, y: 30, width: 90, height: 30))
@@ -271,7 +271,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 113
+        miscLabel.tag = 106
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:60, width:40, height:30))
@@ -279,13 +279,13 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 104
+        miscField.tag = 107
         tempView.addSubview(miscField)
         
         let saLabel = UILabel.init(frame: CGRect.init(x:10, y:100, width:tempView.frame.size.width-20, height:30))
         saLabel.text = "Spellcasting Ability"
         saLabel.textAlignment = NSTextAlignment.center
-        saLabel.tag = 105
+        saLabel.tag = 108
         tempView.addSubview(saLabel)
         
         var saIndex = 0
@@ -328,7 +328,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         sa.insertSegment(withTitle:"CHA", at:5, animated:false)
         sa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         sa.selectedSegmentIndex = saIndex
-        sa.tag = 106
+        sa.tag = 108
         tempView.addSubview(sa)
         
         attributeLabel.text = saText+"\nBonus"
@@ -352,7 +352,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         baseLabel.font = UIFont.systemFont(ofSize: 10)
         baseLabel.textAlignment = NSTextAlignment.center
         baseLabel.numberOfLines = 2
-        baseLabel.tag = 217
+        baseLabel.tag = 202
         tempView.addSubview(baseLabel)
         
         let baseField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:60, width:40, height:30))
@@ -362,7 +362,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         baseField.textColor = UIColor.darkGray
         baseField.layer.borderWidth = 1.0
         baseField.layer.borderColor = UIColor.darkGray.cgColor
-        baseField.tag = 207
+        baseField.tag = 203
         tempView.addSubview(baseField)
         
         let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 30, width: 90, height: 30))
@@ -370,7 +370,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         profLabel.font = UIFont.systemFont(ofSize: 10)
         profLabel.textAlignment = NSTextAlignment.center
         profLabel.numberOfLines = 2
-        profLabel.tag = 211
+        profLabel.tag = 204
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:60, width:40, height:30))
@@ -380,14 +380,14 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         profField.textColor = UIColor.darkGray
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.darkGray.cgColor
-        profField.tag = 202
+        profField.tag = 205
         tempView.addSubview(profField)
         
         let attributeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-15, y: 30, width: 90, height: 30))
         attributeLabel.font = UIFont.systemFont(ofSize: 10)
         attributeLabel.textAlignment = NSTextAlignment.center
         attributeLabel.numberOfLines = 2
-        attributeLabel.tag = 212
+        attributeLabel.tag = 206
         tempView.addSubview(attributeLabel)
         
         let attributeField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:60, width:40, height:30))
@@ -396,7 +396,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         attributeField.textColor = UIColor.darkGray
         attributeField.layer.borderWidth = 1.0
         attributeField.layer.borderColor = UIColor.darkGray.cgColor
-        attributeField.tag = 203
+        attributeField.tag = 207
         tempView.addSubview(attributeField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+45, y: 30, width: 90, height: 30))
@@ -404,7 +404,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 213
+        miscLabel.tag = 208
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+70, y:60, width:40, height:30))
@@ -412,13 +412,13 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 204
+        miscField.tag = 209
         tempView.addSubview(miscField)
         
         let saLabel = UILabel.init(frame: CGRect.init(x:10, y:100, width:tempView.frame.size.width-20, height:30))
         saLabel.text = "Spellcasting Ability"
         saLabel.textAlignment = NSTextAlignment.center
-        saLabel.tag = 205
+        saLabel.tag = 210
         tempView.addSubview(saLabel)
         
         var saIndex = 0
@@ -461,7 +461,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         sa.insertSegment(withTitle:"CHA", at:5, animated:false)
         sa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         sa.selectedSegmentIndex = saIndex
-        sa.tag = 206
+        sa.tag = 211
         tempView.addSubview(sa)
         
         attributeLabel.text = saText+"\nBonus"

@@ -568,7 +568,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         baseLabel.font = UIFont.systemFont(ofSize: 10)
         baseLabel.textAlignment = NSTextAlignment.center
         baseLabel.numberOfLines = 2
-        baseLabel.tag = 506
+        baseLabel.tag = 502
         tempView.addSubview(baseLabel)
         
         let baseField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:65, width:40, height:30))
@@ -576,7 +576,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         baseField.textAlignment = NSTextAlignment.center
         baseField.layer.borderWidth = 1.0
         baseField.layer.borderColor = UIColor.black.cgColor
-        baseField.tag = 502
+        baseField.tag = 503
         tempView.addSubview(baseField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-5, y: 35, width: 90, height: 30))
@@ -584,7 +584,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 507
+        miscLabel.tag = 504
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:65, width:40, height:30))
@@ -592,13 +592,13 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 503
+        miscField.tag = 505
         tempView.addSubview(miscField)
         
         let movementLabel = UILabel.init(frame: CGRect.init(x:10, y:100, width:tempView.frame.size.width-20, height:30))
         movementLabel.text = "Movement Type"
         movementLabel.textAlignment = NSTextAlignment.center
-        movementLabel.tag = 504
+        movementLabel.tag = 506
         tempView.addSubview(movementLabel)
         
         let movementType = UISegmentedControl.init(frame: CGRect.init(x:10, y:135, width:tempView.frame.size.width-20, height:30))
@@ -609,7 +609,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         movementType.insertSegment(withTitle:"Swim", at:4, animated:false)
         movementType.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         movementType.selectedSegmentIndex = 0
-        movementType.tag = 505
+        movementType.tag = 507
         tempView.addSubview(movementType)
         
         view.addSubview(tempView)
@@ -632,7 +632,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         profLabel.font = UIFont.systemFont(ofSize: 10)
         profLabel.textAlignment = NSTextAlignment.center
         profLabel.numberOfLines = 2
-        profLabel.tag = 611
+        profLabel.tag = 602
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
@@ -642,7 +642,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         profField.textColor = UIColor.darkGray
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.darkGray.cgColor
-        profField.tag = 602
+        profField.tag = 603
         tempView.addSubview(profField)
         
         let dexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-45, y: 25, width: 90, height: 30))
@@ -650,7 +650,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         dexLabel.font = UIFont.systemFont(ofSize: 10)
         dexLabel.textAlignment = NSTextAlignment.center
         dexLabel.numberOfLines = 2
-        dexLabel.tag = 612
+        dexLabel.tag = 604
         tempView.addSubview(dexLabel)
         
         let dexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
@@ -658,7 +658,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         dexField.textAlignment = NSTextAlignment.center
         dexField.layer.borderWidth = 1.0
         dexField.layer.borderColor = UIColor.black.cgColor
-        dexField.tag = 603
+        dexField.tag = 605
         tempView.addSubview(dexField)
         
         let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+15, y: 25, width: 90, height: 30))
@@ -666,7 +666,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         miscLabel.font = UIFont.systemFont(ofSize: 10)
         miscLabel.textAlignment = NSTextAlignment.center
         miscLabel.numberOfLines = 2
-        miscLabel.tag = 613
+        miscLabel.tag = 606
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
@@ -674,40 +674,40 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = 604
+        miscField.tag = 607
         tempView.addSubview(miscField)
         
         let alertLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-90, y:85, width:120, height:30))
         alertLabel.text = "Alert Feat"
         alertLabel.textAlignment = NSTextAlignment.right
-        alertLabel.tag = 605
+        alertLabel.tag = 608
         tempView.addSubview(alertLabel)
         
         let alertSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
         alertSwitch.isOn = false
-        alertSwitch.tag = 606
+        alertSwitch.tag = 609
         tempView.addSubview(alertSwitch)
         
         let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
         halfProfLabel.text = "Half Proficiency"
         halfProfLabel.textAlignment = NSTextAlignment.right
-        halfProfLabel.tag = 607
+        halfProfLabel.tag = 610
         tempView.addSubview(halfProfLabel)
         
         let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
         halfProfSwitch.isOn = false
-        halfProfSwitch.tag = 608
+        halfProfSwitch.tag = 611
         tempView.addSubview(halfProfSwitch)
         
         let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
         roundUpLabel.text = "Round Up"
         roundUpLabel.textAlignment = NSTextAlignment.right
-        roundUpLabel.tag = 609
+        roundUpLabel.tag = 612
         tempView.addSubview(roundUpLabel)
         
         let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
         roundUpSwitch.isOn = false
-        roundUpSwitch.tag = 610
+        roundUpSwitch.tag = 613
         tempView.addSubview(roundUpSwitch)
         
         if halfProfSwitch.isOn {
@@ -957,7 +957,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             aa.insertSegment(withTitle:"CHA", at:5, animated:false)
             aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
             aa.selectedSegmentIndex = aaIndex
-            aa.tag = 106
+            aa.tag = 700 + (indexPath.row * 100) + 7
             scrollView.addSubview(aa)
             
             let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 145, width: 90, height: 30))
@@ -965,7 +965,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             profLabel.font = UIFont.systemFont(ofSize: 10)
             profLabel.textAlignment = NSTextAlignment.center
             profLabel.numberOfLines = 2
-            profLabel.tag = 1111
+            profLabel.tag = 700 + (indexPath.row * 100) + 8
             scrollView.addSubview(profLabel)
             
             let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:170, width:40, height:30))
@@ -975,7 +975,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             profField.textColor = UIColor.darkGray
             profField.layer.borderWidth = 1.0
             profField.layer.borderColor = UIColor.darkGray.cgColor
-            profField.tag = 1102
+            profField.tag = 700 + (indexPath.row * 100) + 9
             scrollView.addSubview(profField)
             
             let dexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 145, width: 90, height: 30))
@@ -983,7 +983,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dexLabel.font = UIFont.systemFont(ofSize: 10)
             dexLabel.textAlignment = NSTextAlignment.center
             dexLabel.numberOfLines = 2
-            dexLabel.tag = 1112
+            dexLabel.tag = 700 + (indexPath.row * 100) + 10
             scrollView.addSubview(dexLabel)
             
             let dexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:170, width:40, height:30))
@@ -991,7 +991,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dexField.textAlignment = NSTextAlignment.center
             dexField.layer.borderWidth = 1.0
             dexField.layer.borderColor = UIColor.black.cgColor
-            dexField.tag = 1103
+            dexField.tag = 700 + (indexPath.row * 100) + 11
             scrollView.addSubview(dexField)
             
             let magicLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 145, width: 90, height: 30))
@@ -999,7 +999,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             magicLabel.font = UIFont.systemFont(ofSize: 10)
             magicLabel.textAlignment = NSTextAlignment.center
             magicLabel.numberOfLines = 2
-            magicLabel.tag = 1113
+            magicLabel.tag = 700 + (indexPath.row * 100) + 12
             scrollView.addSubview(magicLabel)
             
             let magicField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:170, width:40, height:30))
@@ -1007,7 +1007,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             magicField.textAlignment = NSTextAlignment.center
             magicField.layer.borderWidth = 1.0
             magicField.layer.borderColor = UIColor.black.cgColor
-            magicField.tag = 1104
+            magicField.tag = 700 + (indexPath.row * 100) + 13
             scrollView.addSubview(magicField)
             
             let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 145, width: 90, height: 30))
@@ -1015,7 +1015,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             miscLabel.font = UIFont.systemFont(ofSize: 10)
             miscLabel.textAlignment = NSTextAlignment.center
             miscLabel.numberOfLines = 2
-            miscLabel.tag = 1114
+            miscLabel.tag = 700 + (indexPath.row * 100) + 14
             scrollView.addSubview(miscLabel)
             
             let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:170, width:40, height:30))
@@ -1023,7 +1023,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             miscField.textAlignment = NSTextAlignment.center
             miscField.layer.borderWidth = 1.0
             miscField.layer.borderColor = UIColor.black.cgColor
-            miscField.tag = 1105
+            miscField.tag = 700 + (indexPath.row * 100) + 15
             scrollView.addSubview(miscField)
             
             let profWithLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 205, width: 90, height: 40))
@@ -1031,12 +1031,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             profWithLabel.font = UIFont.systemFont(ofSize: 10)
             profWithLabel.textAlignment = NSTextAlignment.center
             profWithLabel.numberOfLines = 3
-            profWithLabel.tag = 1106
+            profWithLabel.tag = 700 + (indexPath.row * 100) + 16
             scrollView.addSubview(profWithLabel)
             
             let profWithSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-115, y: 245, width:51, height:31))
             profWithSwitch.isOn = false
-            profWithSwitch.tag = 1107
+            profWithSwitch.tag = 700 + (indexPath.row * 100) + 17
             scrollView.addSubview(profWithSwitch)
             
             let abilityDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 205, width: 90, height: 40))
@@ -1044,7 +1044,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             abilityDmgLabel.font = UIFont.systemFont(ofSize: 10)
             abilityDmgLabel.textAlignment = NSTextAlignment.center
             abilityDmgLabel.numberOfLines = 3
-            abilityDmgLabel.tag = 1108
+            abilityDmgLabel.tag = 700 + (indexPath.row * 100) + 18
             scrollView.addSubview(abilityDmgLabel)
             
             let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 245, width:51, height:31))
@@ -1057,7 +1057,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             magicDmgLabel.font = UIFont.systemFont(ofSize: 10)
             magicDmgLabel.textAlignment = NSTextAlignment.center
             magicDmgLabel.numberOfLines = 3
-            magicDmgLabel.tag = 1115
+            magicDmgLabel.tag = 700 + (indexPath.row * 100) + 19
             scrollView.addSubview(magicDmgLabel)
             
             let magicDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:245, width:40, height:30))
@@ -1065,7 +1065,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             magicDmgField.textAlignment = NSTextAlignment.center
             magicDmgField.layer.borderWidth = 1.0
             magicDmgField.layer.borderColor = UIColor.black.cgColor
-            magicDmgField.tag = 1116
+            magicDmgField.tag = 700 + (indexPath.row * 100) + 20
             scrollView.addSubview(magicDmgField)
             
             let miscDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 205, width: 90, height: 40))
@@ -1073,7 +1073,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             miscDmgLabel.font = UIFont.systemFont(ofSize: 10)
             miscDmgLabel.textAlignment = NSTextAlignment.center
             miscDmgLabel.numberOfLines = 3
-            miscDmgLabel.tag = 1117
+            miscDmgLabel.tag = 700 + (indexPath.row * 100) + 21
             scrollView.addSubview(miscDmgLabel)
             
             let miscDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:245, width:40, height:30))
@@ -1081,21 +1081,21 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             miscDmgField.textAlignment = NSTextAlignment.center
             miscDmgField.layer.borderWidth = 1.0
             miscDmgField.layer.borderColor = UIColor.black.cgColor
-            miscDmgField.tag = 1118
+            miscDmgField.tag = 700 + (indexPath.row * 100) + 22
             scrollView.addSubview(miscDmgField)
             
             let weaponDmgLabel = UILabel.init(frame: CGRect.init(x: 10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
             weaponDmgLabel.text = "Weapon Damage Die"
             weaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
             weaponDmgLabel.textAlignment = NSTextAlignment.center
-            weaponDmgLabel.tag = 1119
+            weaponDmgLabel.tag = 700 + (indexPath.row * 100) + 23
             scrollView.addSubview(weaponDmgLabel)
             
             let extraWeaponDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
             extraWeaponDmgLabel.text = "Extra Damage Die"
             extraWeaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
             extraWeaponDmgLabel.textAlignment = NSTextAlignment.center
-            extraWeaponDmgLabel.tag = 1120
+            extraWeaponDmgLabel.tag = 700 + (indexPath.row * 100) + 24
             scrollView.addSubview(extraWeaponDmgLabel)
             
             let weaponDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:320, width:40, height:30))
@@ -1103,13 +1103,13 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             weaponDieAmount.textAlignment = NSTextAlignment.center
             weaponDieAmount.layer.borderWidth = 1.0
             weaponDieAmount.layer.borderColor = UIColor.black.cgColor
-            weaponDieAmount.tag = 1121
+            weaponDieAmount.tag = 700 + (indexPath.row * 100) + 25
             scrollView.addSubview(weaponDieAmount)
             
             let weaponD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:320, width:20, height:30))
             weaponD.text = "d"
             weaponD.textAlignment = NSTextAlignment.center
-            weaponD.tag = 1122
+            weaponD.tag = 700 + (indexPath.row * 100) + 26
             scrollView.addSubview(weaponD)
             
             let weaponDie = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:320, width:40, height:30))
@@ -1117,12 +1117,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             weaponDie.textAlignment = NSTextAlignment.center
             weaponDie.layer.borderWidth = 1.0
             weaponDie.layer.borderColor = UIColor.black.cgColor
-            weaponDie.tag = 1123
+            weaponDie.tag = 700 + (indexPath.row * 100) + 27
             scrollView.addSubview(weaponDie)
             
             let extraDieSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2+40, y: 305, width:51, height:31))
             extraDieSwitch.isOn = false
-            extraDieSwitch.tag = 1124
+            extraDieSwitch.tag = 700 + (indexPath.row * 100) + 28
             scrollView.addSubview(extraDieSwitch)
             
             let extraDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:340, width:40, height:30))
@@ -1130,13 +1130,13 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             extraDieAmount.textAlignment = NSTextAlignment.center
             extraDieAmount.layer.borderWidth = 1.0
             extraDieAmount.layer.borderColor = UIColor.black.cgColor
-            extraDieAmount.tag = 1125
+            extraDieAmount.tag = 700 + (indexPath.row * 100) + 29
             scrollView.addSubview(extraDieAmount)
             
             let extraD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+60, y:340, width:20, height:30))
             extraD.text = "d"
             extraD.textAlignment = NSTextAlignment.center
-            extraD.tag = 1126
+            extraD.tag = 700 + (indexPath.row * 100) + 30
             scrollView.addSubview(extraD)
             
             let extraDieField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:340, width:40, height:30))
@@ -1144,14 +1144,10 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             extraDieField.textAlignment = NSTextAlignment.center
             extraDieField.layer.borderWidth = 1.0
             extraDieField.layer.borderColor = UIColor.black.cgColor
-            extraDieField.tag = 1127
+            extraDieField.tag = 700 + (indexPath.row * 100) + 31
             scrollView.addSubview(extraDieField)
             
             scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 380)
-            // attack bonus, damage
-//            cell.weaponModifier.text = "+"+String(attackBonus)
-//            let dieDamage = String(damageDieNumber!)+"d"+String(damageDie!)
-//            cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+"
             
             view.addSubview(tempView)
         }
