@@ -14,6 +14,9 @@
 		8DABE6691E72384300EB173D /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6681E72384300EB173D /* Character.swift */; };
 		8DABE66B1E7242C000EB173D /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66A1E7242C000EB173D /* Types.swift */; };
 		8DABE66E1E72ED1C00EB173D /* CharacterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */; };
+		8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66F1E76D72B00EB173D /* Equipment.swift */; };
+		8DABE6721E76D78300EB173D /* Ability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6711E76D78300EB173D /* Ability.swift */; };
+		8DABE6741E76D79000EB173D /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6731E76D79000EB173D /* Skill.swift */; };
 		C2F989BB89C12E80825AF24C /* Pods_cc_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89DC0D765A5809C61EF02219 /* Pods_cc_swift.framework */; };
 		EC14BC4F1E52706300EF3347 /* CharacterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC14BC4E1E52706300EF3347 /* CharacterViewController.swift */; };
 		EC1DAC7D1E3FF3A000616C0A /* character.json in Resources */ = {isa = PBXBuildFile; fileRef = EC1DAC7C1E3FF3A000616C0A /* character.json */; };
@@ -45,6 +48,9 @@
 		8DABE6681E72384300EB173D /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		8DABE66A1E7242C000EB173D /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterFactory.swift; sourceTree = "<group>"; };
+		8DABE66F1E76D72B00EB173D /* Equipment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
+		8DABE6711E76D78300EB173D /* Ability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ability.swift; sourceTree = "<group>"; };
+		8DABE6731E76D79000EB173D /* Skill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skill.swift; sourceTree = "<group>"; };
 		96BCE542D8BEF29E3CB33623 /* Pods-cc_swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cc_swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-cc_swift/Pods-cc_swift.release.xcconfig"; sourceTree = "<group>"; };
 		EC14BC4E1E52706300EF3347 /* CharacterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewController.swift; sourceTree = "<group>"; };
 		EC1DAC7C1E3FF3A000616C0A /* character.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = character.json; sourceTree = "<group>"; };
@@ -127,6 +133,9 @@
 			children = (
 				8DABE6681E72384300EB173D /* Character.swift */,
 				8DABE66A1E7242C000EB173D /* Types.swift */,
+				8DABE66F1E76D72B00EB173D /* Equipment.swift */,
+				8DABE6711E76D78300EB173D /* Ability.swift */,
+				8DABE6731E76D79000EB173D /* Skill.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -317,6 +326,7 @@
 			files = (
 				EC2076BB1E1D836B00FD7B4F /* SpellTableViewCell.swift in Sources */,
 				EC6630151E09DA30002BE9FF /* CombatViewController.swift in Sources */,
+				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
 				8DABE66B1E7242C000EB173D /* Types.swift in Sources */,
 				EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */,
@@ -334,8 +344,10 @@
 				8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */,
 				EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */,
 				8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */,
+				8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */,
 				8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */,
 				EC6630131E09DA30002BE9FF /* OverviewViewController.swift in Sources */,
+				8DABE6721E76D78300EB173D /* Ability.swift in Sources */,
 				EC2076B71E1D827900FD7B4F /* SpellcastingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

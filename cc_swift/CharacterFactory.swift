@@ -14,13 +14,14 @@ class CharacterFactory {
     static func getEmptyCharacter(name: String, context: NSManagedObjectContext) -> Character {
         let character = Character(context: context)
         character.name = name
-        character.abilities = getAbilities()
-        character.skills = getSkills()
+        character.abilities = getAbilities(context: context)
+        character.skills = getSkills(context: context, character: character)
+        character.race = getDefaultRace(context: context)
         return character
     }
     
-    static func getEmptyAbility(name: String) -> Ability {
-        let ability = Ability()
+    static func getEmptyAbility(name: String, context: NSManagedObjectContext) -> Ability {
+        let ability = Ability(context: context)
         ability.name = name
         ability.score = 10
         ability.modifier = 0
@@ -29,22 +30,22 @@ class CharacterFactory {
         return ability
     }
     
-    static func getAbilities() -> NSSet {
+    static func getAbilities(context: NSManagedObjectContext) -> NSSet {
         var abilities: [Ability] = []
         for abilityType in Types.AbilitiesStrings {
-            abilities.append(getEmptyAbility(name: abilityType))
+            abilities.append(getEmptyAbility(name: abilityType, context: context))
         }
         return NSSet(array: abilities)
     }
     
-    static func getSkills() -> NSSet {
+    static func getSkills(context: NSManagedObjectContext, character: Character) -> NSSet {
         var skills: [Skill] = []
         for skillType in Types.SkillsStrings {
-            let skill = Skill()
+            let skill = Skill(context: context)
             skill.name = skillType
             for skillAbilityCombo in Types.SkillToAbilityDictionary {
                 if skillAbilityCombo.key == skillType {
-                    skill.ability = getEmptyAbility(name: skillAbilityCombo.value)
+                    skill.ability = character.getAbility(name: skillAbilityCombo.value)
                 }
             }
             skill.expertise = false
@@ -52,5 +53,11 @@ class CharacterFactory {
             skills.append(skill)
         }
         return NSSet(array: skills)
+    }
+    
+    static func getDefaultRace(context: NSManagedObjectContext) -> Race {
+        var race = Race(context: context)
+        race.name = "Human"
+        return race
     }
 }

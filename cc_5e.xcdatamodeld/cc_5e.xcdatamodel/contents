@@ -70,6 +70,7 @@
     <entity name="Damage" representedClassName="Damage" syncable="YES" codeGenerationType="class">
         <attribute name="damage_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="die_number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="die_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="extra_die" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="extra_die_number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="extra_die_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -78,10 +79,11 @@
         <attribute name="mod_damage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Equipment" representedClassName="Equipment" syncable="YES" codeGenerationType="class">
-        <relationship name="armor" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Armor" syncable="YES"/>
-        <relationship name="currency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Currency" syncable="YES"/>
-        <relationship name="tools" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tool" syncable="YES"/>
-        <relationship name="weapons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Weapon" syncable="YES"/>
+        <relationship name="armor" toMany="YES" deletionRule="Nullify" destinationEntity="Armor" syncable="YES"/>
+        <relationship name="currency" maxCount="1" deletionRule="Nullify" destinationEntity="Currency" syncable="YES"/>
+        <relationship name="other" toMany="YES" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
+        <relationship name="tools" toMany="YES" deletionRule="Nullify" destinationEntity="Tool" syncable="YES"/>
+        <relationship name="weapons" toMany="YES" deletionRule="Nullify" destinationEntity="Weapon" syncable="YES"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="cost" optional="YES" attributeType="String" syncable="YES"/>
@@ -153,7 +155,7 @@
         <attribute name="properties" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="range" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="ability" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
-        <relationship name="damage" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Damage" syncable="YES"/>
+        <relationship name="damage" maxCount="1" deletionRule="Nullify" destinationEntity="Damage" syncable="YES"/>
     </entity>
     <elements>
         <element name="Ability" positionX="-7974" positionY="-324" width="128" height="135"/>
@@ -162,18 +164,18 @@
         <element name="Character" positionX="-8046" positionY="-417" width="128" height="480"/>
         <element name="Class" positionX="-7992" positionY="-333" width="128" height="120"/>
         <element name="Currency" positionX="-7992" positionY="-243" width="128" height="120"/>
-        <element name="Damage" positionX="-7965" positionY="-234" width="128" height="165"/>
-        <element name="Equipment" positionX="-8001" positionY="-252" width="128" height="105"/>
+        <element name="Damage" positionX="-7965" positionY="-234" width="128" height="180"/>
+        <element name="Equipment" positionX="-8001" positionY="-252" width="128" height="120"/>
         <element name="Item" positionX="-7947" positionY="-207" width="128" height="120"/>
         <element name="Race" positionX="-8028" positionY="-387" width="128" height="75"/>
         <element name="Resource" positionX="-7974" positionY="-243" width="128" height="105"/>
+        <element name="SelectedCharacter" positionX="-7983" positionY="-252" width="128" height="60"/>
         <element name="Skill" positionX="-8010" positionY="-306" width="128" height="105"/>
+        <element name="Specialization" positionX="-7992" positionY="-261" width="128" height="90"/>
         <element name="Spell" positionX="-7956" positionY="-225" width="128" height="210"/>
         <element name="Spellcasting" positionX="-7992" positionY="-261" width="128" height="120"/>
         <element name="Spells_by_Level" positionX="-7983" positionY="-252" width="128" height="135"/>
         <element name="Tool" positionX="-7965" positionY="-216" width="128" height="75"/>
         <element name="Weapon" positionX="-7983" positionY="-234" width="128" height="150"/>
-        <element name="Specialization" positionX="-7992" positionY="-261" width="128" height="90"/>
-        <element name="SelectedCharacter" positionX="-7983" positionY="-252" width="128" height="60"/>
     </elements>
 </model>

@@ -77,11 +77,13 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
         // Resource
-        resourceTitle.text = Character.Selected.martialResource["name"].string
+        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+        resourceTitle.text = resource.name ?? "Resource"
         
-        let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-        let dieType: Int = Character.Selected.martialResource["die_type"].int!
+        let currentResourceValue: Int32 = resource.current_value
+        let maxResourceValue: Int32 = resource.max_value
+        let dieType: Int32 = resource.die_type
         
         var resourceDisplay = ""
         if dieType == 0 {
@@ -210,11 +212,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 200:
             // Resource
-            resourceTitle.text = Character.Selected.martialResource["name"].string
-            
-            let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-            let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-            let dieType: Int = Character.Selected.martialResource["die_type"].int!
+            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+            resourceTitle.text = resource.name
+            let currentResourceValue: Int32 = resource.current_value
+            let maxResourceValue: Int32 = resource.max_value
+            let dieType: Int32 = resource.die_type
             
             var resourceDisplay = ""
             if dieType == 0 {
@@ -370,13 +373,14 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Create resource adjusting view
         let tempView = createBasicView()
         tempView.tag = 200
-        
-        let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-        let dieType: Int = Character.Selected.martialResource["die_type"].int!
+        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+        let currentResourceValue: Int32 = resource.current_value
+        let maxResourceValue: Int32 = resource.max_value
+        let dieType: Int32 = resource.die_type
         
         let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = Character.Selected.martialResource["name"].string
+        title.text = resource.name
         title.textAlignment = NSTextAlignment.center
         title.tag = 201
         tempView.addSubview(title)
@@ -728,7 +732,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return Character.Selected.equipment["weapons"].count
+            return (Character.Selected.equipment?.weapons?.allObjects.count)!
         }
         else {
             return 1
@@ -749,65 +753,65 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell", for: indexPath) as! WeaponTableViewCell
-            let weapon = Character.Selected.equipment["weapons"][indexPath.row]
-            let attackBonusDict = weapon["attack_bonus"]
-            let damageDict = weapon["damage"]
+            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+            let damage = weapon.damage! as Damage
             
             var attackBonus = 0
             var damageBonus = 0
-            let modDamage = damageDict["mod_damage"].bool
-            let abilityType: String = attackBonusDict["ability"].string!
+            let modDamage = damage.mod_damage
+            let abilityType: String = (weapon.ability?.name)!
             switch abilityType {
             case "STR":
                 attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.strBonus
                 }
             case "DEX":
                 attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.dexBonus
                 }
             case "CON":
                 attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.conBonus
                 }
             case "INT":
                 attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.intBonus
                 }
             case "WIS":
                 attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.wisBonus
                 }
             case "CHA":
                 attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.chaBonus
                 }
             default: break
             }
             
-            attackBonus = attackBonus + attackBonusDict["magic_bonus"].int! + attackBonusDict["misc_bonus"].int!
-            damageBonus = damageBonus + damageDict["magic_bonus"].int! + damageDict["misc_bonus"].int!
+            attackBonus = attackBonus +
+                Int(weapon.magic_bonus + weapon.misc_bonus)
+            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
             
-            var damageDieNumber = damageDict["die_number"].int
-            var damageDie = damageDict["die_type"].int
-            let extraDie = damageDict["extra_die"].bool
-            if (extraDie)! {
-                damageDieNumber = damageDieNumber! + damageDict["extra_die_number"].int!
-                damageDie = damageDie! + damageDict["extra_die_type"].int!
+            var damageDieNumber = damage.die_number
+            var damageDie = damage.die_type
+            let extraDie = damage.extra_die
+            if (extraDie) {
+                damageDieNumber = damageDieNumber + damage.extra_die_number
+                damageDie = damageDie + damage.extra_die_type
             }
             
-            let damageType = damageDict["damage_type"].string
+            let damageType = damage.damage_type
             
-            cell.weaponName.text = weapon["name"].string?.capitalized
-            cell.weaponReach.text = "Range: "+weapon["range"].string!
-            cell.weaponModifier.text = "+"+String(attackBonus)
-            let dieDamage = String(damageDieNumber!)+"d"+String(damageDie!)
+            cell.weaponName.text = weapon.name
+            cell.weaponReach.text = "Range: " + weapon.range!
+            cell.weaponModifier.text = "+" + String(attackBonus)
+            let dieDamage = String(damageDieNumber)+"d"+String(damageDie)
             cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+" "+damageType!
             
             return cell
@@ -826,64 +830,63 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let tempView = createBasicView()
             tempView.tag = 700 + (indexPath.row * 100)
             
-            let weapon = Character.Selected.equipment["weapons"][indexPath.row]
-            let attackBonusDict = weapon["attack_bonus"]
-            let damageDict = weapon["damage"]
+            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+            let damage = weapon.damage! as Damage
             
             var attackBonus = 0
             var damageBonus = 0
-            let modDamage = damageDict["mod_damage"].bool
-            let abilityType: String = attackBonusDict["ability"].string!
+            let modDamage = damage.mod_damage
+            let abilityType: String = (weapon.ability?.name)!
             switch abilityType {
             case "STR":
                 attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.strBonus
                 }
             case "DEX":
                 attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.dexBonus
                 }
             case "CON":
                 attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.conBonus
                 }
             case "INT":
                 attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.intBonus
                 }
             case "WIS":
                 attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.wisBonus
                 }
             case "CHA":
                 attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.chaBonus
                 }
             default: break
             }
             
-            attackBonus = attackBonus + attackBonusDict["magic_bonus"].int! + attackBonusDict["misc_bonus"].int!
-            damageBonus = damageBonus + damageDict["magic_bonus"].int! + damageDict["misc_bonus"].int!
+            attackBonus = attackBonus + Int(weapon.magic_bonus + weapon.misc_bonus)
+            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
             
-            var damageDieNumber = damageDict["die_number"].int
-            var damageDie = damageDict["die_type"].int
-            let extraDie = damageDict["extra_die"].bool
-            if (extraDie)! {
-                damageDieNumber = damageDieNumber! + damageDict["extra_die_number"].int!
-                damageDie = damageDie! + damageDict["extra_die_type"].int!
+            var damageDieNumber = damage.die_number
+            var damageDie = damage.die_type
+            let extraDie = damage.extra_die
+            if (extraDie) {
+                damageDieNumber = damageDieNumber + damage.extra_die_number
+                damageDie = damageDie + damage.extra_die_type
             }
             
             let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
             tempView.addSubview(scrollView)
             
             let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
-            title.text = weapon["name"].string?.capitalized
+            title.text = weapon.name?.capitalized
             title.textAlignment = NSTextAlignment.center
             title.tag = 700 + (indexPath.row * 100) + 1
             title.layer.borderWidth = 1.0
@@ -897,7 +900,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             scrollView.addSubview(reachLabel)
             
             let reachField = UITextField.init(frame: CGRect.init(x: 10, y: 55, width: tempView.frame.size.width/2-15, height: 40))
-            reachField.text = weapon["range"].string!
+            reachField.text = weapon.range
             reachField.textAlignment = NSTextAlignment.center
             reachField.layer.borderWidth = 1.0
             reachField.layer.borderColor = UIColor.black.cgColor
@@ -1164,7 +1167,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Types.Damage.count
+        return Types.DamageStrings.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -1180,7 +1183,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         
-        pickerLabel?.text = Types.Damage[row]
+        pickerLabel?.text = Types.DamageStrings[row]
         return pickerLabel!
     }
     

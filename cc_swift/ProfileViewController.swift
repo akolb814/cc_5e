@@ -118,36 +118,36 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         let primaryClass: Class = Character.Selected.primaryClass
         
         navigationItem.title = Character.Selected.name
-        classField.text = primaryClass.name + " " + String(primaryClass.level)
+        classField.text = primaryClass.name! + " " + String(primaryClass.level)
         let race = Character.Selected.race
-        raceField.text = race.name
+        raceField.text = race?.name
         let background = Character.Selected.background
-        backgroundField.text = background.name
+        backgroundField.text = background?.name
         alignmentField.text = Character.Selected.alignment
-        experienceField.text = String(Character.Selected.experience
+        experienceField.text = String(Character.Selected.experience)
         
         // Class Features
-        classTextView.text = firstClass["features"].string!
+        classTextView.text = primaryClass.features
         let classTextViewHeight = classTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         classHeight.constant = 20+classTextViewHeight
         
         // Racial Features
-        racialTextView.text = race["features"].string!
+        racialTextView.text = race?.features
         let racialTextViewHeight = racialTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         racialHeight.constant = 20+racialTextViewHeight
         
         // Background Features
-        backgroundTextView.text = background["features"].string!
+        backgroundTextView.text = background?.features
         let backgroundTextViewHeight = backgroundTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         backgroundHeight.constant = 20+backgroundTextViewHeight
         
         // Weapon Proficiencies
-        weaponTextView.text = Character.Selected.weaponProficiencies
+        weaponTextView.text = Character.Selected.weapon_proficiencies
         let weaponTextViewHeight = weaponTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         
         // Armor Proficiencies
-        armorTextView.text = Character.Selected.armorProficienceies
+        armorTextView.text = Character.Selected.armor_proficiencies
         let armorTextViewHeight = armorTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         // Armor and weapon views must be same size, check which one is larger and use that one for both views
@@ -161,7 +161,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
         
         // Tool Proficiencies
-        toolTextView.text = Character.Selected.toolProficiencies
+        toolTextView.text = Character.Selected.tool_proficiencies
         let toolTextViewHeight = toolTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         // Languages Known
@@ -179,7 +179,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
         
         // Personality Traits
-        personalityTextView.text = Character.Selected.personalityTraits
+        personalityTextView.text = Character.Selected.personality_traits
         let personalityTextViewHeight = personalityTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         personalityHeight.constant = 20+personalityTextViewHeight
         
