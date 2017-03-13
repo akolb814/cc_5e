@@ -115,18 +115,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
     
     func setMiscDisplayData() {
         
-        let firstClass: JSON = Character.Selected.classes[0]
-        let classStr = firstClass["class"].string!
-        let level = firstClass["level"].int!
+        let primaryClass: Class = Character.Selected.primaryClass
         
         navigationItem.title = Character.Selected.name
-        classField.text = classStr + " " + String(level)
+        classField.text = primaryClass.name + " " + String(primaryClass.level)
         let race = Character.Selected.race
-        raceField.text = race["title"].string
+        raceField.text = race.name
         let background = Character.Selected.background
-        backgroundField.text = background["title"].string
+        backgroundField.text = background.name
         alignmentField.text = Character.Selected.alignment
-        experienceField.text = Character.Selected.experience
+        experienceField.text = String(Character.Selected.experience
         
         // Class Features
         classTextView.text = firstClass["features"].string!

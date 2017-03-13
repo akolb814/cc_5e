@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Ability" representedClassName="Ability" syncable="YES" codeGenerationType="class">
-        <attribute name="bonus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="modifier" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="save" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="save" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="save_proficiency" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="score" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Armor" representedClassName="Armor" parentEntity="Item" syncable="YES" codeGenerationType="class">
         <attribute name="equipped" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="magic_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="max_dex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="max_dex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="misc_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stealth_disadvantage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="str_requirement" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="str_requirement" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="ability_mod" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
     </entity>
     <entity name="Background" representedClassName="Background" syncable="YES" codeGenerationType="class">
         <attribute name="features" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Character" representedClassName="Character" syncable="YES" codeGenerationType="class">
-        <attribute name="ac" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ac" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="alignment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="armor_proficiencies" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bonds" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="current_hit_dice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="current_hp" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="experience" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="current_hit_dice" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="current_hp" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="experience" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="flaws" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="ideals" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="initiative" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="image_url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="initiative" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="languages" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="max_hp" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="max_hp" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="personality_traits" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="proficiency_bonus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="speed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="proficiency_bonus" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="speed" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="tool_proficiencies" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weapon_proficiencies" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="abilities" optional="YES" toMany="YES" minCount="6" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
-        <relationship name="background" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Background" syncable="YES"/>
+        <relationship name="background" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Background" syncable="YES"/>
         <relationship name="classes" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Class" syncable="YES"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" syncable="YES"/>
-        <relationship name="race" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Race" syncable="YES"/>
+        <relationship name="race" maxCount="1" deletionRule="Nullify" destinationEntity="Race" syncable="YES"/>
         <relationship name="resouces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Resource" syncable="YES"/>
+        <relationship name="skills" toMany="YES" maxCount="18" deletionRule="Nullify" destinationEntity="Skill" syncable="YES"/>
         <relationship name="spellcasting" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Spellcasting" syncable="YES"/>
     </entity>
     <entity name="Class" representedClassName="Class" syncable="YES" codeGenerationType="class">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="features" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hit_die" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="level" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="primary" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Currency" representedClassName="Currency" syncable="YES" codeGenerationType="class">
         <attribute name="copper" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -61,10 +69,10 @@
     </entity>
     <entity name="Damage" representedClassName="Damage" syncable="YES" codeGenerationType="class">
         <attribute name="damage_type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="die_number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="die_number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="extra_die" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="extra_die_number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="extra_die_type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="extra_die_number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="extra_die_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="magic_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="misc_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="mod_damage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -84,19 +92,27 @@
     </entity>
     <entity name="Race" representedClassName="Race" syncable="YES" codeGenerationType="class">
         <attribute name="features" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Resource" representedClassName="Resource" syncable="YES" codeGenerationType="class">
-        <attribute name="current_value" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="die_type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="max_value" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="current_value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="die_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="max_value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SelectedCharacter" representedClassName="SelectedCharacter" syncable="YES" codeGenerationType="class">
+        <attribute name="selected_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Skill" representedClassName="Skill" syncable="YES" codeGenerationType="class">
         <attribute name="expertise" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proficiency" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="ability" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
+    </entity>
+    <entity name="Specialization" representedClassName="Specialization" syncable="YES" codeGenerationType="class">
+        <attribute name="features" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Spell" representedClassName="Spell" syncable="YES" codeGenerationType="class">
         <attribute name="casting_time" optional="YES" attributeType="String" syncable="YES"/>
@@ -120,10 +136,10 @@
     </entity>
     <entity name="Spells_by_Level" representedClassName="Spells_by_Level" syncable="YES" codeGenerationType="class">
         <attribute name="expanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="level" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="remaining_slots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="total_slots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="remaining_slots" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="total_slots" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="spells" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Spell" syncable="YES"/>
     </entity>
     <entity name="Tool" representedClassName="Tool" parentEntity="Item" syncable="YES" codeGenerationType="class">
@@ -140,22 +156,24 @@
         <relationship name="damage" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Damage" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Character" positionX="-8046" positionY="-417" width="128" height="433"/>
-        <element name="Race" positionX="-8028" positionY="-387" width="128" height="75"/>
-        <element name="Background" positionX="-8010" positionY="-360" width="128" height="75"/>
-        <element name="Class" positionX="-7992" positionY="-333" width="128" height="60"/>
-        <element name="Ability" positionX="-7974" positionY="-324" width="128" height="120"/>
-        <element name="Skill" positionX="-8010" positionY="-306" width="128" height="105"/>
-        <element name="Equipment" positionX="-8001" positionY="-252" width="128" height="105"/>
-        <element name="Currency" positionX="-7992" positionY="-243" width="128" height="120"/>
-        <element name="Weapon" positionX="-7983" positionY="-234" width="128" height="150"/>
+        <element name="Ability" positionX="-7974" positionY="-324" width="128" height="135"/>
         <element name="Armor" positionX="-7974" positionY="-225" width="128" height="165"/>
-        <element name="Tool" positionX="-7965" positionY="-216" width="128" height="75"/>
+        <element name="Background" positionX="-8010" positionY="-360" width="128" height="75"/>
+        <element name="Character" positionX="-8046" positionY="-417" width="128" height="480"/>
+        <element name="Class" positionX="-7992" positionY="-333" width="128" height="120"/>
+        <element name="Currency" positionX="-7992" positionY="-243" width="128" height="120"/>
+        <element name="Damage" positionX="-7965" positionY="-234" width="128" height="165"/>
+        <element name="Equipment" positionX="-8001" positionY="-252" width="128" height="105"/>
         <element name="Item" positionX="-7947" positionY="-207" width="128" height="120"/>
+        <element name="Race" positionX="-8028" positionY="-387" width="128" height="75"/>
+        <element name="Resource" positionX="-7974" positionY="-243" width="128" height="105"/>
+        <element name="Skill" positionX="-8010" positionY="-306" width="128" height="105"/>
+        <element name="Spell" positionX="-7956" positionY="-225" width="128" height="210"/>
         <element name="Spellcasting" positionX="-7992" positionY="-261" width="128" height="120"/>
         <element name="Spells_by_Level" positionX="-7983" positionY="-252" width="128" height="135"/>
-        <element name="Resource" positionX="-7974" positionY="-243" width="128" height="105"/>
-        <element name="Damage" positionX="-7965" positionY="-234" width="128" height="165"/>
-        <element name="Spell" positionX="-7956" positionY="-225" width="128" height="210"/>
+        <element name="Tool" positionX="-7965" positionY="-216" width="128" height="75"/>
+        <element name="Weapon" positionX="-7983" positionY="-234" width="128" height="150"/>
+        <element name="Specialization" positionX="-7992" positionY="-261" width="128" height="90"/>
+        <element name="SelectedCharacter" positionX="-7983" positionY="-252" width="128" height="60"/>
     </elements>
 </model>

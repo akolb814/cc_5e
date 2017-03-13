@@ -31,7 +31,7 @@ class CharacterJson {
         } else {
             print("Invalid filename/path.")
         }
-        
+        /**
         character.name = characterJson["name"].stringValue
         character.classes = characterJson["classes"]
         character.race = characterJson["race"]
@@ -97,13 +97,13 @@ class CharacterJson {
         let resources = characterJson["resources"]
         character.martialResource = (resources["martial"])
         character.spellcastingResource = (resources["spellcasting"])
-        
+        **/
         return character
     }
     
     static func saveCharacterToJson(character: Character, filename: String) {
         var characterJson: JSON = [:]
-
+/**
         // Update the characterJson dict based on properties
         characterJson["name"].string = character.name
         characterJson["classes"] = character.classes
@@ -176,6 +176,7 @@ class CharacterJson {
         
         characterJson["resources"].dictionaryObject = ["martial":character.martialResource, "spellcasting":character.spellcastingResource]
         
+ **/
         // Save the character dict as JSON to the file
         let path = Bundle.main.path(forResource: filename, ofType: "json")
         let characterStr = characterJson.description

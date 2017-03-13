@@ -51,7 +51,6 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var hpEffectValue = 0
-    let damageTypes = ["Bludgeoning", "Piercing", "Slashing", "Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +74,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func setMiscDisplayData() {
         // HP
-        hpValue.text = String(Character.Selected.currentHP)+"/"+String(Character.Selected.maxHP)
+        hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
         // Resource
         resourceTitle.text = Character.Selected.martialResource["name"].string
@@ -105,10 +104,10 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         resourceValue.text = resourceDisplay
         
         // Proficiency
-        profValue.text = "+"+String(Character.Selected.proficiencyBonus)
+        profValue.text = "+"+String(Character.Selected.proficiency_bonus)
         
         // Armor Class
-        acValue.text = String(Character.Selected.AC)
+        acValue.text = String(Character.Selected.ac)
         
         // Speed
         speedValue.text = String(Character.Selected.speed)
@@ -186,25 +185,25 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let segControl = view as! UISegmentedControl
                     if segControl.selectedSegmentIndex == 0 {
                         // Damage
-                        Character.Selected.currentHP -= hpEffectValue
+                        Character.Selected.current_hp -= hpEffectValue
                     }
                     else if segControl.selectedSegmentIndex == 1 {
                         // Heal
-                        Character.Selected.currentHP += hpEffectValue
-                        if Character.Selected.currentHP > Character.Selected.maxHP {
-                            Character.Selected.currentHP = Character.Selected.maxHP
+                        Character.Selected.current_hp += hpEffectValue
+                        if Character.Selected.current_hp > Character.Selected.max_hp {
+                            Character.Selected.current_hp = Character.Selected.max_hp
                         }
                     }
                     else {
                         // Temp HP
-                        Character.Selected.currentHP += hpEffectValue
+                        Character.Selected.current_hp += hpEffectValue
                     }
                 }
             }
             hpEffectValue = 0
-            hpValue.text = String(Character.Selected.currentHP)+"/"+String(Character.Selected.maxHP)
+            hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
             
-            if Character.Selected.currentHP == 0 {
+            if Character.Selected.current_hp == 0 {
                 // Death Saves
             }
             break
@@ -240,12 +239,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 300:
             // Proficiency Bonus
-            profValue.text = "+"+String(Character.Selected.proficiencyBonus)
+            profValue.text = "+"+String(Character.Selected.proficiency_bonus)
             break
             
         case 400:
             // Armor Class
-            acValue.text = String(Character.Selected.AC)
+            acValue.text = String(Character.Selected.ac)
             break
             
         case 500:
@@ -317,7 +316,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(title)
         
         let currentHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-        currentHP.text = String(Character.Selected.currentHP)
+        currentHP.text = String(Character.Selected.current_hp)
         currentHP.textAlignment = NSTextAlignment.center
         currentHP.layer.borderWidth = 1.0
         currentHP.layer.borderColor = UIColor.black.cgColor
@@ -331,7 +330,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(slash)
         
         let maxHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-        maxHP.text = String(Character.Selected.maxHP)
+        maxHP.text = String(Character.Selected.max_hp)
         maxHP.textAlignment = NSTextAlignment.center
         maxHP.layer.borderWidth = 1.0
         maxHP.layer.borderColor = UIColor.black.cgColor
@@ -524,7 +523,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(title)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.black.cgColor
@@ -636,7 +635,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray
@@ -969,7 +968,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             scrollView.addSubview(profLabel)
             
             let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:170, width:40, height:30))
-            profField.text = String(Character.Selected.proficiencyBonus)
+            profField.text = String(Character.Selected.proficiency_bonus)
             profField.textAlignment = NSTextAlignment.center
             profField.isEnabled = false
             profField.textColor = UIColor.darkGray
@@ -1165,7 +1164,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return damageTypes.count
+        return Types.Damage.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -1181,7 +1180,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         
-        pickerLabel?.text = damageTypes[row]
+        pickerLabel?.text = Types.Damage[row]
         return pickerLabel!
     }
     

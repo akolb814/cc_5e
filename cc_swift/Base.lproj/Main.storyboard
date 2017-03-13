@@ -1814,7 +1814,11 @@
                         <sections/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Characters" id="5zM-NV-qRV">
-                        <barButtonItem key="rightBarButtonItem" image="add" id="vzX-X6-OJM"/>
+                        <barButtonItem key="rightBarButtonItem" image="add" id="vzX-X6-OJM">
+                            <connections>
+                                <action selector="didTapAddCharacter:" destination="xRp-rC-cmW" id="ZBO-x5-JG1"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="4Jh-lY-A2t" id="7hp-7z-f2u"/>

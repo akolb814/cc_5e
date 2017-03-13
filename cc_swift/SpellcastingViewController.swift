@@ -39,7 +39,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var spellsTable: UITableView!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var spellcastingDict: JSON = [:]
+    var spellcastingDict = Spellcasting()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         spellsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
-        spellcastingDict = Character.Selected.spellcasting
+        spellcastingDict = Character.Selected.spellcasting!
         
         self.setMiscDisplayData()
     }
@@ -66,9 +66,9 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     func setMiscDisplayData() {
         // Spell Attack
-        var spellAttack = Character.Selected.proficiencyBonus
-        var spellDC = 8+Character.Selected.proficiencyBonus
-        let spellAbility = spellcastingDict["spell_ability"].string!
+        var spellAttack = Character.Selected.proficiency_bonus
+        var spellDC = 8+Character.Selected.proficiency_bonus
+        let spellAbility = spellcastingDict.ability!.name!
         switch spellAbility {
         case "STR":
             spellAttack += Character.Selected.strBonus //Add STR bonus
@@ -91,8 +91,8 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         default: break
         }
         
-        spellAttack += spellcastingDict["spell_attack_misc_bonus"].int!
-        spellDC += spellcastingDict["spell_dc_misc_bonus"].int!
+        spellAttack += spellcastingDict.attack_bonus
+        spellDC += spellcastingDict.dc_bonus
         
         saValue.text = "+"+String(spellAttack)
         
@@ -100,14 +100,15 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         sdcValue.text = String(spellDC)
         
         // Caster Level
-        clValue.text = String(spellcastingDict["caster_level"].int!)
+        clValue.text = String(spellcastingDict.caster_level)
         
         // Resource
-        resourceTitle.text = Character.Selected.spellcastingResource["name"].string
+        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+        resourceTitle.text = resource.name
         
-        let currentResourceValue: Int = Character.Selected.spellcastingResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.spellcastingResource["max_value"].int!
-        let dieType: Int = Character.Selected.spellcastingResource["die_type"].int!
+        let currentResourceValue: Int32 = resource.current_value
+        let maxResourceValue: Int32 = resource.max_value
+        let dieType: Int32 = resource.die_type
         
         var resourceDisplay = ""
         if dieType == 0 {
@@ -290,7 +291,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         var saIndex = 0
         var saText = ""
-        let spellAbility = spellcastingDict["spell_ability"].string!
+        let spellAbility = spellcastingDict.ability!.name!
         switch spellAbility {
         case "STR":
             saIndex = 0
@@ -423,7 +424,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         var saIndex = 0
         var saText = ""
-        let spellAbility = spellcastingDict["spell_ability"].string!
+        let spellAbility = spellcastingDict.ability!.name!
         switch spellAbility {
         case "STR":
             saIndex = 0
@@ -481,7 +482,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         view.addSubview(tempView)
         
         let clField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
-        let casterLevel = spellcastingDict["caster_level"].intValue
+        let casterLevel = spellcastingDict.caster_level
         clField.text = String(casterLevel)
         clField.textAlignment = NSTextAlignment.center
         clField.layer.borderWidth = 1.0
@@ -497,12 +498,13 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         let tempView = createBasicView()
         tempView.tag = 400
         
-        let currentResourceValue: Int = Character.Selected.spellcastingResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.spellcastingResource["max_value"].int!
-        let dieType: Int = Character.Selected.spellcastingResource["die_type"].int!
+        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+        let currentResourceValue: Int32 = resource.current_value
+        let maxResourceValue: Int32 = resource.max_value
+        let dieType: Int32 = resource.die_type
         
         let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = Character.Selected.spellcastingResource["name"].string
+        title.text = resource.name
         title.textAlignment = NSTextAlignment.center
         title.tag = 401
         tempView.addSubview(title)
@@ -638,15 +640,15 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     // UITableView Delegate & Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
-        return spellcastingDict["spells"].count
+        return (spellcastingDict.spells_by_level?.allObjects.count)!
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section != spellcastingDict["spells"].count {
-            let spellLevelDict = spellcastingDict["spells"][section]
-            let expanded = spellLevelDict["expanded"].bool
-            if expanded! {
-                return spellLevelDict["prepared_spells"].count+1
+        if section != spellcastingDict.spells_by_level?.allObjects.count {
+            let spellLevelDict = spellcastingDict.spells_by_level?.allObjects[section] as! Spells_by_Level
+            let expanded = spellLevelDict.expanded
+            if expanded {
+                return (spellLevelDict.spells?.allObjects.count)!+1
             }
             else {
                 return 1
@@ -658,33 +660,33 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section != spellcastingDict["spells"].count {
+        if indexPath.section != spellcastingDict.spells_by_level?.allObjects.count {
             if indexPath.row == 0 {
                 // spell level cell
                 return 30
             }
             else {
                 // spell cell
-                let spellLevelDict = spellcastingDict["spells"][indexPath.section]
-                let spellDict = spellLevelDict["prepared_spells"][indexPath.row-1]
+                let spellLevelDict = spellcastingDict.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
+                let spellDict = spellLevelDict.spells?.allObjects[indexPath.row-1] as! Spell
                 
-                let expanded = spellDict["expanded"].bool
-                if expanded! {
-                    let nameHeight = spellDict["name"].string?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold))
-                    let schoolHeight = spellDict["school"].string?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17))
-                    let castingHeight = spellDict["casting_time"].string?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let rangeHeight = spellDict["range"].string?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let componentsHeight = spellDict["components"].string?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let durationHeight = spellDict["duration"].string?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                let expanded = spellDict.expanded
+                if expanded {
+                    let nameHeight = spellDict.name?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold))
+                    let schoolHeight = spellDict.school?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17))
+                    let castingHeight = spellDict.casting_time?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                    let rangeHeight = spellDict.range?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                    let componentsHeight = spellDict.components?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                    let durationHeight = spellDict.duration?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
                     var descriptionHeight: CGFloat = 0
-                    if spellDict["higher_level"].string! == "" {
-                        descriptionHeight = (spellDict["description"].string?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17)))!
+                    if spellDict.higher_level == "" {
+                        descriptionHeight = (spellDict.description.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17)))
                         descriptionHeight += 70
                     }
                     else {
                         let boldText = "At Higher Levels."
                         let attrs = [NSFontAttributeName: UIFont.systemFont(ofSize: 17)]
-                        let attributedString = NSMutableAttributedString(string:spellDict["description"].string!+"\n", attributes:attrs)
+                        let attributedString = NSMutableAttributedString(string:spellDict.description+"\n", attributes:attrs)
                         let attributedHeight = attributedString.heightWithConstrainedWidth(width: view.frame.width-10)
                         
                         let boldAttrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17)]
@@ -692,7 +694,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                         let boldHeight = boldString.heightWithConstrainedWidth(width: view.frame.width-10)
                         
                         attributedString.append(boldString)
-                        let attributedString2 = NSMutableAttributedString(string:" "+spellDict["higher_level"].string!, attributes:attrs)
+                        let attributedString2 = NSMutableAttributedString(string:"" + spellDict.higher_level!, attributes:attrs)
                         let attributedHeight2 = attributedString2.heightWithConstrainedWidth(width: view.frame.width-10)
                         attributedString.append(attributedString2)
                         
@@ -721,11 +723,11 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section != spellcastingDict["spells"].count {
-            let spellLevelDict = spellcastingDict["spells"][indexPath.section]
-            let spellLevel = spellLevelDict["level"].int!
-            let remainingSlots = spellLevelDict["remaining_slots"].int!
-            let totalSlots = spellLevelDict["total_slots"].int!
+        if indexPath.section != spellcastingDict.spells_by_level?.allObjects.count {
+            let spellLevelDict = spellcastingDict.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
+            let spellLevel = spellLevelDict.level
+            let remainingSlots = spellLevelDict.remaining_slots
+            let totalSlots = spellLevelDict.total_slots
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SpellLevelTableViewCell", for: indexPath) as! SpellLevelTableViewCell
                 
@@ -754,24 +756,24 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SpellTableViewCell", for: indexPath) as! SpellTableViewCell
                 
-                let spellDict = spellLevelDict["prepared_spells"][indexPath.row-1]
-                cell.spellName.text = spellDict["name"].string
-                cell.spellSchool.text = spellDict["school"].string
-                cell.castingTime.text = spellDict["casting_time"].string!
-                cell.range.text = spellDict["range"].string!
-                cell.components.text = spellDict["components"].string!
-                cell.duration.text = spellDict["duration"].string!
-                cell.concentration.isHidden = !spellDict["concentration"].bool!
-                if spellDict["higher_level"].string! == "" {
-                    cell.spellDescription.text = spellDict["description"].string!
+                let spell = spellLevelDict.spells?.allObjects[indexPath.row-1] as! Spell
+                cell.spellName.text = spell.name
+                cell.spellSchool.text = spell.school
+                cell.castingTime.text = spell.casting_time
+                cell.range.text = spell.range
+                cell.components.text = spell.components
+                cell.duration.text = spell.duration
+                cell.concentration.isHidden = !spell.concentration
+                if spell.higher_level == "" {
+                    cell.spellDescription.text = spell.description
                 }
                 else {
                     let boldText = "At Higher Levels."
                     let attrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17)]
-                    let attributedString = NSMutableAttributedString(string:spellDict["description"].string!+"\n")
+                    let attributedString = NSMutableAttributedString(string:spell.description+"\n")
                     let boldString = NSMutableAttributedString(string:boldText, attributes:attrs)
                     attributedString.append(boldString)
-                    let attributedString2 = NSMutableAttributedString(string:" "+spellDict["higher_level"].string!)
+                    let attributedString2 = NSMutableAttributedString(string:" "+spell.higher_level!)
                     attributedString.append(attributedString2)
                     cell.spellDescription.attributedText = attributedString
                 }
@@ -786,24 +788,24 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section != spellcastingDict["spells"].count {
-            var spellLevelDict = spellcastingDict["spells"][indexPath.section]
+        if indexPath.section != spellcastingDict.spells_by_level?.allObjects.count {
+            var spellLevelDict = spellcastingDict.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
             if indexPath.row == 0 {
                 // Spell Level
-                var expanded = spellLevelDict["expanded"].bool
-                expanded = !expanded!
-                spellLevelDict["expanded"].bool = expanded
-                spellcastingDict["spells"][indexPath.section] = spellLevelDict
+                var expanded = spellLevelDict.expanded
+                expanded = !expanded
+                spellLevelDict.expanded = expanded
+                //spellcastingDict.spells_by_level?.allObjects[indexPath.section] = spellLevelDict
                 tableView.reloadData()
             }
             else {
                 // Spell
-                var spellDict = spellLevelDict["prepared_spells"][indexPath.row-1]
-                var expanded = spellDict["expanded"].bool
-                expanded = !expanded!
-                spellDict["expanded"].bool = expanded
-                spellLevelDict["prepared_spells"][indexPath.row-1] = spellDict
-                spellcastingDict["spells"][indexPath.section] = spellLevelDict
+                var spellDict = spellLevelDict.spells?.allObjects[indexPath.row-1] as! Spell
+                var expanded = spellDict.expanded
+                expanded = !expanded
+                spellDict.expanded = expanded
+                //spellLevelDict["prepared_spells"][indexPath.row-1] = spellDict
+                //spellcastingDict["spells"][indexPath.section] = spellLevelDict
                 tableView.reloadData()
             }
         }

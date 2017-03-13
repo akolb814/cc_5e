@@ -16,6 +16,8 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     var characters: [Character] = []
     
     override func viewDidLoad() {
@@ -23,6 +25,10 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
         loadCharactersFromDb()
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,7 +46,18 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func loadCharactersFromDb() {
-        characters.append(CharacterJson.getCharacterFromJson(filename: "character"))
+        do {
+            characters = try context.fetch(Character.fetchRequest())
+        } catch {
+            print("Fetching failed...")
+        }
     }
+    
+    @IBAction func didTapAddCharacter(_ sender: Any) {
+        let character = CharacterFactory.getEmptyCharacter(name: "New Character", context:context)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
+    }
+    
 
 }

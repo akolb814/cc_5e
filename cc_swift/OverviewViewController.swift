@@ -132,58 +132,34 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func setMiscDisplayData() {
-        let firstClass: JSON = Character.Selected.classes[0] 
-        let classStr = firstClass["class"].string!
-        let hitDie = firstClass["hitDie"].int!
-        let level = firstClass["level"].int!
+        let firstClass: Class = Character.Selected.primaryClass
+        let classStr = firstClass.name
+        let hitDie = firstClass.hit_die
+        let level = firstClass.hit_die
         
-        var perceptionSkill = [:] as JSON
-        for case let skill in Character.Selected.skills.array! {
-            let skillName = skill["skill"].string!
-            if skillName == "Perception" {
-                perceptionSkill = skill
-            }
-        }
+        let perceptionSkill = Character.Selected.getSkill(skillIn: Types.Skills.Perception)
         
-        
-        let attribute = perceptionSkill["attribute"].string!
-        var skillValue = 0
-        switch attribute {
-        case "STR":
-            skillValue += Character.Selected.strBonus //Add STR bonus
-        case "DEX":
-            skillValue += Character.Selected.dexBonus //Add DEX bonus
-        case "CON":
-            skillValue += Character.Selected.conBonus //Add CON bonus
-        case "INT":
-            skillValue += Character.Selected.intBonus //Add INT bonus
-        case "WIS":
-            skillValue += Character.Selected.wisBonus //Add WIS bonus
-        case "CHA":
-            skillValue += Character.Selected.chaBonus //Add CHA bonus
-        default: break
-        }
-        
-        let isProficient = perceptionSkill["proficient"].bool!
-        if isProficient {
+        var skillValue = Character.Selected.wisBonus
+
+        if perceptionSkill.proficiency {
             skillValue += Character.Selected.proficiencyBonus //Add proficiency bonus
         }
         let passivePerception = 10+skillValue
         ppValue.text = String(passivePerception)
         
-        classTextField.text = classStr + " " + String(level)
+        classTextField.text = classStr! + " " + String(level)
         let race = Character.Selected.race
-        raceTextField.text = race["title"].string
-        let background = Character.Selected.background
-        backgroundTextField.text = background["title"].string
+        raceTextField.text = race?.name
+        let background = Character.Selected.background! as Background
+        backgroundTextField.text = background.name
         alignmentTextField.text = Character.Selected.alignment
-        experienceTextField.text = Character.Selected.experience
+        experienceTextField.text = String(Character.Selected.experience)
         
-        hpValue.text = String(Character.Selected.currentHP)+"\n/"+String(Character.Selected.maxHP)
-        hdValue.text = String(Character.Selected.currentHitDice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
+        hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
+        hdValue.text = String(Character.Selected.current_hit_dice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
         
-        profValue.text = "+"+String(Character.Selected.proficiencyBonus)
-        acValue.text = String(Character.Selected.AC)
+        profValue.text = "+"+String(Character.Selected.proficiency_bonus)
+        acValue.text = String(Character.Selected.ac)
         if Character.Selected.initiative < 0 {
             initValue.text = String(Character.Selected.initiative)
         }
@@ -382,25 +358,25 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     let segControl = view as! UISegmentedControl
                     if segControl.selectedSegmentIndex == 0 {
                         // Damage
-                        Character.Selected.currentHP -= hpEffectValue
+                        Character.Selected.current_hp -= hpEffectValue
                     }
                     else if segControl.selectedSegmentIndex == 1 {
                         // Heal
-                        Character.Selected.currentHP += hpEffectValue
-                        if Character.Selected.currentHP > Character.Selected.maxHP {
-                            Character.Selected.currentHP = Character.Selected.maxHP
+                        Character.Selected.current_hp += hpEffectValue
+                        if Character.Selected.current_hp > Character.Selected.max_hp {
+                            Character.Selected.current_hp = Character.Selected.max_hp
                         }
                     }
                     else {
                         // Temp HP
-                        Character.Selected.currentHP += hpEffectValue
+                        Character.Selected.current_hp += hpEffectValue
                     }
                 }
             }
             hpEffectValue = 0
-            hpValue.text = String(Character.Selected.currentHP)+"\n/"+String(Character.Selected.maxHP)
+            hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
             
-            if Character.Selected.currentHP == 0 {
+            if Character.Selected.current_hp == 0 {
                 // Death Saves
             }
             break
@@ -410,24 +386,24 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             for case let view in parentView.subviews {
                 if view.tag == 209 {
                     let stepper = view as! UIStepper
-                    Character.Selected.currentHitDice = Int(stepper.value)
+                    Character.Selected.current_hit_dice = Int32(stepper.value)
                 }
             }
             
-            let firstClass: JSON = Character.Selected.classes[0]
-            let level = firstClass["level"].int!
-            let hitDie = firstClass["hitDie"].int!
-            hdValue.text = String(Character.Selected.currentHitDice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
+            let firstClass: Class = Character.Selected.primaryClass
+            let level = firstClass.level
+            let hitDie = firstClass.hit_die
+            hdValue.text = String(Character.Selected.current_hit_dice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
             break
             
         case 300:
             // Armor Class
-            acValue.text = String(Character.Selected.AC)
+            acValue.text = String(Character.Selected.ac)
             break
             
         case 400:
             // Proficiency Bonus
-            profValue.text = String(Character.Selected.proficiencyBonus)
+            profValue.text = String(Character.Selected.proficiency_bonus)
             break
         
         case 500:
@@ -472,34 +448,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             
         case 1200:
             // Passive Perception
-            var perceptionSkill = [:] as JSON
-            for case let skill in Character.Selected.skills.array! {
-                let skillName = skill["skill"].string!
-                if skillName == "Perception" {
-                    perceptionSkill = skill
-                }
-            }
+            let perceptionSkill = Character.Selected.getSkill(skillIn: Types.Skills.Perception)
+            var skillValue = Character.Selected.getAbility(abilityIn: Types.Abilities.WIS).modifier
             
-            let attribute = perceptionSkill["attribute"].string!
-            var skillValue = 0
-            switch attribute {
-            case "STR":
-                skillValue += Character.Selected.strBonus
-            case "DEX":
-                skillValue += Character.Selected.dexBonus
-            case "CON":
-                skillValue += Character.Selected.conBonus
-            case "INT":
-                skillValue += Character.Selected.intBonus
-            case "WIS":
-                skillValue += Character.Selected.wisBonus
-            case "CHA":
-                skillValue += Character.Selected.chaBonus
-            default: break
-            }
-            
-            let isProficient = perceptionSkill["proficient"].bool!
-            if isProficient {
+            if perceptionSkill.proficiency {
                 skillValue += Character.Selected.proficiencyBonus
             }
             let passivePerception = 10+skillValue
@@ -613,7 +565,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(title)
         
         let currentHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-        currentHP.text = String(Character.Selected.currentHP)
+        currentHP.text = String(Character.Selected.current_hp)
         currentHP.textAlignment = NSTextAlignment.center
         currentHP.layer.borderWidth = 1.0
         currentHP.layer.borderColor = UIColor.black.cgColor
@@ -627,7 +579,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(slash)
         
         let maxHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-        maxHP.text = String(Character.Selected.maxHP)
+        maxHP.text = String(Character.Selected.max_hp)
         maxHP.textAlignment = NSTextAlignment.center
         maxHP.layer.borderWidth = 1.0
         maxHP.layer.borderColor = UIColor.black.cgColor
@@ -664,9 +616,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Edit Hit Dice
     @IBAction func hdAction(button: UIButton) {
-        let firstClass: JSON = Character.Selected.classes[0]
-        let level = firstClass["level"].int!
-        let hitDie = firstClass["hitDie"].int!
+        let firstClass = Character.Selected.primaryClass
+        let level = firstClass.level
+        let hitDie = firstClass.hit_die
         
         // Create hit dice adjusting view
         let tempView = createBasicView()
@@ -679,7 +631,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(title)
         
         let currentHD = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:35, width:40, height:30))
-        currentHD.text = String(Character.Selected.currentHitDice)
+        currentHD.text = String(Character.Selected.current_hit_dice)
         currentHD.textAlignment = NSTextAlignment.center
         currentHD.layer.borderWidth = 1.0
         currentHD.layer.borderColor = UIColor.black.cgColor
@@ -731,7 +683,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(hd2)
         
         let stepper = UIStepper.init(frame: CGRect.init(x:tempView.frame.size.width/2-47, y:90, width:94, height:29))
-        stepper.value = Double(Character.Selected.currentHitDice)
+        stepper.value = Double(Character.Selected.current_hit_dice)
         stepper.minimumValue = 0
         stepper.maximumValue = Double(level)
         stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
@@ -772,7 +724,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(title)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.black.cgColor
@@ -809,7 +761,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("STR") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.STR).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -849,7 +801,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("DEX") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.DEX).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -888,7 +840,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("CON") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.CON).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -927,7 +879,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("INT") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.INT).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -966,7 +918,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("WIS") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.WIS).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -1005,7 +957,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(proficientLabel)
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:90, width:51, height:31))
-        if Character.Selected.saveProficiencies.arrayValue.contains("CHA") {
+        if Character.Selected.getAbility(abilityIn: Types.Abilities.CHA).save_proficiency {
             proficientSwitch.isOn = true
         }
         else {
@@ -1038,7 +990,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray
@@ -1150,39 +1102,17 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         plusLabel.tag = 1202
         tempView.addSubview(plusLabel)
         
-        var perceptionSkill = [:] as JSON
-        for case let skill in Character.Selected.skills.array! {
-            let skillName = skill["skill"].string!
-            if skillName == "Perception" {
-                perceptionSkill = skill
-            }
-        }
+        let perceptionSkill = Character.Selected.getSkill(skillIn: Types.Skills.Perception)
         
-        let attribute = perceptionSkill["attribute"].string!
-        var skillValue = 0
-        switch attribute {
-        case "STR":
-            skillValue += Character.Selected.strBonus
-        case "DEX":
-            skillValue += Character.Selected.dexBonus
-        case "CON":
-            skillValue += Character.Selected.conBonus
-        case "INT":
-            skillValue += Character.Selected.intBonus
-        case "WIS":
-            skillValue += Character.Selected.wisBonus
-        case "CHA":
-            skillValue += Character.Selected.chaBonus
-        default: break
-        }
+        var skillValue = Character.Selected.wisBonus
         
-        let isProficient = perceptionSkill["proficient"].bool!
-        if isProficient {
-            skillValue += Character.Selected.proficiencyBonus
+        if perceptionSkill.proficiency {
+            skillValue += Character.Selected.proficiencyBonus //Add proficiency bonus
         }
+        let passivePerception = 10+skillValue
         
         let percField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:50, width:40, height:30))
-        percField.text = String(skillValue)
+        percField.text = String(passivePerception)
         percField.textAlignment = NSTextAlignment.center
         percField.isEnabled = false
         percField.textColor = UIColor.darkGray
@@ -1260,16 +1190,16 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     // UITableView Delegate & Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Character.Selected.skills.count
+        return Character.Selected.skills!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SkillTableViewCell", for: indexPath) as! SkillTableViewCell
         
-        let skill: JSON = Character.Selected.skills[indexPath.row] 
-        let skillName = skill["skill"].string!
+        let skill = Character.Selected.getSkill(name: Types.SkillsStrings[indexPath.row])
+        let skillName = skill.name
         
-        let attribute = skill["attribute"].string!
+        let attribute = skill.ability!.name!
         var skillValue = 0
         switch attribute {
         case "STR":
@@ -1287,12 +1217,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         default: break
         }
         
-        let isProficient = skill["proficient"].bool!
-        if isProficient {
+        if skill.proficiency {
             skillValue += Character.Selected.proficiencyBonus
         }
 
-        cell.skillName.text = skillName+"("+attribute+")"
+        cell.skillName.text = skillName!+"("+attribute+")"
         if skillValue < 0 {
             cell.skillValue.text = String(skillValue)
         }
@@ -1308,10 +1237,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         let tag = 1400+(100*indexPath.row)
         
-        let skill: JSON = Character.Selected.skills[indexPath.row]
-        let skillName = skill["skill"].string!
+        let skill = Character.Selected.getSkill(name: Types.SkillsStrings[indexPath.row])
+        let skillName = skill.name
         
-        let attribute = skill["attribute"].string!
+        let attribute = skill.ability!.name!
         var attributeDisplay = ""
         var attributeValue = 0
         switch attribute {
@@ -1337,8 +1266,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         var profValue = 0
-        let isProficient = skill["proficient"].bool!
-        if isProficient {
+        if skill.proficiency {
             profValue += Character.Selected.proficiencyBonus
         }
         
@@ -1361,7 +1289,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray

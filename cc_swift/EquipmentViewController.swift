@@ -43,8 +43,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var equipmentTable: UITableView!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var equipmentDict: JSON = [:]
-    var allEquipment: JSON = []
+    var equipment: Equipment = Equipment()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -576,9 +575,9 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     // Tools
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ToolTableViewCell", for: indexPath) as! ToolTableViewCell
                     
-                    var toolValue = 0
+                    var toolValue: Int32 = 0
                     if equipment["proficient"].bool! {
-                        toolValue += Character.Selected.proficiencyBonus
+                        toolValue += Character.Selected.proficiency_bonus
                     }
                     
                     let abilityType: String = equipment["ability"].string!
