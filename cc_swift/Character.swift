@@ -17,13 +17,48 @@ class Character {
     var background: JSON = [:]
     var alignment = ""
     var experience = ""
+    
     var currentHitDice = 0
+    var maxHitDice = 0
+    var hitDieType = 0
+    var hasExtraHitDie1 = false
+    var extra1CurrentHitDice = 0
+    var extra1MaxHitDice = 0
+    var extra1HitDieType = 0
+    var hasExtraHitDie2 = false
+    var extra2CurrentHitDice = 0
+    var extra2MaxHitDice = 0
+    var extra2HitDieType = 0
+    var hasExtraHitDie3 = false
+    var extra3CurrentHitDice = 0
+    var extra3MaxHitDice = 0
+    var extra3HitDieType = 0
+    
+    
     var currentHP = 0
     var maxHP = 0
+    
     var AC = 0
+    var ACMiscBonus = 0
+    var hasAdditionalACMod = false
+    var additionalACMod = ""
+    
     var proficiencyBonus = 2
     var initiative = 0
-    var speed = 0
+    var initiativeMiscBonus = 0
+    var passivePerception = 10
+    
+    var speedType = 0
+    var walkSpeed = 0
+    var walkSpeedMiscBonus = 0
+    var burrowSpeed = 0
+    var burrowSpeedMiscBonus = 0
+    var climbSpeed = 0
+    var climbSpeedMiscBonus = 0
+    var flySpeed = 0
+    var flySpeedMiscBonus = 0
+    var swimSpeed = 0
+    var swimSpeedMiscBonus = 0
     
     var saveProficiencies: JSON = []
     var strScore = 0
@@ -67,6 +102,11 @@ class Character {
     var martialResource: JSON = [:]
     var spellcastingResource: JSON = [:]
     
+    var alertFeat = false
+    var halfProfOnInitiative = false
+    var roundUpOnInitiative = false
+    
+    
     func loadCharacter(filename: String) {
         if let path = Bundle.main.path(forResource: filename, ofType: "json") {
             do {
@@ -91,7 +131,18 @@ class Character {
         background = character["background"]
         alignment = character["alignment"].stringValue
         experience = character["experience"].stringValue
-        speed = character["speed"].intValue
+        
+        speedType = character["speed_type"].intValue
+        walkSpeed = character["walk_speed"].intValue
+        walkSpeedMiscBonus = character["walk_speed_misc_bonus"].intValue
+        burrowSpeed = character["burrow_speed"].intValue
+        burrowSpeedMiscBonus = character["burrow_speed_misc_bonus"].intValue
+        climbSpeed = character["climb_speed"].intValue
+        climbSpeedMiscBonus = character["climb_speed_misc_bonus"].intValue
+        flySpeed = character["fly_speed"].intValue
+        flySpeedMiscBonus = character["fly_speed_misc_bonus"].intValue
+        swimSpeed = character["swim_speed"].intValue
+        swimSpeedMiscBonus = character["swim_speed_misc_bonus"].intValue
         
         weaponProficiencies = character["weapon_proficiencies"].stringValue
         armorProficienceies = character["armor_proficiencies"].stringValue
@@ -136,15 +187,33 @@ class Character {
         
         skills = character["skills"]
         
+        let firstClass: JSON = classes[0]
+        
         currentHitDice = character["current_hit_dice"].intValue
+        maxHitDice = firstClass["level"].int!
+        hitDieType = firstClass["hitDie"].int!
+        hasExtraHitDie1 = false
+        extra1CurrentHitDice = 0
+        extra1MaxHitDice = 0
+        extra1HitDieType = 0
+        hasExtraHitDie2 = false
+        extra2CurrentHitDice = 0
+        extra2MaxHitDice = 0
+        extra2HitDieType = 0
+        hasExtraHitDie3 = false
+        extra3CurrentHitDice = 0
+        extra3MaxHitDice = 0
+        extra3HitDieType = 0
+        
         currentHP = character["current_hp"].intValue
         maxHP = character["max_hp"].intValue
-        AC = character["ac"].intValue
         proficiencyBonus = character["proficiency_bonus"].intValue
-        initiative = character["initiative"].intValue
+        initiativeMiscBonus = character["initiative_misc_bonus"].intValue
+        self.calcInitiative()
         saveProficiencies = character["save_proficiencies"]
         
         equipment = character["equipment"]
+        self.calcAC()
         spellcasting = character["spellcasting"]
         
         let resources = character["resources"]
@@ -160,7 +229,18 @@ class Character {
         character["background"] = background
         character["alignment"].string = alignment
         character["experience"].string = experience
-        character["speed"].int = speed
+        
+        character["speed_type"].int = speedType
+        character["walk_speed"].int = walkSpeed
+        character["walk_speed_misc_bonus"].int = walkSpeedMiscBonus
+        character["burrow_speed"].int = burrowSpeed
+        character["burrow_speed_misc_bonus"].int = burrowSpeedMiscBonus
+        character["climb_speed"].int = climbSpeed
+        character["climb_speed_misc_bonus"].int = climbSpeedMiscBonus
+        character["fly_speed"].int = flySpeed
+        character["fly_speed_misc_bonus"].int = flySpeedMiscBonus
+        character["swim_speed"].int = swimSpeed
+        character["swim_speed_misc_bonus"].int = swimSpeedMiscBonus
         
         character["weapon_proficiencies"].string = weaponProficiencies
         character["armor_proficiencies"].string = armorProficienceies
@@ -217,7 +297,7 @@ class Character {
         character["max_hp"].int = maxHP
         character["ac"].int = AC
         character["proficiency_bonus"].int = proficiencyBonus
-        character["initiative"].int = initiative
+        character["initiative_misc_bonus"].int = initiativeMiscBonus
         character["save_proficiencies"] = saveProficiencies
         
         character["equipment"] = equipment
@@ -265,5 +345,110 @@ class Character {
             }
             i += 1
         }
+    }
+    
+    func calcInitiative() {
+        initiative = proficiencyBonus + dexBonus + initiativeMiscBonus
+        if alertFeat == true {
+            initiative = initiative + 5
+        }
+        if halfProfOnInitiative == true {
+            if roundUpOnInitiative == true {
+                initiative = initiative + (proficiencyBonus/2)
+            }
+            else {
+                initiative = initiative + (proficiencyBonus/2)
+            }
+        }
+    }
+    
+    func calcPP() {
+        var perceptionSkill = [:] as JSON
+        for case let skill in skills.array! {
+            let skillName = skill["skill"].string!
+            if skillName == "Perception" {
+                perceptionSkill = skill
+            }
+        }
+        
+        let attribute = perceptionSkill["attribute"].string!
+        var skillValue = 0
+        switch attribute {
+        case "STR":
+            skillValue += strBonus
+        case "DEX":
+            skillValue += dexBonus
+        case "CON":
+            skillValue += conBonus
+        case "INT":
+            skillValue += intBonus
+        case "WIS":
+            skillValue += wisBonus
+        case "CHA":
+            skillValue += chaBonus
+        default: break
+        }
+        
+        let isProficient = perceptionSkill["proficient"].bool!
+        if isProficient {
+            skillValue += proficiencyBonus
+        }
+        passivePerception = 10+skillValue
+    }
+    
+    func calcAC() {
+        var armorClass = 0
+        var armorEquipped = false
+        let allArmor = equipment["armor"]
+        for armor in allArmor.array! {
+            if armor["equipped"] == true {
+                armorClass = armorClass + armor["value"].int!
+                
+                if armor["max_dex"].int != 0 {
+                    if dexBonus <= armor["max_dex"].int! {
+                        armorClass = armorClass + dexBonus
+                    }
+                    else {
+                        armorClass = armorClass + armor["max_dex"].int!
+                    }
+                }
+                else {
+                    if armor["mod"] != "" {
+                        armorClass = armorClass + dexBonus
+                    }
+                }
+                armorClass = armorClass + armor["magic_bonus"].int!
+                armorClass = armorClass + armor["misc_bonus"].int!
+                if armor["shield"] == false {
+                    armorEquipped = true
+                }
+            }
+        }
+        
+        if armorEquipped == false {
+            armorClass = armorClass + 10 + dexBonus
+        }
+        
+        armorClass = armorClass + ACMiscBonus
+        
+        if hasAdditionalACMod == true {
+            switch additionalACMod {
+            case "STR":
+                armorClass += strBonus
+            case "DEX":
+                armorClass += dexBonus
+            case "CON":
+                armorClass += conBonus
+            case "INT":
+                armorClass += intBonus
+            case "WIS":
+                armorClass += wisBonus
+            case "CHA":
+                armorClass += chaBonus
+            default: break
+            }
+        }
+        
+        AC = armorClass
     }
 }

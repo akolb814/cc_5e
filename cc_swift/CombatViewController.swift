@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
+class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     // HP
     @IBOutlet weak var hpView: UIView!
     @IBOutlet weak var hpTitle: UILabel!
@@ -111,7 +111,30 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         acValue.text = String(appDelegate.character.AC)
         
         // Speed
-        speedValue.text = String(appDelegate.character.speed)
+        switch appDelegate.character.speedType {
+        case 0:
+            // Walk
+            speedTitle.text = "Walk"
+            speedValue.text = String(appDelegate.character.walkSpeed)
+            break
+        case 1:
+            speedTitle.text = "Burrow"
+            speedValue.text = String(appDelegate.character.burrowSpeed)
+            break
+        case 2:
+            speedTitle.text = "Climb"
+            speedValue.text = String(appDelegate.character.climbSpeed)
+            break
+        case 3:
+            speedTitle.text = "Fly"
+            speedValue.text = String(appDelegate.character.flySpeed)
+            break
+        case 4:
+            speedTitle.text = "Swim"
+            speedValue.text = String(appDelegate.character.swimSpeed)
+            break
+        default: break
+        }
         
         // Initiative
         if appDelegate.character.initiative < 0 {
@@ -250,7 +273,30 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 500:
             // Speed
-            speedValue.text = String(appDelegate.character.speed)
+            switch appDelegate.character.speedType {
+            case 0:
+                // Walk
+                speedTitle.text = "Walk"
+                speedValue.text = String(appDelegate.character.walkSpeed)
+                break
+            case 1:
+                speedTitle.text = "Burrow"
+                speedValue.text = String(appDelegate.character.burrowSpeed)
+                break
+            case 2:
+                speedTitle.text = "Climb"
+                speedValue.text = String(appDelegate.character.climbSpeed)
+                break
+            case 3:
+                speedTitle.text = "Fly"
+                speedValue.text = String(appDelegate.character.flySpeed)
+                break
+            case 4:
+                speedTitle.text = "Swim"
+                speedValue.text = String(appDelegate.character.swimSpeed)
+                break
+            default: break
+            }
             break
             
         case 600:
@@ -572,7 +618,6 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(baseLabel)
         
         let baseField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:65, width:40, height:30))
-        baseField.text = String(appDelegate.character.speed)
         baseField.textAlignment = NSTextAlignment.center
         baseField.layer.borderWidth = 1.0
         baseField.layer.borderColor = UIColor.black.cgColor
@@ -588,12 +633,40 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:65, width:40, height:30))
-        miscField.text = String(0)//String(appDelegate.character.miscInitBonus)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
         miscField.tag = 505
         tempView.addSubview(miscField)
+        
+        switch appDelegate.character.speedType {
+        case 0:
+            // Walk
+            baseField.text = String(appDelegate.character.walkSpeed)
+            miscField.text = String(appDelegate.character.walkSpeedMiscBonus)
+            break
+        case 1:
+            // Burrow
+            baseField.text = String(appDelegate.character.burrowSpeed)
+            miscField.text = String(appDelegate.character.burrowSpeedMiscBonus)
+            break
+        case 2:
+            // Climb
+            baseField.text = String(appDelegate.character.climbSpeed)
+            miscField.text = String(appDelegate.character.climbSpeedMiscBonus)
+            break
+        case 3:
+            // Fly
+            baseField.text = String(appDelegate.character.flySpeed)
+            miscField.text = String(appDelegate.character.flySpeedMiscBonus)
+            break
+        case 4:
+            // Swim
+            baseField.text = String(appDelegate.character.swimSpeed)
+            miscField.text = String(appDelegate.character.swimSpeedMiscBonus)
+            break
+        default: break
+        }
         
         let movementLabel = UILabel.init(frame: CGRect.init(x:10, y:100, width:tempView.frame.size.width-20, height:30))
         movementLabel.text = "Movement Type"
