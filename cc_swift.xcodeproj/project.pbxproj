@@ -11,6 +11,7 @@
 		8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5E1E89AC46002DD453 /* Class.swift */; };
 		8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C28E1E8D74790009873D /* BackgroundFactory.swift */; };
 		8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C2901E8D758F0009873D /* EquipmentFactory.swift */; };
+		8D77C2951E8D799C0009873D /* SpellcastingFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */; };
 		8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */; };
 		8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */; };
 		8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */; };
@@ -49,6 +50,7 @@
 		8D37DE5E1E89AC46002DD453 /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
 		8D77C28E1E8D74790009873D /* BackgroundFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
 		8D77C2901E8D758F0009873D /* EquipmentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentFactory.swift; sourceTree = "<group>"; };
+		8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpellcastingFactory.swift; sourceTree = "<group>"; };
 		8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSelectViewController.swift; sourceTree = "<group>"; };
 		8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterJson.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */,
 				8D77C28E1E8D74790009873D /* BackgroundFactory.swift */,
 				8D77C2901E8D758F0009873D /* EquipmentFactory.swift */,
+				8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
 				8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
+				8D77C2951E8D799C0009873D /* SpellcastingFactory.swift in Sources */,
 				8DABE66B1E7242C000EB173D /* Types.swift in Sources */,
 				EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */,
 				EC2076B31E1D686100FD7B4F /* WeaponTableViewCell.swift in Sources */,

@@ -20,6 +20,7 @@ class CharacterFactory {
         let classes = character.mutableSetValue(forKey: "classes")
         classes.add(ClassFactory.getDefaultClass(context: context))
         character.background = BackgroundFactory.getDefaultBackground(context: context)
+        character.spellcasting = SpellcastingFactory.getEmptySpellcasting(context: context)
         return character
     }
     

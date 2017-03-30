@@ -116,7 +116,7 @@ extension Character {
     func getAbility(abilityIn: Types.Abilities) -> Ability {
         for object in (abilities?.allObjects)! {
             let ability = object as! Ability
-            if (ability.name == name) {
+            if (ability.name == abilityIn.rawValue) {
                 return ability
             }
         }

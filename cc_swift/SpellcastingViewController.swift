@@ -640,7 +640,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     // UITableView Delegate & Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (spellcastingDict.spells_by_level?.allObjects.count)!
+        return spellcastingDict.spells_by_level?.allObjects.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -648,7 +648,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             let spellLevelDict = spellcastingDict.spells_by_level?.allObjects[section] as! Spells_by_Level
             let expanded = spellLevelDict.expanded
             if expanded {
-                return (spellLevelDict.spells?.allObjects.count)!+1
+                return (spellLevelDict.spells?.allObjects.count ?? 0)!+1
             }
             else {
                 return 1

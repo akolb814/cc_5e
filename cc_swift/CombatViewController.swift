@@ -76,34 +76,36 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // HP
         hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
-        // Resource
-        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+        if((Character.Selected.resouces?.allObjects.count ?? 0)! > 0) {
+            // Resource
+            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
 
-        resourceTitle.text = resource.name ?? "Resource"
-        
-        let currentResourceValue: Int32 = resource.current_value
-        let maxResourceValue: Int32 = resource.max_value
-        let dieType: Int32 = resource.die_type
-        
-        var resourceDisplay = ""
-        if dieType == 0 {
-            if maxResourceValue == 0 {
-                resourceDisplay = String(currentResourceValue)
+            resourceTitle.text = resource.name ?? "Resource"
+            
+            let currentResourceValue: Int32 = resource.current_value
+            let maxResourceValue: Int32 = resource.max_value
+            let dieType: Int32 = resource.die_type
+            
+            var resourceDisplay = ""
+            if dieType == 0 {
+                if maxResourceValue == 0 {
+                    resourceDisplay = String(currentResourceValue)
+                }
+                else {
+                    resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                }
             }
             else {
-                resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                if maxResourceValue == 0 {
+                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
+                }
+                else {
+                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
+                }
             }
+            
+            resourceValue.text = resourceDisplay
         }
-        else {
-            if maxResourceValue == 0 {
-                resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
-            }
-            else {
-                resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
-            }
-        }
-        
-        resourceValue.text = resourceDisplay
         
         // Proficiency
         profValue.text = "+"+String(Character.Selected.proficiency_bonus)
@@ -732,10 +734,10 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return (Character.Selected.equipment?.weapons?.allObjects.count)!
+            return (Character.Selected.equipment?.weapons?.allObjects.count) ?? 0
         }
         else {
-            return 1
+            return 0
         }
     }
     
