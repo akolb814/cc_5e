@@ -17,6 +17,8 @@ class CharacterFactory {
         character.abilities = getAbilities(context: context)
         character.skills = getSkills(context: context, character: character)
         character.race = getDefaultRace(context: context)
+        NSEntityDescription.
+        //character.classes?.allObjects.append(ClassFactory.getDefaultClass(context: context))
         return character
     }
     
@@ -60,4 +62,5 @@ class CharacterFactory {
         race.name = "Human"
         return race
     }
+    
 }

@@ -135,7 +135,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         let firstClass: Class = Character.Selected.primaryClass
         let classStr = firstClass.name
         let hitDie = firstClass.hit_die
-        let level = firstClass.hit_die
+        let level = firstClass.level
         
         let perceptionSkill = Character.Selected.getSkill(skillIn: Types.Skills.Perception)
         

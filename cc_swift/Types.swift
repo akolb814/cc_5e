@@ -80,5 +80,9 @@ class Types {
         case Stealth = "Stealth"
         case Survival = "Survival"
     }
+    
+    enum Classes: String {
+        case Barbarian = "Barbarian"
+    }
 
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */; };
+		8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5E1E89AC46002DD453 /* Class.swift */; };
 		8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */; };
 		8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */; };
 		8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		89DC0D765A5809C61EF02219 /* Pods_cc_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cc_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassFactory.swift; sourceTree = "<group>"; };
+		8D37DE5E1E89AC46002DD453 /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
 		8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSelectViewController.swift; sourceTree = "<group>"; };
 		8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterJson.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				8DABE66F1E76D72B00EB173D /* Equipment.swift */,
 				8DABE6711E76D78300EB173D /* Ability.swift */,
 				8DABE6731E76D79000EB173D /* Skill.swift */,
+				8D37DE5E1E89AC46002DD453 /* Class.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */,
+				8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -327,6 +333,7 @@
 				EC2076BB1E1D836B00FD7B4F /* SpellTableViewCell.swift in Sources */,
 				EC6630151E09DA30002BE9FF /* CombatViewController.swift in Sources */,
 				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
+				8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
 				8DABE66B1E7242C000EB173D /* Types.swift in Sources */,
 				EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */,
@@ -344,6 +351,7 @@
 				8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */,
 				EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */,
 				8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */,
+				8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */,
 				8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */,
 				8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */,
 				EC6630131E09DA30002BE9FF /* OverviewViewController.swift in Sources */,

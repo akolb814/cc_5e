@@ -56,6 +56,7 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
     @IBAction func didTapAddCharacter(_ sender: Any) {
         let character = CharacterFactory.getEmptyCharacter(name: "New Character", context:context)
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        loadCharactersFromDb()
         tableView.reloadData()
     }
     
