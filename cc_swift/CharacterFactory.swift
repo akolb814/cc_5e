@@ -17,8 +17,9 @@ class CharacterFactory {
         character.abilities = getAbilities(context: context)
         character.skills = getSkills(context: context, character: character)
         character.race = getDefaultRace(context: context)
-        NSEntityDescription.
-        //character.classes?.allObjects.append(ClassFactory.getDefaultClass(context: context))
+        let classes = character.mutableSetValue(forKey: "classes")
+        classes.add(ClassFactory.getDefaultClass(context: context))
+        character.background = BackgroundFactory.getDefaultBackground(context: context)
         return character
     }
     

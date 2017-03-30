@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */; };
 		8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5E1E89AC46002DD453 /* Class.swift */; };
+		8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C28E1E8D74790009873D /* BackgroundFactory.swift */; };
+		8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C2901E8D758F0009873D /* EquipmentFactory.swift */; };
 		8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */; };
 		8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */; };
 		8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */; };
@@ -45,6 +47,8 @@
 		89DC0D765A5809C61EF02219 /* Pods_cc_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cc_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassFactory.swift; sourceTree = "<group>"; };
 		8D37DE5E1E89AC46002DD453 /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
+		8D77C28E1E8D74790009873D /* BackgroundFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
+		8D77C2901E8D758F0009873D /* EquipmentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentFactory.swift; sourceTree = "<group>"; };
 		8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSelectViewController.swift; sourceTree = "<group>"; };
 		8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterJson.swift; sourceTree = "<group>"; };
@@ -150,6 +154,8 @@
 			children = (
 				8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */,
 				8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */,
+				8D77C28E1E8D74790009873D /* BackgroundFactory.swift */,
+				8D77C2901E8D758F0009873D /* EquipmentFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 				EC2076B11E1C2E2700FD7B4F /* SkillTableViewCell.swift in Sources */,
 				8DABE66E1E72ED1C00EB173D /* CharacterFactory.swift in Sources */,
 				EC14BC4F1E52706300EF3347 /* CharacterViewController.swift in Sources */,
+				8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */,
 				8DABE5B21E70F96800EB173D /* cc_5e.xcdatamodeld in Sources */,
 				EC2076C11E1DBBBF00FD7B4F /* ArmorTableViewCell.swift in Sources */,
 				EC2076BF1E1DB6FD00FD7B4F /* EquipmentViewController.swift in Sources */,
@@ -351,6 +358,7 @@
 				8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */,
 				EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */,
 				8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */,
+				8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */,
 				8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */,
 				8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */,
 				8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */,
