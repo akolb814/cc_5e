@@ -353,6 +353,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         switch parentView.tag {
         case 100:
             // HP
+            let currenthpView = parentView.viewWithTag(102) as! UITextField
+            let maxHpView = parentView.viewWithTag(104) as! UITextField
+            Character.Selected.current_hp = Int32(currenthpView.text ?? "0")!
+            Character.Selected.max_hp = Int32(maxHpView.text ?? "0")!
+            
             for case let view in parentView.subviews {
                 if view.tag == 105 {
                     let segControl = view as! UISegmentedControl
@@ -374,6 +379,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             hpEffectValue = 0
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+
             hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
             
             if Character.Selected.current_hp == 0 {
@@ -394,6 +401,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             let level = firstClass.level
             let hitDie = firstClass.hit_die
             hdValue.text = String(Character.Selected.current_hit_dice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+
             break
             
         case 300:
@@ -408,31 +417,37 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         case 500:
             // Strength
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
         case 600:
             // Dexterity
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
         case 700:
             // Constitution
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
         case 800:
             // Intelligence
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
         case 900:
             // Wisdom
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
         case 1000:
             // Charisma
+            updateCharacterAbility(parentView: parentView)
             self.setAbilityScores()
             break
             
@@ -470,6 +485,17 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         parentView.removeFromSuperview()
     }
+    
+    func updateCharacterAbility(parentView: UIView) {
+        let tag = parentView.tag
+        let abilityName = parentView.viewWithTag(tag+1) as! UILabel
+        let textField = parentView.viewWithTag(tag+2) as! UITextField
+        let proficiencySwitch = parentView.viewWithTag(tag+4) as! UISwitch
+        
+        Character.Selected.updateAbility(name: abilityName.text ?? "", score: Int32(textField.text ?? "10")!, proficient: proficiencySwitch.isOn)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    }
+    
     
     func cancelAction(button: UIButton) {
         let parentView = button.superview

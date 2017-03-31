@@ -103,10 +103,22 @@ extension Character {
         return Class()
     }
     
+    func updateAbility(name: String, score: Int32, proficient: Bool) {
+        let ability = getAbility(name: name)
+        ability.score = score
+        ability.modifier = (score - 10)/2
+        ability.save = (score-10)/2
+        ability.save_proficiency = proficient
+        if(ability.save_proficiency) {
+            ability.save += proficiencyBonus
+        }
+    }
+    
     func getAbility(name: String) -> Ability {
+        let index = name.index(name.startIndex, offsetBy: 3)
         for object in (abilities?.allObjects)! {
             let ability = object as! Ability
-            if (ability.name == name) {
+            if (ability.name == name || ability.name?.uppercased() == name.substring(to: index).uppercased()) {
                 return ability
             }
         }

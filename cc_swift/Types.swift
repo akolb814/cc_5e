@@ -60,6 +60,15 @@ class Types {
         case CHA = "CHA"
     }
     
+    enum AbilitiesFullName: String {
+        case STR = "Strength"
+        case DEX = "Dexterity"
+        case CON = "Constitution"
+        case INT = "Intelligence"
+        case WIS = "Wisdom"
+        case CHA = "Charisma"
+    }
+    
     enum Skills: String {
         case Acrobatics = "Acrobatics"
         case Animal_Handling = "Animal Handling"
