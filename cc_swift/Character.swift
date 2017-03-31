@@ -114,6 +114,12 @@ extension Character {
         }
     }
     
+    func updateSkill(name: String, proficient: Bool, expertise: Bool) {
+        let skill = getSkill(name: name)
+        skill.proficiency = proficient
+        skill.expertise = expertise
+    }
+    
     func getAbility(name: String) -> Ability {
         let index = name.index(name.startIndex, offsetBy: 3)
         for object in (abilities?.allObjects)! {

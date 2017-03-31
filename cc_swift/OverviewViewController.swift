@@ -420,43 +420,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
             profValue.text = String(Character.Selected.proficiency_bonus)
             break
-        
-        case 500:
-            // Strength
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
-        case 600:
-            // Dexterity
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
-        case 700:
-            // Constitution
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
-        case 800:
-            // Intelligence
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
-        case 900:
-            // Wisdom
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
-        case 1000:
-            // Charisma
-            updateCharacterAbility(parentView: parentView)
-            self.setAbilityScores()
-            break
-            
+    
         case 1100:
             // Initiative
             if Character.Selected.initiative < 0 {
@@ -484,9 +448,18 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             speedValue.text = String(Character.Selected.speed)
             break
             
+        
         default:
             break
             
+        }
+        
+        if (parentView.tag >= 500 && parentView.tag < 1100) {
+            updateCharacterAbility(parentView: parentView)
+            self.setAbilityScores()
+        } else if (parentView.tag >= 4000) {
+            updateSkills(parentView: parentView)
+            skillsTable.reloadData()
         }
         
         parentView.removeFromSuperview()
@@ -500,6 +473,16 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         Character.Selected.updateAbility(name: abilityName.text ?? "", score: Int32(textField.text ?? "10")!, proficient: proficiencySwitch.isOn)
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    }
+    
+    func updateSkills(parentView: UIView) {
+        let tag = parentView.tag
+        let skillName = parentView.viewWithTag(tag+1) as! UILabel
+        let profSwitch = parentView.viewWithTag(tag+9) as! UISwitch
+        let expertiseSwitch = parentView.viewWithTag(tag+11) as! UISwitch
+        Character.Selected.updateSkill(name: skillName.text ?? "", proficient: profSwitch.isOn, expertise: expertiseSwitch.isOn)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+
     }
     
     
@@ -578,10 +561,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             // Initiative Round Up
             
         }
-        else {
+        else if sender.tag >= 4000{
             // Skills
-            
         }
+        else {}
     }
     
     // Edit HP
@@ -1273,7 +1256,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         // Edit selected skill value
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let tag = 1400+(100*indexPath.row)
+        let tag = 4000+(100*indexPath.row)
         
         let skill = Character.Selected.getSkill(name: Types.SkillsStrings[indexPath.row])
         let skillName = skill.name
@@ -1318,109 +1301,80 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         title.tag = tag+1
         tempView.addSubview(title)
         
-        let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-105, y: 25, width: 90, height: 30))
-        profLabel.text = "Proficiency\nBonus"
-        profLabel.font = UIFont.systemFont(ofSize: 10)
-        profLabel.textAlignment = NSTextAlignment.center
-        profLabel.numberOfLines = 2
-        profLabel.tag = tag+11
-        tempView.addSubview(profLabel)
-        
-        let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiency_bonus)
-        profField.textAlignment = NSTextAlignment.center
-        profField.isEnabled = false
-        profField.textColor = UIColor.darkGray
-        profField.layer.borderWidth = 1.0
-        profField.layer.borderColor = UIColor.darkGray.cgColor
-        profField.tag = tag+2
-        tempView.addSubview(profField)
-        
-        let attributeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-45, y: 25, width: 90, height: 30))
+        let isproficient = Character.Selected.getSkill(name: skillName!).proficiency
+        let expertise = Character.Selected.getSkill(name: skillName!).expertise
+
+        if(isproficient) {
+            let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-105, y: 35, width: 90, height: 30))
+            profLabel.text = "Proficiency\nBonus"
+            profLabel.textColor = UIColor.darkGray
+            profLabel.font = UIFont.systemFont(ofSize: 10)
+            profLabel.textAlignment = NSTextAlignment.center
+            profLabel.numberOfLines = 2
+            profLabel.tag = tag+2
+            tempView.addSubview(profLabel)
+            
+            let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:60, width:40, height:30))
+            profField.text = String(Character.Selected.proficiency_bonus)
+            profField.textAlignment = NSTextAlignment.center
+            profField.isEnabled = false
+            profField.tag = tag+3
+            tempView.addSubview(profField)
+            
+        }
+        let attributeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-45, y: 35, width: 90, height: 30))
         attributeLabel.text = attributeDisplay+"\nBonus"
         attributeLabel.font = UIFont.systemFont(ofSize: 10)
         attributeLabel.textAlignment = NSTextAlignment.center
         attributeLabel.numberOfLines = 2
-        attributeLabel.tag = 612
+        attributeLabel.tag = tag+4
         tempView.addSubview(attributeLabel)
         
-        let attributeField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
+        let attributeField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:60, width:40, height:30))
         attributeField.text = String(attributeValue)
         attributeField.textAlignment = NSTextAlignment.center
-        attributeField.layer.borderWidth = 1.0
-        attributeField.layer.borderColor = UIColor.black.cgColor
-        attributeField.tag = tag+3
+        attributeField.isEnabled = false
+        attributeField.tag = tag+5
         tempView.addSubview(attributeField)
         
-        let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+15, y: 25, width: 90, height: 30))
-        miscLabel.text = "Misc\nBonus"
-        miscLabel.font = UIFont.systemFont(ofSize: 10)
-        miscLabel.textAlignment = NSTextAlignment.center
-        miscLabel.numberOfLines = 2
-        miscLabel.tag = 613
-        tempView.addSubview(miscLabel)
         
-        let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
-        miscField.text = String(0)//String(Character.Selected.miscInitBonus)
-        miscField.textAlignment = NSTextAlignment.center
-        miscField.layer.borderWidth = 1.0
-        miscField.layer.borderColor = UIColor.black.cgColor
-        miscField.tag = tag+4
-        tempView.addSubview(miscField)
+        let totalLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:60, width:40, height:30))
+        totalLabel.textAlignment = NSTextAlignment.center
+        totalLabel.isEnabled = false
+        totalLabel.tag = tag+7
         
         let skillProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:85, width:150, height:30))
         skillProfLabel.text = "Skill Proficiency"
         skillProfLabel.textAlignment = NSTextAlignment.right
-        skillProfLabel.tag = tag+5
+        skillProfLabel.tag = tag+8
         tempView.addSubview(skillProfLabel)
         
         let skillProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
-        skillProfSwitch.isOn = false
-        skillProfSwitch.tag = tag+6
+        skillProfSwitch.isOn = isproficient
+        skillProfSwitch.tag = tag+9
         tempView.addSubview(skillProfSwitch)
         
-        let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
-        if skillProfSwitch.isOn {
-            halfProfLabel.text = "Double Proficiency"
-        }
-        else {
-            halfProfLabel.text = "Half Proficiency"
-        }
-        halfProfLabel.textAlignment = NSTextAlignment.right
-        halfProfLabel.tag = tag+7
-        tempView.addSubview(halfProfLabel)
+        let doubleProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
+        doubleProfLabel.text = "Expertise"
+        doubleProfLabel.textAlignment = NSTextAlignment.right
+        doubleProfLabel.tag = tag+10
+        tempView.addSubview(doubleProfLabel)
         
-        let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
-        halfProfSwitch.tag = tag+8
-        tempView.addSubview(halfProfSwitch)
+        let doubleProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
+        doubleProfSwitch.tag = tag+11
+        doubleProfLabel.isEnabled = expertise
+        tempView.addSubview(doubleProfSwitch)
         
-        let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
-        roundUpLabel.text = "Round Up"
-        roundUpLabel.textAlignment = NSTextAlignment.right
-        roundUpLabel.tag = tag+9
-        tempView.addSubview(roundUpLabel)
-        
-        let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
-        roundUpSwitch.isOn = false
-        roundUpSwitch.tag = tag+10
-        tempView.addSubview(roundUpSwitch)
-        
-        if halfProfLabel.text == "Double Proficiency" {
-            halfProfSwitch.isOn = false
-            roundUpLabel.isHidden = true
-            roundUpSwitch.isHidden = true
+        var totalBonus = Int32(attributeValue)
+        if(isproficient){
+            totalBonus += Character.Selected.proficiency_bonus
         }
-        else {
-            halfProfSwitch.isOn = true
-            if halfProfSwitch.isOn {
-                roundUpLabel.isHidden = false
-                roundUpSwitch.isHidden = false
-            }
-            else {
-                roundUpLabel.isHidden = true
-                roundUpSwitch.isHidden = true
-            }
+        if(expertise){
+            totalBonus += Character.Selected.proficiency_bonus
         }
+        totalLabel.text = "= " + String(totalBonus)
+        tempView.addSubview(totalLabel)
+
         
         view.addSubview(tempView)
     }
