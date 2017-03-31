@@ -303,6 +303,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             chaSaveValue.text = "+"+String(Character.Selected.chaSave)
         }
+        
+        skillsTable.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -407,11 +409,15 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             
         case 300:
             // Armor Class
+            Character.Selected.ac = Int32((parentView.viewWithTag(302) as! UITextField).text ?? "0")!
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
             acValue.text = String(Character.Selected.ac)
             break
             
         case 400:
             // Proficiency Bonus
+            Character.Selected.proficiency_bonus = Int32((parentView.viewWithTag(402) as! UITextField).text ?? "0")!
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
             profValue.text = String(Character.Selected.proficiency_bonus)
             break
         
@@ -732,7 +738,13 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(title)
         
         // Armor value, Shield Value, Dex Bonus, Max Dex, Misc Mod, Additional Ability Mod (Monk/Barb)
-        
+        let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
+        profField.text = String(Character.Selected.ac)
+        profField.textAlignment = NSTextAlignment.center
+        profField.layer.borderWidth = 1.0
+        profField.layer.borderColor = UIColor.black.cgColor
+        profField.tag = 302
+        tempView.addSubview(profField)
         
         view.addSubview(tempView)
     }
