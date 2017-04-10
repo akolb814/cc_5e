@@ -115,18 +115,18 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
     
     func setMiscDisplayData() {
         
-        let firstClass: JSON = appDelegate.character.classes[0]
+        let firstClass: JSON = Character.Selected.classes[0]
         let classStr = firstClass["class"].string!
         let level = firstClass["level"].int!
         
-        navigationItem.title = appDelegate.character.name
+        navigationItem.title = Character.Selected.name
         classField.text = classStr + " " + String(level)
-        let race = appDelegate.character.race
+        let race = Character.Selected.race
         raceField.text = race["title"].string
-        let background = appDelegate.character.background
+        let background = Character.Selected.background
         backgroundField.text = background["title"].string
-        alignmentField.text = appDelegate.character.alignment
-        experienceField.text = appDelegate.character.experience
+        alignmentField.text = Character.Selected.alignment
+        experienceField.text = Character.Selected.experience
         
         // Class Features
         classTextView.text = firstClass["features"].string!
@@ -144,12 +144,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         backgroundHeight.constant = 20+backgroundTextViewHeight
         
         // Weapon Proficiencies
-        weaponTextView.text = appDelegate.character.weaponProficiencies
+        weaponTextView.text = Character.Selected.weaponProficiencies
         let weaponTextViewHeight = weaponTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         
         // Armor Proficiencies
-        armorTextView.text = appDelegate.character.armorProficienceies
+        armorTextView.text = Character.Selected.armorProficienceies
         let armorTextViewHeight = armorTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         // Armor and weapon views must be same size, check which one is larger and use that one for both views
@@ -163,11 +163,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
         
         // Tool Proficiencies
-        toolTextView.text = appDelegate.character.toolProficiencies
+        toolTextView.text = Character.Selected.toolProficiencies
         let toolTextViewHeight = toolTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         // Languages Known
-        languagesTextView.text = appDelegate.character.languages
+        languagesTextView.text = Character.Selected.languages
         let languagesTextViewHeight = languagesTextView.text.heightWithConstrainedWidth(width: view.frame.width/2-21, font: UIFont.systemFont(ofSize: 17))
         
         // Tool and languages views must be same size, check which one is larger and use that one for both views
@@ -181,27 +181,27 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
         
         // Personality Traits
-        personalityTextView.text = appDelegate.character.personalityTraits
+        personalityTextView.text = Character.Selected.personalityTraits
         let personalityTextViewHeight = personalityTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         personalityHeight.constant = 20+personalityTextViewHeight
         
         // Ideals
-        idealsTextView.text = appDelegate.character.ideals
+        idealsTextView.text = Character.Selected.ideals
         let idealsTextViewHeight = idealsTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         idealsHeight.constant = 20+idealsTextViewHeight
         
         // Bonds
-        bondsTextView.text = appDelegate.character.bonds
+        bondsTextView.text = Character.Selected.bonds
         let bondsTextViewHeight = bondsTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         bondsHeight.constant = 20+bondsTextViewHeight
         
         // Flaws
-        flawsTextView.text = appDelegate.character.flaws
+        flawsTextView.text = Character.Selected.flaws
         let flawsTextViewHeight = flawsTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         flawsHeight.constant = 20+flawsTextViewHeight
         
         // Notes
-        notesTextView.text = appDelegate.character.notes
+        notesTextView.text = Character.Selected.notes
         let notesTextViewHeight = notesTextView.text.heightWithConstrainedWidth(width: view.frame.width-16, font: UIFont.systemFont(ofSize: 17))
         notesHeight.constant = 20+notesTextViewHeight
         

@@ -49,7 +49,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         spellsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
-        spellcastingDict = appDelegate.character.spellcasting
+        spellcastingDict = Character.Selected.spellcasting
         
         self.setMiscDisplayData()
     }
@@ -66,28 +66,28 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     func setMiscDisplayData() {
         // Spell Attack
-        var spellAttack = appDelegate.character.proficiencyBonus
-        var spellDC = 8+appDelegate.character.proficiencyBonus
+        var spellAttack = Character.Selected.proficiencyBonus
+        var spellDC = 8+Character.Selected.proficiencyBonus
         let spellAbility = spellcastingDict["spell_ability"].string!
         switch spellAbility {
         case "STR":
-            spellAttack += appDelegate.character.strBonus //Add STR bonus
-            spellDC += appDelegate.character.strBonus
+            spellAttack += Character.Selected.strBonus //Add STR bonus
+            spellDC += Character.Selected.strBonus
         case "DEX":
-            spellAttack += appDelegate.character.dexBonus //Add DEX bonus
-            spellDC += appDelegate.character.dexBonus
+            spellAttack += Character.Selected.dexBonus //Add DEX bonus
+            spellDC += Character.Selected.dexBonus
         case "CON":
-            spellAttack += appDelegate.character.conBonus //Add CON bonus
-            spellDC += appDelegate.character.conBonus
+            spellAttack += Character.Selected.conBonus //Add CON bonus
+            spellDC += Character.Selected.conBonus
         case "INT":
-            spellAttack += appDelegate.character.intBonus //Add INT bonus
-            spellDC += appDelegate.character.intBonus
+            spellAttack += Character.Selected.intBonus //Add INT bonus
+            spellDC += Character.Selected.intBonus
         case "WIS":
-            spellAttack += appDelegate.character.wisBonus //Add WIS bonus
-            spellDC += appDelegate.character.wisBonus
+            spellAttack += Character.Selected.wisBonus //Add WIS bonus
+            spellDC += Character.Selected.wisBonus
         case "CHA":
-            spellAttack += appDelegate.character.chaBonus //Add CHA bonus
-            spellDC += appDelegate.character.chaBonus
+            spellAttack += Character.Selected.chaBonus //Add CHA bonus
+            spellDC += Character.Selected.chaBonus
         default: break
         }
         
@@ -103,11 +103,11 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         clValue.text = String(spellcastingDict["caster_level"].int!)
         
         // Resource
-        resourceTitle.text = appDelegate.character.spellcastingResource["name"].string
+        resourceTitle.text = Character.Selected.spellcastingResource["name"].string
         
-        let currentResourceValue: Int = appDelegate.character.spellcastingResource["current_value"].int!
-        let maxResourceValue: Int = appDelegate.character.spellcastingResource["max_value"].int!
-        let dieType: Int = appDelegate.character.spellcastingResource["die_type"].int!
+        let currentResourceValue: Int = Character.Selected.spellcastingResource["current_value"].int!
+        let maxResourceValue: Int = Character.Selected.spellcastingResource["max_value"].int!
+        let dieType: Int = Character.Selected.spellcastingResource["die_type"].int!
         
         var resourceDisplay = ""
         if dieType == 0 {
@@ -241,7 +241,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:60, width:40, height:30))
-        profField.text = String(appDelegate.character.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiencyBonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray
@@ -275,7 +275,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:60, width:40, height:30))
-        miscField.text = String(0)//String(appDelegate.character.miscInitBonus)
+        miscField.text = String(0)//String(Character.Selected.miscInitBonus)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -295,27 +295,27 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         case "STR":
             saIndex = 0
             saText = "Strength"
-            attributeField.text = String(appDelegate.character.strBonus)
+            attributeField.text = String(Character.Selected.strBonus)
         case "DEX":
             saIndex = 1
             saText = "Dexterity"
-            attributeField.text = String(appDelegate.character.dexBonus)
+            attributeField.text = String(Character.Selected.dexBonus)
         case "CON":
             saIndex = 2
             saText = "Constitution"
-            attributeField.text = String(appDelegate.character.conBonus)
+            attributeField.text = String(Character.Selected.conBonus)
         case "INT":
             saIndex = 3
             saText = "Intelligence"
-            attributeField.text = String(appDelegate.character.intBonus)
+            attributeField.text = String(Character.Selected.intBonus)
         case "WIS":
             saIndex = 4
             saText = "Wisdom"
-            attributeField.text = String(appDelegate.character.wisBonus)
+            attributeField.text = String(Character.Selected.wisBonus)
         case "CHA":
             saIndex = 5
             saText = "Charisma"
-            attributeField.text = String(appDelegate.character.chaBonus)
+            attributeField.text = String(Character.Selected.chaBonus)
         default: break
         }
         
@@ -374,7 +374,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:60, width:40, height:30))
-        profField.text = String(appDelegate.character.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiencyBonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray
@@ -408,7 +408,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+70, y:60, width:40, height:30))
-        miscField.text = String(0)//String(appDelegate.character.miscInitBonus)
+        miscField.text = String(0)//String(Character.Selected.miscInitBonus)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -428,27 +428,27 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         case "STR":
             saIndex = 0
             saText = "Strength"
-            attributeField.text = String(appDelegate.character.strBonus)
+            attributeField.text = String(Character.Selected.strBonus)
         case "DEX":
             saIndex = 1
             saText = "Dexterity"
-            attributeField.text = String(appDelegate.character.dexBonus)
+            attributeField.text = String(Character.Selected.dexBonus)
         case "CON":
             saIndex = 2
             saText = "Constitution"
-            attributeField.text = String(appDelegate.character.conBonus)
+            attributeField.text = String(Character.Selected.conBonus)
         case "INT":
             saIndex = 3
             saText = "Intelligence"
-            attributeField.text = String(appDelegate.character.intBonus)
+            attributeField.text = String(Character.Selected.intBonus)
         case "WIS":
             saIndex = 4
             saText = "Wisdom"
-            attributeField.text = String(appDelegate.character.wisBonus)
+            attributeField.text = String(Character.Selected.wisBonus)
         case "CHA":
             saIndex = 5
             saText = "Charisma"
-            attributeField.text = String(appDelegate.character.chaBonus)
+            attributeField.text = String(Character.Selected.chaBonus)
         default: break
         }
         
@@ -497,12 +497,12 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         let tempView = createBasicView()
         tempView.tag = 400
         
-        let currentResourceValue: Int = appDelegate.character.spellcastingResource["current_value"].int!
-        let maxResourceValue: Int = appDelegate.character.spellcastingResource["max_value"].int!
-        let dieType: Int = appDelegate.character.spellcastingResource["die_type"].int!
+        let currentResourceValue: Int = Character.Selected.spellcastingResource["current_value"].int!
+        let maxResourceValue: Int = Character.Selected.spellcastingResource["max_value"].int!
+        let dieType: Int = Character.Selected.spellcastingResource["die_type"].int!
         
         let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = appDelegate.character.spellcastingResource["name"].string
+        title.text = Character.Selected.spellcastingResource["name"].string
         title.textAlignment = NSTextAlignment.center
         title.tag = 401
         tempView.addSubview(title)

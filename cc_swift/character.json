@@ -1,5 +1,5 @@
 {
-    "name": "",
+    "name": "Johnny Sharktooth",
     "race": {
         "title": "Human",
         "subrace":"Variant",
@@ -71,92 +71,110 @@
                "skill": "Acrobatics",
                "attribute": "DEX",
                "misc_bonus":0,
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Animal Handling",
                "attribute": "WIS",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Arcana",
                "attribute": "INT",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Athletics",
                "attribute": "STR",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Deception",
                "attribute": "CHA",
                "misc_bonus":0,
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "History",
                "attribute": "INT",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Insight",
                "attribute": "WIS",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Intimidation",
                "attribute": "CHA",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Investigation",
                "attribute": "INT",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Medicine",
                "attribute": "WIS",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Nature",
                "attribute": "INT",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Perception",
                "attribute": "WIS",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Performance",
                "attribute": "CHA",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Persuasion",
                "attribute": "CHA",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Religion",
                "attribute": "INT",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }, {
                "skill": "Sleight of Hand",
                "attribute": "DEX",
                "misc_bonus":0,
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Stealth",
                "attribute": "DEX",
                "misc_bonus":0,
-               "proficient": true
+               "proficient": true,
+               "expertise": false
                }, {
                "skill": "Survival",
                "attribute": "WIS",
                "misc_bonus":0,
-               "proficient": false
+               "proficient": false,
+               "expertise": false
                }],
     "weapon_proficiencies": "Simple, Rapier",
     "armor_proficiencies": "Medium",

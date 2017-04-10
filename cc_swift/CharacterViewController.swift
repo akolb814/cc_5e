@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabViewController: UITabBarController {
+class CharacterViewController: UITabBarController {
     
     @IBOutlet weak var leftButton: UIBarButtonItem!
     @IBOutlet weak var rightButton: UIBarButtonItem!
@@ -17,10 +17,9 @@ class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         
-        navigationItem.title = appDelegate.character.name
+        // Do any additional setup after loading the view.
+        navigationItem.title = Character.Selected.name
     }
 
     override func didReceiveMemoryWarning() {
