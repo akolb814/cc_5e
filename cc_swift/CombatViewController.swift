@@ -51,7 +51,6 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var hpEffectValue = 0
-    let damageTypes = ["Bludgeoning", "Piercing", "Slashing", "Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,63 +74,67 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func setMiscDisplayData() {
         // HP
-        hpValue.text = String(Character.Selected.currentHP)+"/"+String(Character.Selected.maxHP)
+        hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
-        // Resource
-        resourceTitle.text = Character.Selected.martialResource["name"].string
-        
-        let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-        let dieType: Int = Character.Selected.martialResource["die_type"].int!
-        
-        var resourceDisplay = ""
-        if dieType == 0 {
-            if maxResourceValue == 0 {
-                resourceDisplay = String(currentResourceValue)
+        if((Character.Selected.resouces?.allObjects.count ?? 0)! > 0) {
+            // Resource
+            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+            resourceTitle.text = resource.name ?? "Resource"
+            
+            let currentResourceValue: Int32 = resource.current_value
+            let maxResourceValue: Int32 = resource.max_value
+            let dieType: Int32 = resource.die_type
+            
+            var resourceDisplay = ""
+            if dieType == 0 {
+                if maxResourceValue == 0 {
+                    resourceDisplay = String(currentResourceValue)
+                }
+                else {
+                    resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                }
             }
             else {
-                resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                if maxResourceValue == 0 {
+                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
+                }
+                else {
+                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
+                }
             }
+            
+            resourceValue.text = resourceDisplay
         }
-        else {
-            if maxResourceValue == 0 {
-                resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
-            }
-            else {
-                resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
-            }
-        }
-        
-        resourceValue.text = resourceDisplay
         
         // Proficiency
-        profValue.text = "+"+String(Character.Selected.proficiencyBonus)
+        profValue.text = "+"+String(Character.Selected.proficiency_bonus)
         
         // Armor Class
-        acValue.text = String(Character.Selected.AC)
+        acValue.text = String(Character.Selected.ac)
         
         // Speed
-        switch appDelegate.character.speedType {
+        switch Character.Selected.speed_type {
         case 0:
             // Walk
             speedTitle.text = "Walk"
-            speedValue.text = String(Character.Selected.walkSpeed)
+            speedValue.text = String(Character.Selected.speed_walk)
             break
         case 1:
             speedTitle.text = "Burrow"
-            speedValue.text = String(Character.Selected.burrowSpeed)
+            speedValue.text = String(Character.Selected.speed_burrow)
             break
         case 2:
             speedTitle.text = "Climb"
-            speedValue.text = String(Character.Selected.climbSpeed)
+            speedValue.text = String(Character.Selected.speed_climb)
             break
         case 3:
             speedTitle.text = "Fly"
-            speedValue.text = String(Character.Selected.flySpeed)
+            speedValue.text = String(Character.Selected.speed_fly)
             break
         case 4:
             speedTitle.text = "Swim"
-            speedValue.text = String(Character.Selected.swimSpeed)
+            speedValue.text = String(Character.Selected.speed_swim)
             break
         default: break
         }
@@ -209,36 +212,37 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let segControl = view as! UISegmentedControl
                     if segControl.selectedSegmentIndex == 0 {
                         // Damage
-                        Character.Selected.currentHP -= hpEffectValue
+                        Character.Selected.current_hp -= hpEffectValue
                     }
                     else if segControl.selectedSegmentIndex == 1 {
                         // Heal
-                        Character.Selected.currentHP += hpEffectValue
-                        if Character.Selected.currentHP > Character.Selected.maxHP {
-                            Character.Selected.currentHP = Character.Selected.maxHP
+                        Character.Selected.current_hp += hpEffectValue
+                        if Character.Selected.current_hp > Character.Selected.max_hp {
+                            Character.Selected.current_hp = Character.Selected.max_hp
                         }
                     }
                     else {
                         // Temp HP
-                        Character.Selected.currentHP += hpEffectValue
+                        Character.Selected.current_hp += hpEffectValue
                     }
                 }
             }
             hpEffectValue = 0
-            hpValue.text = String(Character.Selected.currentHP)+"/"+String(Character.Selected.maxHP)
+            hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
             
-            if Character.Selected.currentHP == 0 {
+            if Character.Selected.current_hp == 0 {
                 // Death Saves
             }
             break
             
         case 200:
             // Resource
-            resourceTitle.text = Character.Selected.martialResource["name"].string
-            
-            let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-            let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-            let dieType: Int = Character.Selected.martialResource["die_type"].int!
+            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+            resourceTitle.text = resource.name
+            let currentResourceValue: Int32 = resource.current_value
+            let maxResourceValue: Int32 = resource.max_value
+            let dieType: Int32 = resource.die_type
             
             var resourceDisplay = ""
             if dieType == 0 {
@@ -263,37 +267,37 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 300:
             // Proficiency Bonus
-            profValue.text = "+"+String(Character.Selected.proficiencyBonus)
+            profValue.text = "+"+String(Character.Selected.proficiency_bonus)
             break
             
         case 400:
             // Armor Class
-            acValue.text = String(Character.Selected.AC)
+            acValue.text = String(Character.Selected.ac)
             break
             
         case 500:
             // Speed
-            switch appDelegate.character.speedType {
+            switch Character.Selected.speed_type {
             case 0:
                 // Walk
                 speedTitle.text = "Walk"
-                speedValue.text = String(Character.Selected.walkSpeed)
+                speedValue.text = String(Character.Selected.speed_walk)
                 break
             case 1:
                 speedTitle.text = "Burrow"
-                speedValue.text = String(Character.Selected.burrowSpeed)
+                speedValue.text = String(Character.Selected.speed_burrow)
                 break
             case 2:
                 speedTitle.text = "Climb"
-                speedValue.text = String(Character.Selected.climbSpeed)
+                speedValue.text = String(Character.Selected.speed_climb)
                 break
             case 3:
                 speedTitle.text = "Fly"
-                speedValue.text = String(Character.Selected.flySpeed)
+                speedValue.text = String(Character.Selected.speed_fly)
                 break
             case 4:
                 speedTitle.text = "Swim"
-                speedValue.text = String(Character.Selected.swimSpeed)
+                speedValue.text = String(Character.Selected.speed_swim)
                 break
             default: break
             }
@@ -363,7 +367,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(title)
         
         let currentHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-        currentHP.text = String(Character.Selected.currentHP)
+        currentHP.text = String(Character.Selected.current_hp)
         currentHP.textAlignment = NSTextAlignment.center
         currentHP.layer.borderWidth = 1.0
         currentHP.layer.borderColor = UIColor.black.cgColor
@@ -377,7 +381,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(slash)
         
         let maxHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-        maxHP.text = String(Character.Selected.maxHP)
+        maxHP.text = String(Character.Selected.max_hp)
         maxHP.textAlignment = NSTextAlignment.center
         maxHP.layer.borderWidth = 1.0
         maxHP.layer.borderColor = UIColor.black.cgColor
@@ -417,13 +421,14 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Create resource adjusting view
         let tempView = createBasicView()
         tempView.tag = 200
-        
-        let currentResourceValue: Int = Character.Selected.martialResource["current_value"].int!
-        let maxResourceValue: Int = Character.Selected.martialResource["max_value"].int!
-        let dieType: Int = Character.Selected.martialResource["die_type"].int!
+        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+
+        let currentResourceValue: Int32 = resource.current_value
+        let maxResourceValue: Int32 = resource.max_value
+        let dieType: Int32 = resource.die_type
         
         let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = Character.Selected.martialResource["name"].string
+        title.text = resource.name
         title.textAlignment = NSTextAlignment.center
         title.tag = 201
         tempView.addSubview(title)
@@ -570,7 +575,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(title)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.layer.borderWidth = 1.0
         profField.layer.borderColor = UIColor.black.cgColor
@@ -639,31 +644,31 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         miscField.tag = 505
         tempView.addSubview(miscField)
         
-        switch appDelegate.character.speedType {
+        switch Character.Selected.speed_type {
         case 0:
             // Walk
-            baseField.text = String(Character.Selected.walkSpeed)
-            miscField.text = String(Character.Selected.walkSpeedMiscBonus)
+            baseField.text = String(Character.Selected.speed_walk)
+            miscField.text = String(Character.Selected.speed_walk_misc)
             break
         case 1:
             // Burrow
-            baseField.text = String(Character.Selected.burrowSpeed)
-            miscField.text = String(Character.Selected.burrowSpeedMiscBonus)
+            baseField.text = String(Character.Selected.speed_burrow)
+            miscField.text = String(Character.Selected.speed_burrow_misc)
             break
         case 2:
             // Climb
-            baseField.text = String(Character.Selected.climbSpeed)
-            miscField.text = String(Character.Selected.climbSpeedMiscBonus)
+            baseField.text = String(Character.Selected.speed_climb)
+            miscField.text = String(Character.Selected.speed_climb_misc)
             break
         case 3:
             // Fly
-            baseField.text = String(Character.Selected.flySpeed)
-            miscField.text = String(Character.Selected.flySpeedMiscBonus)
+            baseField.text = String(Character.Selected.speed_fly)
+            miscField.text = String(Character.Selected.speed_fly_misc)
             break
         case 4:
             // Swim
-            baseField.text = String(Character.Selected.swimSpeed)
-            miscField.text = String(Character.Selected.swimSpeedMiscBonus)
+            baseField.text = String(Character.Selected.speed_swim)
+            miscField.text = String(Character.Selected.speed_swim_misc)
             break
         default: break
         }
@@ -709,7 +714,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(profLabel)
         
         let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:50, width:40, height:30))
-        profField.text = String(Character.Selected.proficiencyBonus)
+        profField.text = String(Character.Selected.proficiency_bonus)
         profField.textAlignment = NSTextAlignment.center
         profField.isEnabled = false
         profField.textColor = UIColor.darkGray
@@ -802,10 +807,10 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return Character.Selected.equipment["weapons"].count
+            return (Character.Selected.equipment?.weapons?.allObjects.count) ?? 0
         }
         else {
-            return 1
+            return 0
         }
     }
     
@@ -823,65 +828,65 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell", for: indexPath) as! WeaponTableViewCell
-            let weapon = Character.Selected.equipment["weapons"][indexPath.row]
-            let attackBonusDict = weapon["attack_bonus"]
-            let damageDict = weapon["damage"]
+            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+            let damage = weapon.damage! as Damage
             
             var attackBonus = 0
             var damageBonus = 0
-            let modDamage = damageDict["mod_damage"].bool
-            let abilityType: String = attackBonusDict["ability"].string!
+            let modDamage = damage.mod_damage
+            let abilityType: String = (weapon.ability?.name)!
             switch abilityType {
             case "STR":
                 attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.strBonus
                 }
             case "DEX":
                 attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.dexBonus
                 }
             case "CON":
                 attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.conBonus
                 }
             case "INT":
                 attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.intBonus
                 }
             case "WIS":
                 attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.wisBonus
                 }
             case "CHA":
                 attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.chaBonus
                 }
             default: break
             }
             
-            attackBonus = attackBonus + attackBonusDict["magic_bonus"].int! + attackBonusDict["misc_bonus"].int!
-            damageBonus = damageBonus + damageDict["magic_bonus"].int! + damageDict["misc_bonus"].int!
+            attackBonus = attackBonus +
+                Int(weapon.magic_bonus + weapon.misc_bonus)
+            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
             
-            var damageDieNumber = damageDict["die_number"].int
-            var damageDie = damageDict["die_type"].int
-            let extraDie = damageDict["extra_die"].bool
-            if (extraDie)! {
-                damageDieNumber = damageDieNumber! + damageDict["extra_die_number"].int!
-                damageDie = damageDie! + damageDict["extra_die_type"].int!
+            var damageDieNumber = damage.die_number
+            var damageDie = damage.die_type
+            let extraDie = damage.extra_die
+            if (extraDie) {
+                damageDieNumber = damageDieNumber + damage.extra_die_number
+                damageDie = damageDie + damage.extra_die_type
             }
             
-            let damageType = damageDict["damage_type"].string
+            let damageType = damage.damage_type
             
-            cell.weaponName.text = weapon["name"].string?.capitalized
-            cell.weaponReach.text = "Range: "+weapon["range"].string!
-            cell.weaponModifier.text = "+"+String(attackBonus)
-            let dieDamage = String(damageDieNumber!)+"d"+String(damageDie!)
+            cell.weaponName.text = weapon.name
+            cell.weaponReach.text = "Range: " + weapon.range!
+            cell.weaponModifier.text = "+" + String(attackBonus)
+            let dieDamage = String(damageDieNumber)+"d"+String(damageDie)
             cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+" "+damageType!
             
             return cell
@@ -900,64 +905,63 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let tempView = createBasicView()
             tempView.tag = 700 + (indexPath.row * 100)
             
-            let weapon = Character.Selected.equipment["weapons"][indexPath.row]
-            let attackBonusDict = weapon["attack_bonus"]
-            let damageDict = weapon["damage"]
+            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+            let damage = weapon.damage! as Damage
             
             var attackBonus = 0
             var damageBonus = 0
-            let modDamage = damageDict["mod_damage"].bool
-            let abilityType: String = attackBonusDict["ability"].string!
+            let modDamage = damage.mod_damage
+            let abilityType: String = (weapon.ability?.name)!
             switch abilityType {
             case "STR":
                 attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.strBonus
                 }
             case "DEX":
                 attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.dexBonus
                 }
             case "CON":
                 attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.conBonus
                 }
             case "INT":
                 attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.intBonus
                 }
             case "WIS":
                 attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.wisBonus
                 }
             case "CHA":
                 attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage! {
+                if modDamage {
                     damageBonus += Character.Selected.chaBonus
                 }
             default: break
             }
             
-            attackBonus = attackBonus + attackBonusDict["magic_bonus"].int! + attackBonusDict["misc_bonus"].int!
-            damageBonus = damageBonus + damageDict["magic_bonus"].int! + damageDict["misc_bonus"].int!
+            attackBonus = attackBonus + Int(weapon.magic_bonus + weapon.misc_bonus)
+            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
             
-            var damageDieNumber = damageDict["die_number"].int
-            var damageDie = damageDict["die_type"].int
-            let extraDie = damageDict["extra_die"].bool
-            if (extraDie)! {
-                damageDieNumber = damageDieNumber! + damageDict["extra_die_number"].int!
-                damageDie = damageDie! + damageDict["extra_die_type"].int!
+            var damageDieNumber = damage.die_number
+            var damageDie = damage.die_type
+            let extraDie = damage.extra_die
+            if (extraDie) {
+                damageDieNumber = damageDieNumber + damage.extra_die_number
+                damageDie = damageDie + damage.extra_die_type
             }
             
             let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
             tempView.addSubview(scrollView)
             
             let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
-            title.text = weapon["name"].string?.capitalized
+            title.text = weapon.name?.capitalized
             title.textAlignment = NSTextAlignment.center
             title.tag = 700 + (indexPath.row * 100) + 1
             title.layer.borderWidth = 1.0
@@ -971,7 +975,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             scrollView.addSubview(reachLabel)
             
             let reachField = UITextField.init(frame: CGRect.init(x: 10, y: 55, width: tempView.frame.size.width/2-15, height: 40))
-            reachField.text = weapon["range"].string!
+            reachField.text = weapon.range
             reachField.textAlignment = NSTextAlignment.center
             reachField.layer.borderWidth = 1.0
             reachField.layer.borderColor = UIColor.black.cgColor
@@ -1042,7 +1046,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             scrollView.addSubview(profLabel)
             
             let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:170, width:40, height:30))
-            profField.text = String(Character.Selected.proficiencyBonus)
+            profField.text = String(Character.Selected.proficiency_bonus)
             profField.textAlignment = NSTextAlignment.center
             profField.isEnabled = false
             profField.textColor = UIColor.darkGray
@@ -1234,7 +1238,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return damageTypes.count
+        return Types.DamageStrings.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -1250,7 +1254,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         
-        pickerLabel?.text = damageTypes[row]
+        pickerLabel?.text = Types.DamageStrings[row]
         return pickerLabel!
     }
     

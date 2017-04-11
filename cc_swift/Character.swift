@@ -2,146 +2,179 @@
 //  Character.swift
 //  cc_swift
 //
-//  Created by Andrew Kolb on 1/31/17.
+//  Created by Rip Britton on 3/9/17.
 //
 //
 
+import Foundation
 import UIKit
-import SwiftyJSON
 
-class Character {
+extension Character {
     
-    static var Selected: Character! = Character()
+    @nonobjc static var Selected : Character!
     
-    var name = ""
-    var classes: JSON = []
-    var race: JSON = [:]
-    var background: JSON = [:]
-    var alignment = ""
-    var experience = ""
-    
-    var currentHitDice = 0
-    var maxHitDice = 0
-    var hitDieType = 0
-    var hasExtraHitDie1 = false
-    var extra1CurrentHitDice = 0
-    var extra1MaxHitDice = 0
-    var extra1HitDieType = 0
-    var hasExtraHitDie2 = false
-    var extra2CurrentHitDice = 0
-    var extra2MaxHitDice = 0
-    var extra2HitDieType = 0
-    var hasExtraHitDie3 = false
-    var extra3CurrentHitDice = 0
-    var extra3MaxHitDice = 0
-    var extra3HitDieType = 0
-    
-    
-    var currentHP = 0
-    var maxHP = 0
-    
-    var AC = 0
-    var ACMiscBonus = 0
-    var hasAdditionalACMod = false
-    var additionalACMod = ""
-    
-    var proficiencyBonus = 2
-    var initiative = 0
-    var initiativeMiscBonus = 0
-    var passivePerception = 10
-    
-    var speedType = 0
-    var walkSpeed = 0
-    var walkSpeedMiscBonus = 0
-    var burrowSpeed = 0
-    var burrowSpeedMiscBonus = 0
-    var climbSpeed = 0
-    var climbSpeedMiscBonus = 0
-    var flySpeed = 0
-    var flySpeedMiscBonus = 0
-    var swimSpeed = 0
-    var swimSpeedMiscBonus = 0
-    
-    var saveProficiencies: JSON = []
-    var strScore = 0
-    var strBonus = 0
-    var strSave = 0
-    
-    var dexScore = 0
-    var dexBonus = 0
-    var dexSave = 0
-    
-    var conScore = 0
-    var conBonus = 0
-    var conSave = 0
-    
-    var intScore = 0
-    var intBonus = 0
-    var intSave = 0
-    
-    var wisScore = 0
-    var wisBonus = 0
-    var wisSave = 0
-    
-    var chaScore = 0
-    var chaBonus = 0
-    var chaSave = 0
-    
-    var skills: JSON = []
-    
-    var weaponProficiencies = ""
-    var armorProficienceies = ""
-    var toolProficiencies = ""
-    var languages = ""
-    var personalityTraits = ""
-    var ideals = ""
-    var bonds = ""
-    var flaws = ""
-    var notes = ""
-    
-    var equipment: JSON = [:]
-    var spellcasting: JSON = [:]
-    var martialResource: JSON = [:]
-    var spellcastingResource: JSON = [:]
-    
-    var alertFeat = false
-    var halfProfOnInitiative = false
-    var roundUpOnInitiative = false
-    var image: UIImage = UIImage(named:"default_character_image")!
-    
-    func getBonus(score: Int) -> Int {
-        let bonus = (score/2)-5
-        return bonus
+    func getImage() -> UIImage {
+        return UIImage(named: "default_character_image")!
     }
     
-    func getSave(bonus: Int, attribute: JSON) -> Int {
-        var save = bonus
-        let isContained = saveProficiencies.arrayValue.contains(attribute)
-        
-        if isContained {
-            save += proficiencyBonus
+    var strBonus: Int {
+        return Int(getAbility(name: Types.Abilities.STR.rawValue).modifier)
+    }
+    
+    var dexBonus: Int {
+        return Int(getAbility(name: Types.Abilities.DEX.rawValue).modifier)
+    }
+    
+    var conBonus: Int {
+        return Int(getAbility(name: Types.Abilities.CON.rawValue).modifier)
+    }
+    
+    var intBonus: Int {
+        return Int(getAbility(name: Types.Abilities.INT.rawValue).modifier)
+    }
+    
+    var wisBonus: Int {
+        return Int(getAbility(name: Types.Abilities.WIS.rawValue).modifier)
+    }
+    
+    var chaBonus: Int {
+        return Int(getAbility(name: Types.Abilities.CHA.rawValue).modifier)
+    }
+    
+    var strScore: Int {
+        return Int(getAbility(name: Types.Abilities.STR.rawValue).score)
+    }
+    
+    var dexScore: Int {
+        return Int(getAbility(name: Types.Abilities.DEX.rawValue).score)
+    }
+    
+    var conScore: Int {
+        return Int(getAbility(name: Types.Abilities.CON.rawValue).score)
+    }
+    
+    var intScore: Int {
+        return Int(getAbility(name: Types.Abilities.INT.rawValue).score)
+    }
+    
+    var wisScore: Int {
+        return Int(getAbility(name: Types.Abilities.WIS.rawValue).score)
+    }
+    
+    var chaScore: Int {
+        return Int(getAbility(name: Types.Abilities.CHA.rawValue).score)
+    }
+    
+    var strSave: Int {
+        return Int(getAbility(name: Types.Abilities.STR.rawValue).save)
+    }
+    
+    var dexSave: Int {
+        return Int(getAbility(name: Types.Abilities.DEX.rawValue).save)
+    }
+    
+    var conSave: Int {
+        return Int(getAbility(name: Types.Abilities.CON.rawValue).save)
+    }
+    
+    var intSave: Int {
+        return Int(getAbility(name: Types.Abilities.INT.rawValue).save)
+    }
+    
+    var wisSave: Int {
+        return Int(getAbility(name: Types.Abilities.WIS.rawValue).save)
+    }
+    
+    var chaSave: Int {
+        return Int(getAbility(name: Types.Abilities.CHA.rawValue).save)
+    }
+    
+    var proficiencyBonus: Int {
+        return Int(proficiency_bonus)
+    }
+    
+    var primaryClass: Class {
+        for object in classes! {
+            let classType = object as! Class
+            if classType.primary {
+                return classType
+            }
         }
-        return save
+        return Class()
     }
     
-    func getHpMaximum() {
-        let firstClass = classes[0]
-        let hitDie: Int = firstClass["hitDie"].int!
-        let level: Int = firstClass["level"].int!
-        maxHP = 0
-        
-        var i = 1
-        while i < level+1 {
-            if i == 1 {
-                maxHP = hitDie + conBonus
-            }
-            else {
-                maxHP += (hitDie/2) + 1 + conBonus
-            }
-            i += 1
+    func updateAbility(name: String, score: Int32, proficient: Bool) {
+        let ability = getAbility(name: name)
+        ability.score = score
+        ability.modifier = (score - 10)/2
+        ability.save = (score-10)/2
+        ability.save_proficiency = proficient
+        if(ability.save_proficiency) {
+            ability.save += proficiencyBonus
         }
     }
     
+    func updateSkill(name: String, proficient: Bool, expertise: Bool) {
+        let skill = getSkill(name: name)
+        skill.proficiency = proficient
+        skill.expertise = expertise
+    }
+    
+    func getAbility(name: String) -> Ability {
+        let index = name.index(name.startIndex, offsetBy: 3)
+        for object in (abilities?.allObjects)! {
+            let ability = object as! Ability
+            if (ability.name == name || ability.name?.uppercased() == name.substring(to: index).uppercased()) {
+                return ability
+            }
+        }
+        return Ability()
+    }
+    
+    func getAbility(abilityIn: Types.Abilities) -> Ability {
+        for object in (abilities?.allObjects)! {
+            let ability = object as! Ability
+            if (ability.name == abilityIn.rawValue) {
+                return ability
+            }
+        }
+        return Ability()
+    }
+    
+    func getSkill(skillIn: Types.Skills) -> Skill {
+        for object in (skills?.allObjects)! {
+            let skill = object as! Skill
+            if (skill.name == skillIn.rawValue) {
+                return skill
+            }
+        }
+        return Skill()
+    }
+    
+    func getSkill(name: String) -> Skill {
+        for object in (skills?.allObjects)! {
+            let skill = object as! Skill
+            if (skill.name == name) {
+                return skill
+            }
+        }
+        return Skill()
+    }
+    /*
+     func getBonus(score: Int) -> Int {
+     let bonus = (score/2)-5
+     return bonus
+     }
+     
+     func getSave(bonus: Int, attribute: JSON) -> Int {
+     var save = bonus
+     let isContained = saveProficiencies.arrayValue.contains(attribute)
+     
+     if isContained {
+     save += proficiencyBonus
+     }
+     }
+     
     func calcInitiative() {
         initiative = proficiencyBonus + dexBonus + initiativeMiscBonus
         if alertFeat == true {
@@ -246,4 +279,5 @@ class Character {
         
         AC = armorClass
     }
+ */
 }

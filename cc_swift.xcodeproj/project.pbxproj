@@ -7,17 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */; };
+		8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37DE5E1E89AC46002DD453 /* Class.swift */; };
+		8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C28E1E8D74790009873D /* BackgroundFactory.swift */; };
+		8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C2901E8D758F0009873D /* EquipmentFactory.swift */; };
+		8D77C2951E8D799C0009873D /* SpellcastingFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */; };
 		8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */; };
 		8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */; };
 		8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */; };
 		8DABE5B21E70F96800EB173D /* cc_5e.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5B01E70F96800EB173D /* cc_5e.xcdatamodeld */; };
-		8DABE5B41E710EEB00EB173D /* Ability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5B31E710EEB00EB173D /* Ability.swift */; };
-		8DABE5B61E710EF500EB173D /* Armor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5B51E710EF500EB173D /* Armor.swift */; };
-		8DABE5B81E710F0100EB173D /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE5B71E710F0100EB173D /* Background.swift */; };
+		8DABE6691E72384300EB173D /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6681E72384300EB173D /* Character.swift */; };
+		8DABE66B1E7242C000EB173D /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66A1E7242C000EB173D /* Types.swift */; };
+		8DABE66E1E72ED1C00EB173D /* CharacterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */; };
+		8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE66F1E76D72B00EB173D /* Equipment.swift */; };
+		8DABE6721E76D78300EB173D /* Ability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6711E76D78300EB173D /* Ability.swift */; };
+		8DABE6741E76D79000EB173D /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DABE6731E76D79000EB173D /* Skill.swift */; };
 		C2F989BB89C12E80825AF24C /* Pods_cc_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89DC0D765A5809C61EF02219 /* Pods_cc_swift.framework */; };
 		EC14BC4F1E52706300EF3347 /* CharacterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC14BC4E1E52706300EF3347 /* CharacterViewController.swift */; };
 		EC1DAC7D1E3FF3A000616C0A /* character.json in Resources */ = {isa = PBXBuildFile; fileRef = EC1DAC7C1E3FF3A000616C0A /* character.json */; };
-		EC1DAC7F1E41237C00616C0A /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1DAC7E1E41237C00616C0A /* Character.swift */; };
 		EC2076B11E1C2E2700FD7B4F /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076B01E1C2E2700FD7B4F /* SkillTableViewCell.swift */; };
 		EC2076B31E1D686100FD7B4F /* WeaponTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076B21E1D686100FD7B4F /* WeaponTableViewCell.swift */; };
 		EC2076B51E1D69CA00FD7B4F /* NewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076B41E1D69CA00FD7B4F /* NewTableViewCell.swift */; };
@@ -39,17 +46,24 @@
 
 /* Begin PBXFileReference section */
 		89DC0D765A5809C61EF02219 /* Pods_cc_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cc_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassFactory.swift; sourceTree = "<group>"; };
+		8D37DE5E1E89AC46002DD453 /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
+		8D77C28E1E8D74790009873D /* BackgroundFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
+		8D77C2901E8D758F0009873D /* EquipmentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentFactory.swift; sourceTree = "<group>"; };
+		8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpellcastingFactory.swift; sourceTree = "<group>"; };
 		8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSelectViewController.swift; sourceTree = "<group>"; };
 		8DABE5AA1E707D5200EB173D /* CharacterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		8DABE5AD1E70E8A100EB173D /* CharacterJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterJson.swift; sourceTree = "<group>"; };
 		8DABE5B11E70F96800EB173D /* cc_5e.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = cc_5e.xcdatamodel; sourceTree = "<group>"; };
-		8DABE5B31E710EEB00EB173D /* Ability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ability.swift; sourceTree = "<group>"; };
-		8DABE5B51E710EF500EB173D /* Armor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Armor.swift; sourceTree = "<group>"; };
-		8DABE5B71E710F0100EB173D /* Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		8DABE6681E72384300EB173D /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		8DABE66A1E7242C000EB173D /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterFactory.swift; sourceTree = "<group>"; };
+		8DABE66F1E76D72B00EB173D /* Equipment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
+		8DABE6711E76D78300EB173D /* Ability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ability.swift; sourceTree = "<group>"; };
+		8DABE6731E76D79000EB173D /* Skill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skill.swift; sourceTree = "<group>"; };
 		96BCE542D8BEF29E3CB33623 /* Pods-cc_swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cc_swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-cc_swift/Pods-cc_swift.release.xcconfig"; sourceTree = "<group>"; };
 		EC14BC4E1E52706300EF3347 /* CharacterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterViewController.swift; sourceTree = "<group>"; };
 		EC1DAC7C1E3FF3A000616C0A /* character.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = character.json; sourceTree = "<group>"; };
-		EC1DAC7E1E41237C00616C0A /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		EC2076B01E1C2E2700FD7B4F /* SkillTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		EC2076B21E1D686100FD7B4F /* WeaponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponTableViewCell.swift; sourceTree = "<group>"; };
 		EC2076B41E1D69CA00FD7B4F /* NewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTableViewCell.swift; sourceTree = "<group>"; };
@@ -127,12 +141,26 @@
 		8DABE5AF1E70E8EC00EB173D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8DABE5B31E710EEB00EB173D /* Ability.swift */,
-				8DABE5B51E710EF500EB173D /* Armor.swift */,
-				8DABE5B71E710F0100EB173D /* Background.swift */,
-				EC1DAC7E1E41237C00616C0A /* Character.swift */,
+				8DABE6681E72384300EB173D /* Character.swift */,
+				8DABE66A1E7242C000EB173D /* Types.swift */,
+				8DABE66F1E76D72B00EB173D /* Equipment.swift */,
+				8DABE6711E76D78300EB173D /* Ability.swift */,
+				8DABE6731E76D79000EB173D /* Skill.swift */,
+				8D37DE5E1E89AC46002DD453 /* Class.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		8DABE66C1E72ED0700EB173D /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */,
+				8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */,
+				8D77C28E1E8D74790009873D /* BackgroundFactory.swift */,
+				8D77C2901E8D758F0009873D /* EquipmentFactory.swift */,
+				8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */,
+			);
+			name = Factories;
 			sourceTree = "<group>";
 		};
 		EC2076C81E1EF60500FD7B4F /* TableViewCells */ = {
@@ -172,6 +200,7 @@
 		EC66300F1E09DA2F002BE9FF /* cc_swift */ = {
 			isa = PBXGroup;
 			children = (
+				8DABE66C1E72ED0700EB173D /* Factories */,
 				8DABE5AF1E70E8EC00EB173D /* Models */,
 				8DABE5AC1E70E88E00EB173D /* Data */,
 				8DABE5A71E707BF300EB173D /* Controllers */,
@@ -312,26 +341,33 @@
 			files = (
 				EC2076BB1E1D836B00FD7B4F /* SpellTableViewCell.swift in Sources */,
 				EC6630151E09DA30002BE9FF /* CombatViewController.swift in Sources */,
+				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
+				8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
-				8DABE5B61E710EF500EB173D /* Armor.swift in Sources */,
+				8D77C2951E8D799C0009873D /* SpellcastingFactory.swift in Sources */,
+				8DABE66B1E7242C000EB173D /* Types.swift in Sources */,
 				EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */,
 				EC2076B31E1D686100FD7B4F /* WeaponTableViewCell.swift in Sources */,
 				EC2076B51E1D69CA00FD7B4F /* NewTableViewCell.swift in Sources */,
 				EC2076B91E1D835B00FD7B4F /* SpellLevelTableViewCell.swift in Sources */,
+				8DABE6691E72384300EB173D /* Character.swift in Sources */,
 				EC2076B11E1C2E2700FD7B4F /* SkillTableViewCell.swift in Sources */,
+				8DABE66E1E72ED1C00EB173D /* CharacterFactory.swift in Sources */,
 				EC14BC4F1E52706300EF3347 /* CharacterViewController.swift in Sources */,
+				8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */,
 				8DABE5B21E70F96800EB173D /* cc_5e.xcdatamodeld in Sources */,
-				8DABE5B41E710EEB00EB173D /* Ability.swift in Sources */,
 				EC2076C11E1DBBBF00FD7B4F /* ArmorTableViewCell.swift in Sources */,
 				EC2076BF1E1DB6FD00FD7B4F /* EquipmentViewController.swift in Sources */,
-				8DABE5B81E710F0100EB173D /* Background.swift in Sources */,
 				EC2076C71E1DBBEE00FD7B4F /* EquipmentTableViewCell.swift in Sources */,
 				8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */,
 				EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */,
 				8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */,
+				8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */,
+				8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */,
+				8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */,
 				8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */,
-				EC1DAC7F1E41237C00616C0A /* Character.swift in Sources */,
 				EC6630131E09DA30002BE9FF /* OverviewViewController.swift in Sources */,
+				8DABE6721E76D78300EB173D /* Ability.swift in Sources */,
 				EC2076B71E1D827900FD7B4F /* SpellcastingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

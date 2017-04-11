@@ -30,7 +30,7 @@ class CharacterViewCell: UITableViewCell {
     func update(characterIn: Character) {
         self.character = characterIn
         nameLabel.text = characterIn.name
-        characterImageView.image = character.image
+        characterImageView.image = character.getImage()
     }
 
 }

@@ -8,16 +8,40 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>PureLayout.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>445FF0245CEE4050AD1DC8A8C655C85F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>51E82C627674B8300F26B4E284B86680</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>82087B25A29028A2AF9D3E4599844FF5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -33,6 +57,16 @@
 			<true/>
 		</dict>
 		<key>8F91D149BEAF398BE35DD439033E629D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B00F5DB93E1370B9567E075444FF9BF9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D9A9A30CC900B38CF6C2A6CEC1F74D50</key>
 		<dict>
 			<key>primary</key>
 			<true/>
