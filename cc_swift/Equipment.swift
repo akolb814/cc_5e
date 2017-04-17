@@ -10,6 +10,6 @@ import Foundation
 
 extension Equipment {
     
-
+@nonobjc static var Armor : Equipment!
     
 }

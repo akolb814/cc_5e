@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import CoreData
 
 class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     // Character Overview
@@ -119,54 +120,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var hpEffectValue = 0
-    
-    let allClasses = ["Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard", "Custom"]
-    let levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    let allRaces = [
-        ["race":"Aarakocra",
-         "subraces":[]
-        ],
-        ["race":"Aasimar",
-         "subraces":[]
-        ],
-        ["race":"Dragonborn",
-         "subraces":[]
-        ],
-        ["race":"Dwarf",
-         "subraces":["Dark", "Hill", "Mountain"]
-        ],
-        ["race":"Elf",
-         "subraces":["Dark", "Eladrin", "High", "Wood"]
-        ],
-        ["race":"Genasi",
-         "subraces":["Air", "Earth", "Fire", "Water"]
-        ],
-        ["race":"Gnome",
-         "subraces":["Deep", "Forest", "Rock"]
-        ],
-        ["race":"Goliath",
-         "subraces":[]
-        ],
-        ["race":"Half-Elf",
-         "subraces":["Half-Elf", "Variant"]
-        ],
-        ["race":"Halfling",
-         "subraces":["Ghastly", "Lightfoot", "Stout"]
-        ],
-        ["race":"Half-Orc",
-         "subraces":[]
-        ],
-        ["race":"Human",
-         "subraces":["Human", "Variant"]
-        ],
-        ["race":"Tiefling",
-         "subraces":["Tiefling", "Variant"]
-        ],
-        ["race":"Custom",
-         "subraces":[]
-        ]
-    ]
-    let allBackgrounds = ["Acolyte", "Charlatan", "Criminal", "Entertainer", "Folk Hero", "Guild Artisan", "Hermit", "Noble", "Outlander", "Sage", "Sailor", "Soldier", "Urchin", "Custom"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -582,7 +535,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     }
     
-    
     func cancelAction(button: UIButton) {
         let parentView = button.superview
         parentView?.removeFromSuperview()
@@ -605,44 +557,37 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     case 0:
                         // NA
                         textField.text = "-"
-                        Character.Selected.hasAdditionalACMod = false
-                        Character.Selected.additionalACMod = ""
+                        Character.Selected.additional_ac_mod = "-"
                         break
                     case 1:
                         // STR
                         textField.text = String(Character.Selected.strBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "STR"
+                        Character.Selected.additional_ac_mod = "STR"
                         break
                     case 2:
                         // DEX
                         textField.text = String(Character.Selected.dexBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "DEX"
+                        Character.Selected.additional_ac_mod = "DEX"
                         break
                     case 3:
                         // CON
                         textField.text = String(Character.Selected.conBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "CON"
+                        Character.Selected.additional_ac_mod = "CON"
                         break
                     case 4:
                         // INT
                         textField.text = String(Character.Selected.intBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "INT"
+                        Character.Selected.additional_ac_mod = "INT"
                         break
                     case 5:
                         // WIS
                         textField.text = String(Character.Selected.wisBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "WIS"
+                        Character.Selected.additional_ac_mod = "WIS"
                         break
                     case 6:
                         // CHA
                         textField.text = String(Character.Selected.chaBonus)
-                        Character.Selected.hasAdditionalACMod = true
-                        Character.Selected.additionalACMod = "CHA"
+                        Character.Selected.additional_ac_mod = "CHA"
                         break
                     default:
                         break
@@ -782,7 +727,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-    
+
     func switchAction(sender: UISwitch) {
         if sender.tag == 211 {
             // Extra Hit Die 1
@@ -833,7 +778,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         else if sender.tag >= 4000{
             // Skills
         }
-        else {}
+        else {
+        
+        }
     }
     
     // Edit HP
@@ -982,7 +929,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
         stepper.tag = 209
         scrollView.addSubview(stepper)
-        
+        /*
         let extraHitDie1 = UILabel.init(frame: CGRect.init(x:10, y:115, width:120, height:30))
         extraHitDie1.text = "Extra Hit Dice"
         extraHitDie1.tag = 210
@@ -1204,7 +1151,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         extra3Stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
         extra3Stepper.tag = 239
         scrollView.addSubview(extra3Stepper)
-        
+        */
         scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 450)
         
         view.addSubview(tempView)
@@ -1311,7 +1258,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         scrollView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:55, width:40, height:30))
-        miscField.text = String(Character.Selected.ACMiscBonus)
+        miscField.text = String(Character.Selected.ac_misc)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -1356,53 +1303,64 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 260)
         
-        let allArmor = Character.Selected.equipment["armor"]
-        for armor in allArmor.array! {
-            if armor["equipped"] == true {
-                if armor["shield"] == true {
-                    let shieldValue = armor["value"].int! + armor["magic_bonus"].int! + armor["misc_bonus"].int!
-                    shieldField.text = String(shieldValue)
-                }
-                else {
-                    let armorValue = armor["value"].int! + armor["magic_bonus"].int! + armor["misc_bonus"].int!
-                    armorValueField.text = String(armorValue)
-                    let maxDex = armor["max_dex"].int!
-                    if maxDex == 0 {
-                        maxDexField.text = "-"
+        let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
+        do {
+            let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
+            
+            for armor: Armor in fetchedArmor {
+                if armor.equipped == true {
+                    if armor.shield == true {
+                        let shieldValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                        shieldField.text = String(shieldValue)
                     }
                     else {
-                        maxDexField.text = String(maxDex)
+                        let armorValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                        armorValueField.text = String(armorValue)
+                        let maxDex = armor.max_dex
+                        if maxDex == 0 {
+                            maxDexField.text = "-"
+                        }
+                        else {
+                            maxDexField.text = String(maxDex)
+                        }
                     }
                 }
             }
+        } catch {
+            fatalError("Failed to fetch armor: \(error)")
         }
         
-        if Character.Selected.hasAdditionalACMod == true {
-            switch Character.Selected.additionalACMod {
-            case "STR":
-                addAbilitySeg.selectedSegmentIndex = 1
-                addAbilityField.text = String(Character.Selected.strBonus)
-            case "DEX":
-                addAbilitySeg.selectedSegmentIndex = 2
-                addAbilityField.text = String(Character.Selected.dexBonus)
-            case "CON":
-                addAbilitySeg.selectedSegmentIndex = 3
-                addAbilityField.text = String(Character.Selected.conBonus)
-            case "INT":
-                addAbilitySeg.selectedSegmentIndex = 4
-                addAbilityField.text = String(Character.Selected.intBonus)
-            case "WIS":
-                addAbilitySeg.selectedSegmentIndex = 5
-                addAbilityField.text = String(Character.Selected.wisBonus)
-            case "CHA":
-                addAbilitySeg.selectedSegmentIndex = 6
-                addAbilityField.text = String(Character.Selected.chaBonus)
-            default: break
-            }
-        }
-        else {
+        
+        switch Character.Selected.additional_ac_mod! {
+        case "STR":
+            addAbilitySeg.selectedSegmentIndex = 1
+            addAbilityField.text = String(Character.Selected.strBonus)
+            break
+        case "DEX":
+            addAbilitySeg.selectedSegmentIndex = 2
+            addAbilityField.text = String(Character.Selected.dexBonus)
+            break
+        case "CON":
+            addAbilitySeg.selectedSegmentIndex = 3
+            addAbilityField.text = String(Character.Selected.conBonus)
+            break
+        case "INT":
+            addAbilitySeg.selectedSegmentIndex = 4
+            addAbilityField.text = String(Character.Selected.intBonus)
+            break
+        case "WIS":
+            addAbilitySeg.selectedSegmentIndex = 5
+            addAbilityField.text = String(Character.Selected.wisBonus)
+            break
+        case "CHA":
+            addAbilitySeg.selectedSegmentIndex = 6
+            addAbilityField.text = String(Character.Selected.chaBonus)
+            break
+        default:
             addAbilitySeg.selectedSegmentIndex = 0
             addAbilityField.text = "-"
+            break
         }
         
         view.addSubview(tempView)
@@ -1731,7 +1689,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
 
-        miscField.text = String(Character.Selected.miscInitBonus)
+        miscField.text = String(Character.Selected.initiative_misc)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -1746,7 +1704,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(alertLabel)
         
         let alertSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
-        alertSwitch.isOn = Character.Selected.alertFeat
+        alertSwitch.isOn = Character.Selected.alert_feat
         alertSwitch.tag = 1109
         tempView.addSubview(alertSwitch)
         
@@ -1757,7 +1715,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(halfProfLabel)
         
         let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
-        halfProfSwitch.isOn = Character.Selected.halfProfOnInitiative
+        halfProfSwitch.isOn = Character.Selected.initiative_half_proficiency
         halfProfSwitch.tag = 1111
         tempView.addSubview(halfProfSwitch)
         
@@ -1768,7 +1726,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(roundUpLabel)
         
         let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
-        roundUpSwitch.isOn = Character.Selected.roundUpOnInitiative
+        roundUpSwitch.isOn = Character.Selected.initiative_round_up
         roundUpSwitch.tag = 1113
         tempView.addSubview(roundUpSwitch)
         
@@ -1869,7 +1827,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:65, width:40, height:30))
-        miscField.text = String(Character.Selected.miscInitBonus)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -1955,7 +1912,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func alignmentAction(sender: UIButton) {
-        
         var lgBtn = UIButton.init(type: UIButtonType.custom)
         var ngBtn = UIButton.init(type: UIButtonType.custom)
         var cgBtn = UIButton.init(type: UIButtonType.custom)
@@ -2272,40 +2228,49 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     // UITableView Delegate & Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 315 {
-            return Character.Selected.equipment["armor"].count
+            return Character.Selected.equipment!.armor!.count//["armor"].count
         }
         else {
-            return Character.Selected.skills.count
+            return Character.Selected.skills!.count
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView.tag == 315 {
             let cell = skillsTable.dequeueReusableCell(withIdentifier: "SkillTableViewCell", for: indexPath) as! SkillTableViewCell
             
-            let armor = Character.Selected.equipment["armor"][indexPath.row]
-            
-            var armorValue: Int = armor["value"].int!
-            armorValue = armorValue + armor["magic_bonus"].int!
-            armorValue = armorValue + armor["misc_bonus"].int!
-            
-            if armor["equipped"] == true {
-                cell.skillName.textColor = UIColor.green
-                cell.skillValue.textColor = UIColor.green
+            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
+            do {
+                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
+                let armor = fetchedArmor[indexPath.row]
+                
+                var armorValue = armor.value
+                armorValue = armorValue + armor.magic_bonus
+                armorValue = armorValue + armor.misc_bonus
+                
+                if armor.equipped == true {
+                    cell.skillName.textColor = UIColor.green
+                    cell.skillValue.textColor = UIColor.green
+                }
+                
+                if Int(armor.str_requirement) > Character.Selected.strScore {
+                    cell.skillName.textColor = UIColor.red
+                    cell.skillValue.textColor = UIColor.red
+                }
+                
+                cell.skillName.text = armor.name
+                if armor.ability_mod?.name == "" {
+                    cell.skillValue.text = String(armorValue)
+                }
+                else {
+                    cell.skillValue.text = String(armorValue) + " + " + (armor.ability_mod?.name)!
+                }
+                
+            } catch {
+                fatalError("Failed to fetch armor: \(error)")
             }
             
-            if armor["str_requirement"].int! > Character.Selected.strScore {
-                cell.skillName.textColor = UIColor.red
-                cell.skillValue.textColor = UIColor.red
-            }
-            
-            cell.skillName.text = armor["name"].string
-            if armor["mod"] == "" {
-                cell.skillValue.text = String(armorValue)
-            }
-            else {
-                cell.skillValue.text = String(armorValue) + " + " + armor["mod"].string!
-            }
             return cell
         }
         else {
@@ -2340,6 +2305,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             if skillValue < 0 {
                 cell.skillValue.text = String(skillValue)
             }
+            
+            return cell
         }
     }
     
@@ -2349,46 +2316,54 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         if tableView.tag == 315 {
             // Select a new armor to equip
-            var armor = Character.Selected.equipment["armor"][indexPath.row]
-            armor["equipped"].bool = !armor["equipped"].boolValue
-            appDelegate.character.equipment["armor"][indexPath.row] = armor
-            
-            let parentView:UIView = tableView.superview!
-            for case let view in parentView.subviews {
-                if armor["shield"] == true {
-                    if view.tag == 307 {
-                        // Shield Value
-                        let textField = view as! UITextField
-                        if armor["equipped"] == true {
-                            textField.text = String(armor["value"].int!)
+            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
+            do {
+                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
+                let armor = fetchedArmor[indexPath.row]
+                
+                armor.equipped = !armor.equipped
+                
+                let parentView:UIView = tableView.superview!
+                for case let view in parentView.subviews {
+                    if armor.shield == true {
+                        if view.tag == 307 {
+                            // Shield Value
+                            let textField = view as! UITextField
+                            if armor.equipped == true {
+                                textField.text = String(armor.value)
+                            }
+                            else {
+                                textField.text = "-"
+                            }
                         }
-                        else {
-                            textField.text = "-"
+                    }
+                    else {
+                        if view.tag == 303 {
+                            // Armor Value
+                            let textField = view as! UITextField
+                            if armor.equipped == true {
+                                textField.text = String(armor.value)
+                            }
+                            else {
+                                textField.text = String(10)
+                            }
+                        }
+                        else if view.tag == 309 {
+                            // Max Dex
+                            let textField = view as! UITextField
+                            if armor.equipped == true {
+                                textField.text = String(armor.max_dex)
+                            }
+                            else {
+                                textField.text = "-"
+                            }
                         }
                     }
                 }
-                else {
-                    if view.tag == 303 {
-                        // Armor Value
-                        let textField = view as! UITextField
-                        if armor["equipped"] == true {
-                            textField.text = String(armor["value"].int!)
-                        }
-                        else {
-                            textField.text = String(10)
-                        }
-                    }
-                    else if view.tag == 309 {
-                        // Max Dex
-                        let textField = view as! UITextField
-                        if armor["equipped"] == true {
-                            textField.text = String(armor["max_dex"].int!)
-                        }
-                        else {
-                            textField.text = "-"
-                        }
-                    }
-                }
+                
+            } catch {
+                fatalError("Failed to fetch armor: \(error)")
             }
             
             tableView.reloadData()
@@ -2396,13 +2371,13 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             let tag = 1400+(100*indexPath.row)
             
-            let skill: JSON = Character.Selected.skills[indexPath.row]
-            let skillName = skill["skill"].string!
+            let skill:Skill = Character.Selected.skills!.allObjects[indexPath.row] as! Skill
+            let skillName = skill.name
             
-            let attribute = skill["attribute"].string!
+            let attribute = skill.ability?.name
             var attributeDisplay = ""
             var attributeValue = 0
-            switch attribute {
+            switch attribute! {
             case "STR":
                 attributeDisplay = "Strength"
                 attributeValue += Character.Selected.strBonus
@@ -2425,7 +2400,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             var profValue = 0
-            let isProficient = skill["proficient"].bool!
+            let isProficient = skill.proficiency
             if isProficient {
                 profValue += Character.Selected.proficiencyBonus
             }
@@ -2485,7 +2460,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             tempView.addSubview(miscLabel)
             
             let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
-            miscField.text = String(skill["misc_bonus"].intValue)
+            miscField.text = String(skill.misc_bonus)
             miscField.textAlignment = NSTextAlignment.center
             miscField.layer.borderWidth = 1.0
             miscField.layer.borderColor = UIColor.black.cgColor
@@ -2549,6 +2524,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             
             view.addSubview(tempView)
         }
+    }
     
     // UITextField Delegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -2582,8 +2558,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Class: ", classStr, "Level: ", levelStr)
                 
                 var selectedIndex = 0
-                for i in 0...allClasses.count-1 {
-                    let c = allClasses[i]
+                for i in 0...Types.ClassStrings.count-1 {
+                    let c = Types.ClassStrings[i]
                     if c == classStr {
                         selectedIndex = i
                     }
@@ -2599,8 +2575,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 scrollView.addSubview(classPickerView)
                 
                 selectedIndex = 0
-                for i in 0...levels.count-1 {
-                    let l = String(levels[i])
+                for i in 0...Types.levels.count-1 {
+                    let l = String(Types.levels[i])
                     if l == levelStr {
                         selectedIndex = i
                     }
@@ -2649,9 +2625,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             scrollView.addSubview(raceTitle)
             
             var selectedIndex = 0
-            for i in 0...allRaces.count-1 {
-                let r = allRaces[i]["race"] as! String
-                let currentRace = Character.Selected.race["title"].string
+            for i in 0...Types.RaceStrings.count-1 {
+                let r = Types.RaceStrings[i]
+                let currentRace = Character.Selected.race?.name
                 if r == currentRace {
                     selectedIndex = i
                 }
@@ -2667,14 +2643,14 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             scrollView.addSubview(racePickerView)
             
             selectedIndex = 0
-            for i in 0...allRaces.count-1 {
-                let r = allRaces[i]["race"] as! String
-                let currentRace = Character.Selected.race["title"].string
+            for i in 0...Types.RaceStrings.count-1 {
+                let r = Types.RaceStrings[i]
+                let currentRace = Character.Selected.race?.name
                 if r == currentRace {
-                    let subRaces:Array<String> = allRaces[i]["subraces"] as! Array<String>
+                    let subRaces:Array<String> = Types.SubraceToRaceDictionary[r]!
                     for j in 0...subRaces.count-1 {
                         let sr = subRaces[j]
-                        let currentSubrace = Character.Selected.race["subrace"].string
+                        let currentSubrace = Character.Selected.race?.subrace?.name
                         if sr == currentSubrace {
                             selectedIndex = j
                         }
@@ -2713,9 +2689,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             scrollView.addSubview(backgroundTitle)
             
             var selectedIndex = 0
-            for i in 0...allBackgrounds.count-1 {
-                let bg = allBackgrounds[i] 
-                let currentBackground = Character.Selected.background["title"].string
+            for i in 0...Types.BackgroundStrings.count-1 {
+                let bg = Types.BackgroundStrings[i]
+                let currentBackground = Character.Selected.background?.name
                 if bg == currentBackground {
                     selectedIndex = i
                 }
@@ -3181,95 +3157,95 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else if textField.tag == 206 {
             // Max Hit Die
-            Character.Selected.maxHitDice = Int32(textField.text!)!
+            //Character.Selected.maxHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 208 {
             // Hit Die Type
-            Character.Selected.hitDieType = Int32(textField.text!)!
+            //Character.Selected.hitDieType = Int32(textField.text!)!
         }
         else if textField.tag == 212 {
             // Extra Hit Die 1 Current
-            Character.Selected.extra1CurrentHitDice = Int32(textField.text!)!
+            //Character.Selected.extra1CurrentHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 216 {
             // Extra Hit Die 1 Max
-            Character.Selected.extra1MaxHitDice = Int32(textField.text!)!
+            //Character.Selected.extra1MaxHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 218 {
             // Extra Hit Die 1 Type
-            Character.Selected.extra1HitDieType = Int32(textField.text!)!
+            //Character.Selected.extra1HitDieType = Int32(textField.text!)!
         }
         else if textField.tag == 222 {
             // Extra Hit Die 2 Current
-            Character.Selected.extra2CurrentHitDice = Int32(textField.text!)!
+            //Character.Selected.extra2CurrentHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 226 {
             // Extra Hit Die 2 Max
-            Character.Selected.extra2MaxHitDice = Int32(textField.text!)!
+            //Character.Selected.extra2MaxHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 228 {
             // Extra Hit Die 2 Type
-            Character.Selected.extra2HitDieType = Int32(textField.text!)!
+            //Character.Selected.extra2HitDieType = Int32(textField.text!)!
         }
         else if textField.tag == 232 {
             // Extra Hit Die 3 Current
-            Character.Selected.extra3CurrentHitDice = Int32(textField.text!)!
+            //Character.Selected.extra3CurrentHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 236 {
             // Extra Hit Die 3 Max
-            Character.Selected.extra3MaxHitDice = Int32(textField.text!)!
+            //Character.Selected.extra3MaxHitDice = Int32(textField.text!)!
         }
         else if textField.tag == 238 {
             // Extra Hit Die 3 Type
-            Character.Selected.extra3HitDieType = Int32(textField.text!)!
+            //Character.Selected.extra3HitDieType = Int32(textField.text!)!
         }
         else if textField.tag == 311 {
             // Misc AC Bonus
-            Character.Selected.ACMiscBonus = Int32(textField.text!)!
+            //Character.Selected.ACMiscBonus = Int32(textField.text!)!
         }
         else if textField.tag == 402 {
             // Proficiency Bonus
-            Character.Selected.proficiencyBonus = Int32(textField.text!)!
+            //Character.Selected.proficiencyBonus = Int32(textField.text!)!
         }
         else if textField.tag == 502 {
             // Strength Score
-            Character.Selected.strScore = Int32(textField.text!)!
-            Character.Selected.strBonus = appDelegate.character.getBonus(score: appDelegate.character.strScore)
-            Character.Selected.strSave = appDelegate.character.getSave(bonus: appDelegate.character.strBonus, attribute: "STR")
+            //Character.Selected.strScore = Int32(textField.text!)!
+            //Character.Selected.strBonus = appDelegate.character.getBonus(score: appDelegate.character.strScore)
+            //Character.Selected.strSave = appDelegate.character.getSave(bonus: appDelegate.character.strBonus, attribute: "STR")
         }
         else if textField.tag == 602 {
             // Dexterity Score
-            Character.Selected.dexScore = Int32(textField.text!)!
-            Character.Selected.dexBonus = appDelegate.character.getBonus(score: appDelegate.character.dexScore)
-            Character.Selected.dexSave = appDelegate.character.getSave(bonus: appDelegate.character.dexBonus, attribute: "DEX")
+            //Character.Selected.dexScore = Int32(textField.text!)!
+            //Character.Selected.dexBonus = appDelegate.character.getBonus(score: appDelegate.character.dexScore)
+            //Character.Selected.dexSave = appDelegate.character.getSave(bonus: appDelegate.character.dexBonus, attribute: "DEX")
         }
         else if textField.tag == 702 {
             // Constitution Score
-            Character.Selected.conScore = Int32(textField.text!)!
-            Character.Selected.conBonus = appDelegate.character.getBonus(score: appDelegate.character.conScore)
-            Character.Selected.conSave = appDelegate.character.getSave(bonus: appDelegate.character.conBonus, attribute: "CON")
+            //Character.Selected.conScore = Int32(textField.text!)!
+            //Character.Selected.conBonus = appDelegate.character.getBonus(score: appDelegate.character.conScore)
+            //Character.Selected.conSave = appDelegate.character.getSave(bonus: appDelegate.character.conBonus, attribute: "CON")
         }
         else if textField.tag == 802 {
             // Intelligence Score
-            Character.Selected.intScore = Int32(textField.text!)!
-            Character.Selected.intBonus = appDelegate.character.getBonus(score: appDelegate.character.intScore)
-            Character.Selected.intSave = appDelegate.character.getSave(bonus: appDelegate.character.intBonus, attribute: "INT")
+            //Character.Selected.intScore = Int32(textField.text!)!
+            //Character.Selected.intBonus = appDelegate.character.getBonus(score: appDelegate.character.intScore)
+            //Character.Selected.intSave = appDelegate.character.getSave(bonus: appDelegate.character.intBonus, attribute: "INT")
         }
         else if textField.tag == 902 {
             // Wisdom Score
-            Character.Selected.wisScore = Int32(textField.text!)!
-            Character.Selected.wisBonus = appDelegate.character.getBonus(score: appDelegate.character.wisScore)
-            Character.Selected.wisSave = appDelegate.character.getSave(bonus: appDelegate.character.wisBonus, attribute: "WIS")
+            //Character.Selected.wisScore = Int32(textField.text!)!
+            //Character.Selected.wisBonus = appDelegate.character.getBonus(score: appDelegate.character.wisScore)
+            //Character.Selected.wisSave = appDelegate.character.getSave(bonus: appDelegate.character.wisBonus, attribute: "WIS")
         }
         else if textField.tag == 1002 {
             // Charisma Score
-            Character.Selected.chaScore = Int32(textField.text!)!
-            Character.Selected.chaBonus = appDelegate.character.getBonus(score: appDelegate.character.chaScore)
-            Character.Selected.chaSave = appDelegate.character.getSave(bonus: appDelegate.character.chaBonus, attribute: "CHA")
+            //Character.Selected.chaScore = Int32(textField.text!)!
+            //Character.Selected.chaBonus = appDelegate.character.getBonus(score: appDelegate.character.chaScore)
+            //Character.Selected.chaSave = appDelegate.character.getSave(bonus: appDelegate.character.chaBonus, attribute: "CHA")
         }
         else if textField.tag == 1107 {
             // Initiative Misc Bonus
-            Character.Selected.initiativeMiscBonus = Int32(textField.text!)!
+            //Character.Selected.initiativeMiscBonus = Int32(textField.text!)!
         }
         else if textField.tag == 1303 {
             // Base Speed
@@ -3337,27 +3313,27 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView.tag == 23 || pickerView.tag == 26 {
-            return allClasses.count
+            return Types.ClassStrings.count
         }
         else if pickerView.tag == 32 {
-            return allClasses.count
+            return Types.ClassStrings.count
         }
         else if pickerView.tag == 33 {
-            for i in 0...allRaces.count-1 {
-                let r = allRaces[i]["race"] as! String
+            for i in 0...Types.RaceStrings.count-1 {
+                let r = Types.RaceStrings[i]
                 let currentRace = Character.Selected.race?.name
                 if r == currentRace {
-                    let subRaces:Array<String> = allRaces[i]["subraces"] as! Array<String>
+                    let subRaces:Array<String> = Types.SubraceToRaceDictionary[r]!
                     return subRaces.count
                 }
             }
             return 0
         }
         else if pickerView.tag == 42 {
-            return allBackgrounds.count
+            return Types.BackgroundStrings.count
         }
         else {
-            return levels.count
+            return Types.levels.count
         }
     }
     
@@ -3375,27 +3351,27 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         if pickerView.tag == 23 || pickerView.tag == 26 {
-            pickerLabel?.text = allClasses[row]
+            pickerLabel?.text = Types.ClassStrings[row]
         }
         else if pickerView.tag == 32 {
-            pickerLabel?.text = allRaces[row]["race"] as? String
+            pickerLabel?.text = Types.RaceStrings[row]
         }
         else if pickerView.tag == 33 {
-            for i in 0...allRaces.count-1 {
-                let r = allRaces[i]["race"] as! String
+            for i in 0...Types.RaceStrings.count-1 {
+                let r = Types.RaceStrings[i]
                 let currentRace = Character.Selected.race?.name
                 if r == currentRace {
-                    let subRaces:Array<String> = allRaces[i]["subraces"] as! Array<String>
+                    let subRaces:Array<String> = Types.SubraceToRaceDictionary[r]!
                     pickerLabel?.text = subRaces[row]
                 }
             }
             
         }
         else if pickerView.tag == 42 {
-            pickerLabel?.text = allBackgrounds[row]
+            pickerLabel?.text = Types.BackgroundStrings[row]
         }
         else {
-            pickerLabel?.text = String(levels[row])
+            pickerLabel?.text = String(Types.levels[row])
         }
         return pickerLabel!
     }
@@ -3407,8 +3383,5 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 35.0
     }
-    
-    func typePickerViewSelected(sender: AnyObject) {
         
-    }
 }

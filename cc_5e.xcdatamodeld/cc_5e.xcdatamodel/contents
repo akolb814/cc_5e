@@ -13,6 +13,7 @@
         <attribute name="magic_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="max_dex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="misc_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="shield" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stealth_disadvantage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="str_requirement" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -24,6 +25,9 @@
     </entity>
     <entity name="Character" representedClassName="Character" syncable="YES" codeGenerationType="class">
         <attribute name="ac" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ac_misc" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="additional_ac_mod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="alert_feat" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="alignment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="armor_proficiencies" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bonds" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,6 +39,9 @@
         <attribute name="ideals" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="initiative" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="initiative_half_proficiency" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="initiative_misc" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="initiative_round_up" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="languages" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="max_hp" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -69,6 +76,7 @@
         <attribute name="level" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="primary" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="specialization" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Specialization" syncable="YES"/>
     </entity>
     <entity name="Currency" representedClassName="Currency" syncable="YES" codeGenerationType="class">
         <attribute name="copper" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -105,6 +113,7 @@
     <entity name="Race" representedClassName="Race" syncable="YES" codeGenerationType="class">
         <attribute name="features" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="subrace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Subrace" syncable="YES"/>
     </entity>
     <entity name="Resource" representedClassName="Resource" syncable="YES" codeGenerationType="class">
         <attribute name="current_value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -112,11 +121,12 @@
         <attribute name="max_value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="SelectedCharacter" representedClassName="SelectedCharacter" syncable="YES" codeGenerationType="class">
+    <entity name="SelectedCharacter" representedClassName="SelectedCharacter" parentEntity="Character" syncable="YES" codeGenerationType="class">
         <attribute name="selected_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Skill" representedClassName="Skill" syncable="YES" codeGenerationType="class">
         <attribute name="expertise" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="misc_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proficiency" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="ability" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
@@ -154,6 +164,9 @@
         <attribute name="total_slots" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="spells" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Spell" syncable="YES"/>
     </entity>
+    <entity name="Subrace" representedClassName="Subrace" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Tool" representedClassName="Tool" parentEntity="Item" syncable="YES" codeGenerationType="class">
         <attribute name="proficient" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="ability" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
@@ -168,24 +181,25 @@
         <relationship name="damage" maxCount="1" deletionRule="Nullify" destinationEntity="Damage" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Ability" positionX="-7974" positionY="-324" width="128" height="135"/>
-        <element name="Armor" positionX="-7974" positionY="-225" width="128" height="165"/>
-        <element name="Background" positionX="-8010" positionY="-360" width="128" height="75"/>
-        <element name="Character" positionX="-8046" positionY="-417" width="128" height="630"/>
-        <element name="Class" positionX="-7992" positionY="-333" width="128" height="120"/>
-        <element name="Currency" positionX="-7992" positionY="-243" width="128" height="120"/>
-        <element name="Damage" positionX="-7965" positionY="-234" width="128" height="180"/>
-        <element name="Equipment" positionX="-8001" positionY="-252" width="128" height="120"/>
-        <element name="Item" positionX="-7947" positionY="-207" width="128" height="120"/>
-        <element name="Race" positionX="-8028" positionY="-387" width="128" height="75"/>
-        <element name="Resource" positionX="-7974" positionY="-243" width="128" height="105"/>
-        <element name="SelectedCharacter" positionX="-7983" positionY="-252" width="128" height="60"/>
-        <element name="Skill" positionX="-8010" positionY="-306" width="128" height="105"/>
-        <element name="Specialization" positionX="-7992" positionY="-261" width="128" height="90"/>
-        <element name="Spell" positionX="-7956" positionY="-225" width="128" height="210"/>
-        <element name="Spellcasting" positionX="-7992" positionY="-261" width="128" height="120"/>
-        <element name="Spells_by_Level" positionX="-7983" positionY="-252" width="128" height="135"/>
-        <element name="Tool" positionX="-7965" positionY="-216" width="128" height="75"/>
-        <element name="Weapon" positionX="-7983" positionY="-234" width="128" height="150"/>
+        <element name="Ability" positionX="-8424" positionY="-207" width="128" height="43"/>
+        <element name="Armor" positionX="-8084" positionY="-13" width="128" height="43"/>
+        <element name="Background" positionX="-8523" positionY="-378" width="128" height="43"/>
+        <element name="Character" positionX="-8505" positionY="-477" width="128" height="43"/>
+        <element name="Class" positionX="-8219" positionY="-369" width="128" height="43"/>
+        <element name="Currency" positionX="-8676" positionY="-9" width="128" height="43"/>
+        <element name="Damage" positionX="-8550" positionY="99" width="128" height="43"/>
+        <element name="Equipment" positionX="-8595" positionY="-171" width="128" height="43"/>
+        <element name="Item" positionX="-8345" positionY="101" width="128" height="43"/>
+        <element name="Race" positionX="-8667" positionY="-376" width="128" height="43"/>
+        <element name="Resource" positionX="-8316" positionY="-504" width="128" height="43"/>
+        <element name="SelectedCharacter" positionX="-8723" positionY="-477" width="128" height="43"/>
+        <element name="Skill" positionX="-8372" positionY="-369" width="128" height="43"/>
+        <element name="Specialization" positionX="-8219" positionY="-288" width="128" height="43"/>
+        <element name="Spell" positionX="-8046" positionY="-252" width="128" height="43"/>
+        <element name="Spellcasting" positionX="-8046" positionY="-421" width="128" height="43"/>
+        <element name="Spells_by_Level" positionX="-8046" positionY="-342" width="128" height="43"/>
+        <element name="Subrace" positionX="-8685" positionY="-306" width="128" height="43"/>
+        <element name="Tool" positionX="-8307" positionY="-9" width="128" height="43"/>
+        <element name="Weapon" positionX="-8516" positionY="-9" width="128" height="43"/>
     </elements>
 </model>
