@@ -76,9 +76,9 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // HP
         hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
-        if((Character.Selected.resouces?.allObjects.count ?? 0)! > 0) {
+        if((Character.Selected.resources?.allObjects.count ?? 0)! > 0) {
             // Resource
-            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+            let resource = Character.Selected.resources?.allObjects[0] as! Resource
 
             resourceTitle.text = resource.name ?? "Resource"
             
@@ -237,7 +237,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 200:
             // Resource
-            let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+            let resource = Character.Selected.resources?.allObjects[0] as! Resource
 
             resourceTitle.text = resource.name
             let currentResourceValue: Int32 = resource.current_value
@@ -421,7 +421,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Create resource adjusting view
         let tempView = createBasicView()
         tempView.tag = 200
-        let resource = Character.Selected.resouces?.allObjects[0] as! Resource
+        let resource = Character.Selected.resources?.allObjects[0] as! Resource
 
         let currentResourceValue: Int32 = resource.current_value
         let maxResourceValue: Int32 = resource.max_value

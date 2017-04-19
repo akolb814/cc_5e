@@ -15,7 +15,12 @@ class SpellcastingFactory {
         spellcasting.caster_level = 0
         spellcasting.dc_bonus = 0
         spellcasting.attack_bonus = 0
-        spellcasting.ability = CharacterFactory.getEmptyAbility(name: "STR", context: context)
+        spellcasting.ability = CharacterFactory.getEmptyAbility(name: "INT", context: context)
+        
+        var spells_by_level: [Spells_by_Level] = []
+        spells_by_level.append(SpellLevelFactory.getEmptySpellLevel(context: context))
+        spellcasting.spells_by_level = NSSet(array: spells_by_level)
+        
         return spellcasting
     }
     

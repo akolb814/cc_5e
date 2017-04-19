@@ -46,6 +46,7 @@
         <attribute name="max_hp" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="passive_perception" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="personality_traits" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proficiency_bonus" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="speed_burrow" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -66,7 +67,7 @@
         <relationship name="classes" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Class" syncable="YES"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" syncable="YES"/>
         <relationship name="race" maxCount="1" deletionRule="Nullify" destinationEntity="Race" syncable="YES"/>
-        <relationship name="resouces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Resource" syncable="YES"/>
+        <relationship name="resources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Resource" syncable="YES"/>
         <relationship name="skills" toMany="YES" maxCount="18" deletionRule="Nullify" destinationEntity="Skill" syncable="YES"/>
         <relationship name="spellcasting" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Spellcasting" syncable="YES"/>
     </entity>
@@ -120,6 +121,7 @@
         <attribute name="die_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="max_value" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="spellcasting" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="SelectedCharacter" representedClassName="SelectedCharacter" parentEntity="Character" syncable="YES" codeGenerationType="class">
         <attribute name="selected_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -184,19 +186,19 @@
         <element name="Ability" positionX="-8424" positionY="-207" width="128" height="43"/>
         <element name="Armor" positionX="-8084" positionY="-13" width="128" height="43"/>
         <element name="Background" positionX="-8523" positionY="-378" width="128" height="43"/>
-        <element name="Character" positionX="-8505" positionY="-477" width="128" height="43"/>
-        <element name="Class" positionX="-8219" positionY="-369" width="128" height="43"/>
+        <element name="Character" positionX="-8505" positionY="-477" width="128" height="28"/>
+        <element name="Class" positionX="-8210" positionY="-376" width="128" height="43"/>
         <element name="Currency" positionX="-8676" positionY="-9" width="128" height="43"/>
         <element name="Damage" positionX="-8550" positionY="99" width="128" height="43"/>
         <element name="Equipment" positionX="-8595" positionY="-171" width="128" height="43"/>
         <element name="Item" positionX="-8345" positionY="101" width="128" height="43"/>
         <element name="Race" positionX="-8667" positionY="-376" width="128" height="43"/>
-        <element name="Resource" positionX="-8316" positionY="-504" width="128" height="43"/>
+        <element name="Resource" positionX="-8282" positionY="-475" width="128" height="28"/>
         <element name="SelectedCharacter" positionX="-8723" positionY="-477" width="128" height="43"/>
-        <element name="Skill" positionX="-8372" positionY="-369" width="128" height="43"/>
+        <element name="Skill" positionX="-8370" positionY="-369" width="128" height="43"/>
         <element name="Specialization" positionX="-8219" positionY="-288" width="128" height="43"/>
         <element name="Spell" positionX="-8046" positionY="-252" width="128" height="43"/>
-        <element name="Spellcasting" positionX="-8046" positionY="-421" width="128" height="43"/>
+        <element name="Spellcasting" positionX="-8057" positionY="-432" width="128" height="43"/>
         <element name="Spells_by_Level" positionX="-8046" positionY="-342" width="128" height="43"/>
         <element name="Subrace" positionX="-8685" positionY="-306" width="128" height="43"/>
         <element name="Tool" positionX="-8307" positionY="-9" width="128" height="43"/>

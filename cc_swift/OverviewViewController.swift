@@ -138,15 +138,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         let hitDie = firstClass.hit_die
         let level = firstClass.level
         
-        let perceptionSkill = Character.Selected.getSkill(skillIn: Types.Skills.Perception)
-        
-        var skillValue = Character.Selected.wisBonus
-
-        if perceptionSkill.proficiency {
-            skillValue += Character.Selected.proficiencyBonus //Add proficiency bonus
-        }
-        let passivePerception = 10+skillValue
-        ppValue.text = String(passivePerception)
+        Character.Selected.calcPP()
+        ppValue.text = String(Character.Selected.passive_perception)
         
         classTextField.text = classStr! + " " + String(level)
         let race = Character.Selected.race
@@ -160,7 +153,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         hdValue.text = String(Character.Selected.current_hit_dice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
         
         profValue.text = "+"+String(Character.Selected.proficiency_bonus)
+        Character.Selected.calcAC()
         acValue.text = String(Character.Selected.ac)
+        Character.Selected.calcInitiative()
         if Character.Selected.initiative < 0 {
             initValue.text = String(Character.Selected.initiative)
         }
@@ -433,7 +428,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             
         case 300:
             // Armor Class
-            //Character.Selected.calcAC()
+            Character.Selected.calcAC()
             Character.Selected.ac = Int32((parentView.viewWithTag(302) as! UITextField).text ?? "0")!
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
             acValue.text = String(Character.Selected.ac)
@@ -448,7 +443,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
         case 1100:
             // Initiative
-            //Character.Selected.calcInitiative()
+            Character.Selected.calcInitiative()
             if Character.Selected.initiative < 0 {
                 initValue.text = String(Character.Selected.initiative)
             }
@@ -459,9 +454,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             
         case 1200:
             // Passive Perception
-            //Character.Selected.calcPP()
-            //ppValue.text = String(Character.Selected.passive_perception)
-            ppValue.text = String(10)
+            Character.Selected.calcPP()
+            ppValue.text = String(Character.Selected.passive_perception)
             break
             
         case 1300:
@@ -1775,10 +1769,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         if perceptionSkill.proficiency {
             skillValue += Character.Selected.proficiencyBonus //Add proficiency bonus
         }
-        let passivePerception = 10+skillValue
+        
         
         let percField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:50, width:40, height:30))
-        percField.text = String(passivePerception)
+        percField.text = String(skillValue)
         percField.textAlignment = NSTextAlignment.center
         percField.isEnabled = false
         percField.textColor = UIColor.darkGray
@@ -2228,7 +2222,14 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     // UITableView Delegate & Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 315 {
-            return Character.Selected.equipment!.armor!.count//["armor"].count
+            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
+            do {
+                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
+                return fetchedArmor.count
+            } catch {
+                fatalError("Failed to fetch armor: \(error)")
+            }
         }
         else {
             return Character.Selected.skills!.count

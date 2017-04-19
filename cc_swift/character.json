@@ -64,6 +64,7 @@
     "current_hp": 0,
     "max_hp": 0,
     "ac": 16,
+    "additional_ac_mod":"",
     "proficiency_bonus": 2,
     "initiative_misc_bonus": 0,
     "save_proficiencies": ["DEX", "INT"],

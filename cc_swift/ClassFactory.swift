@@ -22,6 +22,9 @@ class ClassFactory {
         barbarian.name = Types.Classes.Barbarian.rawValue
         barbarian.hit_die = 8
         barbarian.level = 1
+        barbarian.features = ""
+        barbarian.name = "Barbarian"
+        barbarian.specialization = SpecializationFactory.getEmptySpecialization(context: context)
         
         return barbarian
     }

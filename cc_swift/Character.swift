@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 extension Character {
     
@@ -160,124 +161,111 @@ extension Character {
         }
         return Skill()
     }
-    /*
-     func getBonus(score: Int) -> Int {
-     let bonus = (score/2)-5
-     return bonus
-     }
-     
-     func getSave(bonus: Int, attribute: JSON) -> Int {
-     var save = bonus
-     let isContained = saveProficiencies.arrayValue.contains(attribute)
-     
-     if isContained {
-     save += proficiencyBonus
-     }
-     }
-     
+    
     func calcInitiative() {
-        initiative = proficiencyBonus + dexBonus + initiativeMiscBonus
-        if alertFeat == true {
+        var initiative = self.proficiency_bonus + self.dexBonus + self.initiative_misc
+        if self.alert_feat == true {
             initiative = initiative + 5
         }
-        if halfProfOnInitiative == true {
-            if roundUpOnInitiative == true {
-                initiative = initiative + (proficiencyBonus/2)
+        if self.initiative_half_proficiency == true {
+            if self.initiative_round_up == true {
+                initiative = initiative + (self.proficiency_bonus/2)
             }
             else {
-                initiative = initiative + (proficiencyBonus/2)
+                initiative = initiative + (self.proficiency_bonus/2)
             }
         }
     }
     
     func calcPP() {
-        var perceptionSkill = [:] as JSON
-        for case let skill in skills.array! {
-            let skillName = skill["skill"].string!
-            if skillName == "Perception" {
-                perceptionSkill = skill
-            }
-        }
-        
-        let attribute = perceptionSkill["attribute"].string!
-        var skillValue = 0
-        switch attribute {
+        let perceptionSkill = self.getSkill(skillIn: Types.Skills.Perception)
+        let attribute = perceptionSkill.ability?.name
+        var skillValue: Int32 = 0
+        switch attribute! {
         case "STR":
-            skillValue += strBonus
+            skillValue += self.strBonus
         case "DEX":
-            skillValue += dexBonus
+            skillValue += self.dexBonus
         case "CON":
-            skillValue += conBonus
+            skillValue += self.conBonus
         case "INT":
-            skillValue += intBonus
+            skillValue += self.intBonus
         case "WIS":
-            skillValue += wisBonus
+            skillValue += self.wisBonus
         case "CHA":
-            skillValue += chaBonus
+            skillValue += self.chaBonus
         default: break
         }
         
-        let isProficient = perceptionSkill["proficient"].bool!
+        let isProficient = perceptionSkill.proficiency
         if isProficient {
-            skillValue += proficiencyBonus
+            skillValue += self.proficiency_bonus
         }
-        passivePerception = 10+skillValue
+        self.passive_perception = 10+skillValue
     }
     
     func calcAC() {
-        var armorClass = 0
+        var armorClass: Int32 = 0
         var armorEquipped = false
-        let allArmor = equipment["armor"]
-        for armor in allArmor.array! {
-            if armor["equipped"] == true {
-                armorClass = armorClass + armor["value"].int!
-                
-                if armor["max_dex"].int != 0 {
-                    if dexBonus <= armor["max_dex"].int! {
-                        armorClass = armorClass + dexBonus
+        
+        let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
+        do {
+            let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
+            
+            for armor: Armor in fetchedArmor {
+                if armor.equipped == true {
+                    armorClass = armorClass + armor.value
+                    
+                    if armor.max_dex != 0 {
+                        if self.dexBonus <= Int(armor.max_dex) {
+                            armorClass = armorClass + self.dexBonus
+                        }
+                        else {
+                            armorClass = armorClass + armor.max_dex
+                        }
                     }
                     else {
-                        armorClass = armorClass + armor["max_dex"].int!
+                        if armor.ability_mod?.name != "" {
+                            armorClass = armorClass + self.dexBonus
+                        }
                     }
-                }
-                else {
-                    if armor["mod"] != "" {
-                        armorClass = armorClass + dexBonus
+                    armorClass = armorClass + armor.magic_bonus
+                    armorClass = armorClass + armor.misc_bonus
+                    if armor.shield == false {
+                        armorEquipped = true
                     }
-                }
-                armorClass = armorClass + armor["magic_bonus"].int!
-                armorClass = armorClass + armor["misc_bonus"].int!
-                if armor["shield"] == false {
-                    armorEquipped = true
                 }
             }
-        }
-        
-        if armorEquipped == false {
-            armorClass = armorClass + 10 + dexBonus
-        }
-        
-        armorClass = armorClass + ACMiscBonus
-        
-        if hasAdditionalACMod == true {
-            switch additionalACMod {
+            if armorEquipped == false {
+                armorClass = 10 + self.dexBonus
+            }
+            
+            armorClass = armorClass + self.ac_misc
+            
+            if self.additional_ac_mod == nil {
+               self.additional_ac_mod = "" 
+            }
+            
+            switch self.additional_ac_mod! {
             case "STR":
-                armorClass += strBonus
+                armorClass += self.strBonus
             case "DEX":
-                armorClass += dexBonus
+                armorClass += self.dexBonus
             case "CON":
-                armorClass += conBonus
+                armorClass += self.conBonus
             case "INT":
-                armorClass += intBonus
+                armorClass += self.intBonus
             case "WIS":
-                armorClass += wisBonus
+                armorClass += self.wisBonus
             case "CHA":
-                armorClass += chaBonus
+                armorClass += self.chaBonus
             default: break
             }
+            
+            self.ac = armorClass
+        } catch {
+            fatalError("Failed to fetch armor: \(error)")
         }
-        
-        AC = armorClass
     }
- */
 }

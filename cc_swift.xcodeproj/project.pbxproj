@@ -42,6 +42,16 @@
 		EC6630181E09DA30002BE9FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC6630161E09DA30002BE9FF /* Main.storyboard */; };
 		EC66301A1E09DA30002BE9FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC6630191E09DA30002BE9FF /* Assets.xcassets */; };
 		EC66301D1E09DA30002BE9FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC66301B1E09DA30002BE9FF /* LaunchScreen.storyboard */; };
+		ECA969BD1EA693AD0057AD3E /* CurrencyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969BC1EA693AD0057AD3E /* CurrencyFactory.swift */; };
+		ECA969C21EA69DD40057AD3E /* ArmorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969BE1EA69DD40057AD3E /* ArmorFactory.swift */; };
+		ECA969C31EA69DD40057AD3E /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969BF1EA69DD40057AD3E /* ItemFactory.swift */; };
+		ECA969C41EA69DD40057AD3E /* ToolFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969C01EA69DD40057AD3E /* ToolFactory.swift */; };
+		ECA969C51EA69DD40057AD3E /* WeaponFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969C11EA69DD40057AD3E /* WeaponFactory.swift */; };
+		ECA969C71EA6A04F0057AD3E /* DamageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969C61EA6A04F0057AD3E /* DamageFactory.swift */; };
+		ECA969C91EA7E6270057AD3E /* SpellLevelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969C81EA7E6270057AD3E /* SpellLevelFactory.swift */; };
+		ECA969CB1EA7E8450057AD3E /* SpellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969CA1EA7E8450057AD3E /* SpellFactory.swift */; };
+		ECA969CE1EA7F78A0057AD3E /* ResourceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969CC1EA7F78A0057AD3E /* ResourceFactory.swift */; };
+		ECA969CF1EA7F78A0057AD3E /* SpecializationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA969CD1EA7F78A0057AD3E /* SpecializationFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +93,16 @@
 		EC6630191E09DA30002BE9FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC66301C1E09DA30002BE9FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EC66301E1E09DA30002BE9FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECA969BC1EA693AD0057AD3E /* CurrencyFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyFactory.swift; sourceTree = "<group>"; };
+		ECA969BE1EA69DD40057AD3E /* ArmorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArmorFactory.swift; sourceTree = "<group>"; };
+		ECA969BF1EA69DD40057AD3E /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
+		ECA969C01EA69DD40057AD3E /* ToolFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolFactory.swift; sourceTree = "<group>"; };
+		ECA969C11EA69DD40057AD3E /* WeaponFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponFactory.swift; sourceTree = "<group>"; };
+		ECA969C61EA6A04F0057AD3E /* DamageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DamageFactory.swift; sourceTree = "<group>"; };
+		ECA969C81EA7E6270057AD3E /* SpellLevelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpellLevelFactory.swift; sourceTree = "<group>"; };
+		ECA969CA1EA7E8450057AD3E /* SpellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpellFactory.swift; sourceTree = "<group>"; };
+		ECA969CC1EA7F78A0057AD3E /* ResourceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceFactory.swift; sourceTree = "<group>"; };
+		ECA969CD1EA7F78A0057AD3E /* SpecializationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecializationFactory.swift; sourceTree = "<group>"; };
 		FB6E00AAD7A320C27A9EB267 /* Pods-cc_swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cc_swift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cc_swift/Pods-cc_swift.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,11 +174,21 @@
 		8DABE66C1E72ED0700EB173D /* Factories */ = {
 			isa = PBXGroup;
 			children = (
+				ECA969BE1EA69DD40057AD3E /* ArmorFactory.swift */,
+				ECA969BF1EA69DD40057AD3E /* ItemFactory.swift */,
+				ECA969C01EA69DD40057AD3E /* ToolFactory.swift */,
+				ECA969C11EA69DD40057AD3E /* WeaponFactory.swift */,
+				ECA969C61EA6A04F0057AD3E /* DamageFactory.swift */,
 				8DABE66D1E72ED1C00EB173D /* CharacterFactory.swift */,
 				8D37DE5C1E89ABC3002DD453 /* ClassFactory.swift */,
+				ECA969BC1EA693AD0057AD3E /* CurrencyFactory.swift */,
 				8D77C28E1E8D74790009873D /* BackgroundFactory.swift */,
 				8D77C2901E8D758F0009873D /* EquipmentFactory.swift */,
 				8D77C2941E8D799C0009873D /* SpellcastingFactory.swift */,
+				ECA969C81EA7E6270057AD3E /* SpellLevelFactory.swift */,
+				ECA969CA1EA7E8450057AD3E /* SpellFactory.swift */,
+				ECA969CC1EA7F78A0057AD3E /* ResourceFactory.swift */,
+				ECA969CD1EA7F78A0057AD3E /* SpecializationFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -344,14 +374,21 @@
 				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
 				8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
+				ECA969CF1EA7F78A0057AD3E /* SpecializationFactory.swift in Sources */,
 				8D77C2951E8D799C0009873D /* SpellcastingFactory.swift in Sources */,
+				ECA969C21EA69DD40057AD3E /* ArmorFactory.swift in Sources */,
+				ECA969C91EA7E6270057AD3E /* SpellLevelFactory.swift in Sources */,
 				8DABE66B1E7242C000EB173D /* Types.swift in Sources */,
 				EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */,
 				EC2076B31E1D686100FD7B4F /* WeaponTableViewCell.swift in Sources */,
+				ECA969CE1EA7F78A0057AD3E /* ResourceFactory.swift in Sources */,
+				ECA969C51EA69DD40057AD3E /* WeaponFactory.swift in Sources */,
 				EC2076B51E1D69CA00FD7B4F /* NewTableViewCell.swift in Sources */,
 				EC2076B91E1D835B00FD7B4F /* SpellLevelTableViewCell.swift in Sources */,
+				ECA969C41EA69DD40057AD3E /* ToolFactory.swift in Sources */,
 				8DABE6691E72384300EB173D /* Character.swift in Sources */,
 				EC2076B11E1C2E2700FD7B4F /* SkillTableViewCell.swift in Sources */,
+				ECA969BD1EA693AD0057AD3E /* CurrencyFactory.swift in Sources */,
 				8DABE66E1E72ED1C00EB173D /* CharacterFactory.swift in Sources */,
 				EC14BC4F1E52706300EF3347 /* CharacterViewController.swift in Sources */,
 				8D77C28F1E8D74790009873D /* BackgroundFactory.swift in Sources */,
@@ -359,16 +396,19 @@
 				EC2076C11E1DBBBF00FD7B4F /* ArmorTableViewCell.swift in Sources */,
 				EC2076BF1E1DB6FD00FD7B4F /* EquipmentViewController.swift in Sources */,
 				EC2076C71E1DBBEE00FD7B4F /* EquipmentTableViewCell.swift in Sources */,
+				ECA969CB1EA7E8450057AD3E /* SpellFactory.swift in Sources */,
 				8DABE5AB1E707D5200EB173D /* CharacterViewCell.swift in Sources */,
 				EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */,
 				8DABE5A91E707C1300EB173D /* CharacterSelectViewController.swift in Sources */,
 				8D77C2911E8D758F0009873D /* EquipmentFactory.swift in Sources */,
 				8D37DE5F1E89AC46002DD453 /* Class.swift in Sources */,
+				ECA969C71EA6A04F0057AD3E /* DamageFactory.swift in Sources */,
 				8DABE6701E76D72B00EB173D /* Equipment.swift in Sources */,
 				8DABE5AE1E70E8A100EB173D /* CharacterJson.swift in Sources */,
 				EC6630131E09DA30002BE9FF /* OverviewViewController.swift in Sources */,
 				8DABE6721E76D78300EB173D /* Ability.swift in Sources */,
 				EC2076B71E1D827900FD7B4F /* SpellcastingViewController.swift in Sources */,
+				ECA969C31EA69DD40057AD3E /* ItemFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,13 +14,46 @@ class CharacterFactory {
     static func getEmptyCharacter(name: String, context: NSManagedObjectContext) -> Character {
         let character = Character(context: context)
         character.name = name
+        character.alignment = ""
+        character.armor_proficiencies = ""
+        character.bonds = ""
+        character.experience = 0
+        character.flaws = ""
+        character.ideals = ""
+        character.languages = ""
+        character.notes = ""
+        character.personality_traits = ""
+        character.speed_burrow = 0
+        character.speed_burrow_misc = 0
+        character.speed_climb = 0
+        character.speed_climb_misc = 0
+        character.speed_fly = 0
+        character.speed_fly_misc = 0
+        character.speed_swim = 0
+        character.speed_swim_misc = 0
+        character.speed_walk = 0
+        character.speed_walk_misc = 0
+        character.speed_type = 0
+        character.tool_proficiencies = ""
+        character.weapon_proficiencies = ""
+        character.proficiency_bonus = 2
         character.abilities = getAbilities(context: context)
         character.skills = getSkills(context: context, character: character)
         character.race = getDefaultRace(context: context)
+        
         let classes = character.mutableSetValue(forKey: "classes")
         classes.add(ClassFactory.getDefaultClass(context: context))
+        
         character.background = BackgroundFactory.getDefaultBackground(context: context)
         character.spellcasting = SpellcastingFactory.getEmptySpellcasting(context: context)
+        character.equipment = EquipmentFactory.getEmptyEquipment(context:context)
+        
+        let resources = character.mutableSetValue(forKey: "resources")
+        resources.add(ResourceFactory.getEmptyResource(context: context))
+        
+        character.calcAC()
+        character.calcPP()
+        character.calcInitiative()
         return character
     }
     
@@ -28,9 +61,9 @@ class CharacterFactory {
         let ability = Ability(context: context)
         ability.name = name
         ability.score = 10
-        ability.modifier = 0
+        ability.modifier = getBonus(ability: ability)
         ability.save_proficiency = false
-        ability.save = 0
+        ability.save = getSave(ability: ability)
         return ability
     }
     
@@ -65,4 +98,19 @@ class CharacterFactory {
         return race
     }
     
+    static func getBonus(ability: Ability) -> Int32 {
+        let bonus = (ability.score/2)-5
+        return bonus
+    }
+
+    static func getSave(ability: Ability) -> Int32 {
+        var save = ability.modifier
+        let isContained = ability.save_proficiency
+
+        if isContained {
+            save += Character.Selected.proficiency_bonus
+        }
+        
+        return save
+    }
 }
