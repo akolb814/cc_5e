@@ -7,8 +7,17 @@
 //
 import Foundation
 import CoreData
+import SwiftyJSON
 
 class SpecializationFactory {
+    
+    static func getSpecialization(json: JSON, context: NSManagedObjectContext) -> Specialization {
+        let specialization = Specialization(context: context)
+        specialization.features = json["features"].string
+        specialization.id = json["id"].int32!
+        specialization.name = json["name"].string
+        return specialization
+    }
     
     static func getEmptySpecialization(context: NSManagedObjectContext) -> Specialization {
         let specialization = Specialization(context: context)
@@ -17,7 +26,5 @@ class SpecializationFactory {
         specialization.name = ""
         return specialization
     }
-    
-
     
 }

@@ -7,6 +7,7 @@
 //
 import Foundation
 import CoreData
+import SwiftyJSON
 
 class SpellcastingFactory {
     
@@ -24,6 +25,21 @@ class SpellcastingFactory {
         return spellcasting
     }
     
-
+    static func getSpellcasting(json: JSON ,context: NSManagedObjectContext) -> Spellcasting {
+        let spellcasting = Spellcasting(context: context)
+        spellcasting.caster_level = json["spellcasting"]["caster_level"].int32!
+        spellcasting.dc_bonus = json["spellcasting"]["spell_dc_misc_bonus"].int32!
+        spellcasting.attack_bonus = json["spellcasting"]["spell_attack_misc_bonus"].int32!
+        spellcasting.ability = CharacterFactory.getEmptyAbility(name: json["spellcasting"]["spell_ability"].string!, context: context)
+        
+        var spells_by_level: [Spells_by_Level] = []
+        for (index,spellLevel):(String,JSON) in json["spellcasting"]["spells"] {
+            print(index)
+            spells_by_level.append(SpellLevelFactory.getSpellLevel(json:spellLevel, context: context))
+        }
+        spellcasting.spells_by_level = NSSet(array: spells_by_level)
+        
+        return spellcasting
+    }
     
 }

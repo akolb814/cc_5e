@@ -8,8 +8,21 @@
 
 import CoreData
 import Foundation
+import SwiftyJSON
 
 class ToolFactory {
+    
+    static func getTool(json: JSON, context: NSManagedObjectContext) -> Tool {
+        let tool = Tool(context: context)
+        tool.proficient = json["proficient"].bool!
+        tool.ability = CharacterFactory.getAbility(name: "INT", json:json, context: context)
+        tool.cost = json["cost"].string
+        tool.info = json["description"].string
+        tool.name = json["name"].string
+        tool.quantity = json["quantity"].int32!
+        tool.weight = json["weight"].string
+        return tool
+    }
     
     static func getEmptyTool(context: NSManagedObjectContext) -> Tool {
         let tool = Tool(context: context)

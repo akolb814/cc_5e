@@ -7,6 +7,7 @@
 //
 import Foundation
 import CoreData
+import SwiftyJSON
 
 class ResourceFactory {
     
@@ -20,6 +21,14 @@ class ResourceFactory {
         return resource
     }
     
-
+    static func getResource(json: JSON, context: NSManagedObjectContext) -> Resource {
+        let resource = Resource(context: context)
+        resource.spellcasting = json["spellcasting"].bool!
+        resource.current_value = json["current_value"].int32!
+        resource.die_type = json["die_type"].int32!
+        resource.max_value = json["max_value"].int32!
+        resource.name = json["name"].string
+        return resource
+    }
     
 }

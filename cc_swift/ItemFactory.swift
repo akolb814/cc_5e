@@ -8,8 +8,19 @@
 
 import CoreData
 import Foundation
+import SwiftyJSON
 
 class ItemFactory {
+    
+    static func getItem(json: JSON, context: NSManagedObjectContext) -> Item {
+        let item = Item(context: context)
+        item.cost = json["cost"].string
+        item.info = json["description"].string
+        item.name = json["name"].string
+        item.quantity = json["quantity"].int32!
+        item.weight = json["weight"].string
+        return item
+    }
     
     static func getEmptyItem(context: NSManagedObjectContext) -> Item {
         let item = Item(context: context)

@@ -8,8 +8,28 @@
 
 import CoreData
 import Foundation
+import SwiftyJSON
 
 class ArmorFactory {
+    
+    static func getArmor(json: JSON, context: NSManagedObjectContext) -> Armor {
+        let armor = Armor(context: context)
+        armor.equipped = json["equipped"].bool!
+        armor.magic_bonus = json["magic_bonus"].int32!
+        armor.max_dex = json["max_dex"].int32!
+        armor.misc_bonus = json["misc_bonus"].int32!
+        armor.shield = json["shield"].bool!
+        armor.stealth_disadvantage = json["stealth_disadvantage"].bool!
+        armor.str_requirement = json["str_requirement"].int32!
+        armor.value = json["value"].int32!
+        armor.ability_mod = CharacterFactory.getAbility(name: "DEX", json: json, context: context)
+        armor.cost = json["cost"].string
+        armor.info = json["description"].string
+        armor.name = json["name"].string
+        armor.quantity = json["quantity"].int32!
+        armor.weight = json["weight"].string
+        return armor
+    }
     
     static func getEmptyArmor(context: NSManagedObjectContext) -> Armor {
         let armor = Armor(context: context)

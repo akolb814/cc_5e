@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import SwiftyJSON
 
 class BackgroundFactory {
     
@@ -15,6 +16,13 @@ class BackgroundFactory {
         return getAcolyteBackground(context: context)
     }
     
+    static func getBackground(json: JSON, context: NSManagedObjectContext) -> Background {
+        let background = Background(context: context)
+        background.name = json["background"]["title"].string
+        background.features = json["background"]["features"].string
+        return background
+    }
+
     static func getAcolyteBackground(context: NSManagedObjectContext) -> Background {
         let acolyte = Background(context: context)
         acolyte.name = "Acolyte"
