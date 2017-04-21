@@ -49,7 +49,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        equipment = EquipmentFactory.getEmptyEquipment(context: context)
+        equipment = EquipmentFactory.getEmptyEquipment(character: Character.Selected, context: context)
         
         // Do any additional setup after loading the view.
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))

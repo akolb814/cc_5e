@@ -12,10 +12,10 @@ import SwiftyJSON
 
 class ToolFactory {
     
-    static func getTool(json: JSON, context: NSManagedObjectContext) -> Tool {
+    static func getTool(character: Character, json: JSON, context: NSManagedObjectContext) -> Tool {
         let tool = Tool(context: context)
         tool.proficient = json["proficient"].bool!
-        tool.ability = CharacterFactory.getAbility(name: "INT", json:json, context: context)
+        tool.ability = CharacterFactory.getAbility(character: character, name: "INT", context: context)
         tool.cost = json["cost"].string
         tool.info = json["description"].string
         tool.name = json["name"].string
@@ -24,10 +24,10 @@ class ToolFactory {
         return tool
     }
     
-    static func getEmptyTool(context: NSManagedObjectContext) -> Tool {
+    static func getEmptyTool(character: Character, context: NSManagedObjectContext) -> Tool {
         let tool = Tool(context: context)
         tool.proficient = false
-        tool.ability = CharacterFactory.getEmptyAbility(name: "INT", context: context)
+        tool.ability = CharacterFactory.getAbility(character: character, name: "INT", context: context)
         tool.cost = ""
         tool.info = ""
         tool.name = ""

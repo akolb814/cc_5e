@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class ArmorFactory {
     
-    static func getArmor(json: JSON, context: NSManagedObjectContext) -> Armor {
+    static func getArmor(character: Character, json: JSON, context: NSManagedObjectContext) -> Armor {
         let armor = Armor(context: context)
         armor.equipped = json["equipped"].bool!
         armor.magic_bonus = json["magic_bonus"].int32!
@@ -22,7 +22,7 @@ class ArmorFactory {
         armor.stealth_disadvantage = json["stealth_disadvantage"].bool!
         armor.str_requirement = json["str_requirement"].int32!
         armor.value = json["value"].int32!
-        armor.ability_mod = CharacterFactory.getAbility(name: "DEX", json: json, context: context)
+        armor.ability_mod = CharacterFactory.getAbility(character: character, name: "DEX", context: context)
         armor.cost = json["cost"].string
         armor.info = json["description"].string
         armor.name = json["name"].string
@@ -31,7 +31,7 @@ class ArmorFactory {
         return armor
     }
     
-    static func getEmptyArmor(context: NSManagedObjectContext) -> Armor {
+    static func getEmptyArmor(character: Character, context: NSManagedObjectContext) -> Armor {
         let armor = Armor(context: context)
         armor.equipped = false
         armor.magic_bonus = 0
@@ -41,7 +41,7 @@ class ArmorFactory {
         armor.stealth_disadvantage = false
         armor.str_requirement = 0
         armor.value = 10
-        armor.ability_mod = CharacterFactory.getEmptyAbility(name: "DEX", context: context)
+        armor.ability_mod = CharacterFactory.getAbility(character: character, name: "DEX", context: context)
         armor.cost = ""
         armor.info = ""
         armor.name = ""

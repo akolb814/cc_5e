@@ -10,54 +10,49 @@
         "features": ""
     },
     "alignment": "NG",
-    "experience": "0",
+    "experience": 0,
     "speed_type":0,
-    "walk_speed": 30,
-    "walk_speed_misc_bonus": 0,
-    "burrow_speed": 0,
-    "burrow_speed_misc_bonus": 0,
-    "climb_speed": 0,
-    "climb_speed_misc_bonus": 0,
-    "fly_speed": 0,
-    "fly_speed_misc_bonus": 0,
-    "swim_speed": 0,
-    "swim_speed_misc_bonus": 0,
+    "speed_walk": 30,
+    "speed_walk_misc_bonus": 0,
+    "speed_burrow": 0,
+    "speed_burrow_misc_bonus": 0,
+    "speed_climb": 0,
+    "speed_climb_misc_bonus": 0,
+    "speed_fly": 0,
+    "speed_fly_misc_bonus": 0,
+    "speed_swim": 0,
+    "speed_swim_misc_bonus": 0,
     "classes": [{
                 "class": "Rogue",
                 "level": 1,
                 "hitDie": 8,
-                "features": ""
+                "features": "",
+                "primary": true
                 }],
     "ability_scores": {
         "STR": {
-            "score": 16,
-            "bonus": 3,
-            "save": 3
+            "score": 10,
+            "save_proficiency": false
         },
         "DEX": {
-            "score": 16,
-            "bonus": 3,
-            "save": 3
+            "score": 18,
+            "save_proficiency": true
         },
         "CON": {
-            "score": 16,
-            "bonus": 3,
-            "save": 3
+            "score": 14,
+            "save_proficiency": false
         },
         "INT": {
             "score": 16,
-            "bonus": 3,
-            "save": 3
+            "save_proficiency": false
         },
         "WIS": {
-            "score": 16,
-            "bonus": 3,
-            "save": 3
+            "score": 8,
+            "save_proficiency": false
         },
         "CHA": {
-            "score": 16,
-            "bonus": 3,
-            "save": 3
+            "score": 12,
+            "save_proficiency": false
         }
     },
     "current_hit_dice": 1,

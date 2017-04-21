@@ -175,6 +175,7 @@ extension Character {
                 initiative = initiative + (self.proficiency_bonus/2)
             }
         }
+        self.initiative = initiative
     }
     
     func calcPP() {
@@ -208,15 +209,11 @@ extension Character {
         var armorClass: Int32 = 0
         var armorEquipped = false
         
-        let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
-        do {
-            let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
-            
-            for armor: Armor in fetchedArmor {
-                if armor.equipped == true {
-                    armorClass = armorClass + armor.value
-                    
+        for armor: Armor in self.equipment?.armor?.allObjects as! [Armor] {
+            if armor.equipped == true {
+                armorClass = armorClass + armor.value
+                
+                if armor.shield == false {
                     if armor.max_dex != 0 {
                         if self.dexBonus <= Int(armor.max_dex) {
                             armorClass = armorClass + self.dexBonus
@@ -230,42 +227,42 @@ extension Character {
                             armorClass = armorClass + self.dexBonus
                         }
                     }
-                    armorClass = armorClass + armor.magic_bonus
-                    armorClass = armorClass + armor.misc_bonus
-                    if armor.shield == false {
-                        armorEquipped = true
-                    }
+                    armorEquipped = true
                 }
+                armorClass = armorClass + armor.magic_bonus
+                armorClass = armorClass + armor.misc_bonus
             }
-            if armorEquipped == false {
-                armorClass = 10 + self.dexBonus
-            }
-            
-            armorClass = armorClass + self.ac_misc
-            
-            if self.additional_ac_mod == nil {
-               self.additional_ac_mod = "" 
-            }
-            
-            switch self.additional_ac_mod! {
-            case "STR":
-                armorClass += self.strBonus
-            case "DEX":
-                armorClass += self.dexBonus
-            case "CON":
-                armorClass += self.conBonus
-            case "INT":
-                armorClass += self.intBonus
-            case "WIS":
-                armorClass += self.wisBonus
-            case "CHA":
-                armorClass += self.chaBonus
-            default: break
-            }
-            
-            self.ac = armorClass
-        } catch {
-            fatalError("Failed to fetch armor: \(error)")
         }
+        if armorEquipped == false {
+            armorClass = 10 + self.dexBonus
+        }
+        
+        armorClass = armorClass + self.ac_misc
+        
+        if self.additional_ac_mod == nil {
+           self.additional_ac_mod = "" 
+        }
+        
+        switch self.additional_ac_mod! {
+        case "STR":
+            armorClass += self.strBonus
+        case "DEX":
+            armorClass += self.dexBonus
+        case "CON":
+            armorClass += self.conBonus
+        case "INT":
+            armorClass += self.intBonus
+        case "WIS":
+            armorClass += self.wisBonus
+        case "CHA":
+            armorClass += self.chaBonus
+        default: break
+        }
+        
+        self.ac = armorClass
+    }
+    
+    func calcHP() {
+        
     }
 }

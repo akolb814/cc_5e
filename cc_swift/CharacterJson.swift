@@ -13,7 +13,7 @@ class CharacterJson {
     
     static func getCharacterFromJson(filename: String) -> Character {
         var characterJson: JSON = [:]
-        let character: Character = Character()
+        var character: Character = Character()
 
         if let path = Bundle.main.path(forResource: filename, ofType: "json") {
             do {
@@ -31,6 +31,9 @@ class CharacterJson {
         } else {
             print("Invalid filename/path.")
         }
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        character = CharacterFactory.getCharacter(json: characterJson, context: context)
+        
         /**
         character.name = characterJson["name"].stringValue
         character.classes = characterJson["classes"]

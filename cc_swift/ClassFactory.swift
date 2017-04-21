@@ -25,6 +25,7 @@ class ClassFactory {
         newClass.level = json["level"].int32!
         newClass.features = json["features"].string
         newClass.specialization = SpecializationFactory.getEmptySpecialization(context: context)
+        newClass.primary = json["primary"].bool!
         return newClass
     }
     

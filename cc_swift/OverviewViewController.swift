@@ -2303,7 +2303,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             cell.skillName.text = skillName!+"("+attribute+")"
-            if skillValue < 0 {
+            if skillValue > 0 {
+                cell.skillValue.text = "+"+String(skillValue)
+            }
+            else {
                 cell.skillValue.text = String(skillValue)
             }
             

@@ -12,15 +12,15 @@ import SwiftyJSON
 
 class WeaponFactory {
     
-    static func getWeapon(json: JSON, context: NSManagedObjectContext) -> Weapon {
+    static func getWeapon(character: Character, json: JSON, context: NSManagedObjectContext) -> Weapon {
         let weapon = Weapon(context: context)
         weapon.category = json["category"].string
-        weapon.magic_bonus = json["magic_bonus"].int32!
-        weapon.misc_bonus = json["misc_bonus"].int32!
+        weapon.magic_bonus = json["attack_bonus"]["magic_bonus"].int32!
+        weapon.misc_bonus = json["attack_bonus"]["misc_bonus"].int32!
         weapon.properties = json["properties"].string
         weapon.range = json["range"].string
-        weapon.ability = CharacterFactory.getAbility(name: "INT", json:json, context: context)
-        weapon.damage = DamageFactory.getDamage(json:json, context: context)
+        weapon.ability = CharacterFactory.getAbility(character: character, name: json["attack_bonus"]["ability"].string!, context: context)
+        weapon.damage = DamageFactory.getDamage(json:json["damage"], context: context)
         weapon.cost = json["cost"].string
         weapon.info = json["description"].string
         weapon.name = json["name"].string
@@ -29,14 +29,14 @@ class WeaponFactory {
         return weapon
     }
     
-    static func getEmptyWeapon(context: NSManagedObjectContext) -> Weapon {
+    static func getEmptyWeapon(character: Character, context: NSManagedObjectContext) -> Weapon {
         let weapon = Weapon(context: context)
         weapon.category = ""
         weapon.magic_bonus = 0
         weapon.misc_bonus = 0
         weapon.properties = ""
         weapon.range = ""
-        weapon.ability = CharacterFactory.getEmptyAbility(name: "INT", context: context)
+        weapon.ability = CharacterFactory.getAbility(character: character, name: "INT", context: context)
         weapon.damage = DamageFactory.getEmptyDamage(context: context)
         weapon.cost = ""
         weapon.info = ""

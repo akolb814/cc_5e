@@ -11,12 +11,12 @@ import SwiftyJSON
 
 class SpellcastingFactory {
     
-    static func getEmptySpellcasting(context: NSManagedObjectContext) -> Spellcasting {
+    static func getEmptySpellcasting(character: Character, context: NSManagedObjectContext) -> Spellcasting {
         let spellcasting = Spellcasting(context: context)
         spellcasting.caster_level = 0
         spellcasting.dc_bonus = 0
         spellcasting.attack_bonus = 0
-        spellcasting.ability = CharacterFactory.getEmptyAbility(name: "INT", context: context)
+        spellcasting.ability = CharacterFactory.getAbility(character: character, name: "INT", context: context)
         
         var spells_by_level: [Spells_by_Level] = []
         spells_by_level.append(SpellLevelFactory.getEmptySpellLevel(context: context))
@@ -25,12 +25,12 @@ class SpellcastingFactory {
         return spellcasting
     }
     
-    static func getSpellcasting(json: JSON ,context: NSManagedObjectContext) -> Spellcasting {
+    static func getSpellcasting(character: Character, json: JSON ,context: NSManagedObjectContext) -> Spellcasting {
         let spellcasting = Spellcasting(context: context)
         spellcasting.caster_level = json["spellcasting"]["caster_level"].int32!
         spellcasting.dc_bonus = json["spellcasting"]["spell_dc_misc_bonus"].int32!
         spellcasting.attack_bonus = json["spellcasting"]["spell_attack_misc_bonus"].int32!
-        spellcasting.ability = CharacterFactory.getEmptyAbility(name: json["spellcasting"]["spell_ability"].string!, context: context)
+        spellcasting.ability = CharacterFactory.getAbility(character: character, name: json["spellcasting"]["spell_ability"].string!, context: context)
         
         var spells_by_level: [Spells_by_Level] = []
         for (index,spellLevel):(String,JSON) in json["spellcasting"]["spells"] {

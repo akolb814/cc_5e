@@ -54,10 +54,20 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func didTapAddCharacter(_ sender: Any) {
-        let character = CharacterFactory.getEmptyCharacter(name: "New Character", context:context)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        loadCharactersFromDb()
-        tableView.reloadData()
+        let alertView = UIAlertController.init(title: "New Character", message: "Create a new charatcer or load from a file?", preferredStyle: .alert)
+        alertView.addAction(UIAlertAction.init(title: "New Character", style: .default, handler: { (action:UIAlertAction) in
+            let character = CharacterFactory.getEmptyCharacter(name: "New Character", context:self.context)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            self.loadCharactersFromDb()
+            self.tableView.reloadData()
+        }))
+        alertView.addAction(UIAlertAction.init(title: "Load Character", style: .default, handler: { (action:UIAlertAction) in
+            let character = CharacterJson.getCharacterFromJson(filename: "character")
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            self.loadCharactersFromDb()
+            self.tableView.reloadData()
+        }))
+        self.present(alertView, animated:true, completion: nil)
     }
     
 
