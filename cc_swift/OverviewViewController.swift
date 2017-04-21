@@ -149,6 +149,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         alignmentTextField.text = Character.Selected.alignment
         experienceTextField.text = String(Character.Selected.experience)
         
+        Character.Selected.calcMaxHP()
         hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
         hdValue.text = String(Character.Selected.current_hit_dice)+"d"+String(hitDie)+"\n/"+String(level)+"d"+String(hitDie)
         

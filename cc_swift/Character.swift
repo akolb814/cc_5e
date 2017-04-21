@@ -262,7 +262,20 @@ extension Character {
         self.ac = armorClass
     }
     
-    func calcHP() {
-        
+    func calcMaxHP() {
+        var maxHP: Int32 = 0
+        for classObj in self.classes?.allObjects as! [Class] {
+            let hitDie = classObj.hit_die
+            let level = classObj.level
+            for i in 1...level {
+                if classObj.primary && i == 1 {
+                    maxHP = hitDie + self.conBonus
+                }
+                else {
+                    maxHP += (hitDie/2) + 1 + conBonus
+                }
+            }
+        }
+        self.max_hp = maxHP
     }
 }

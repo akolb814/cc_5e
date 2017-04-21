@@ -63,6 +63,7 @@ class CharacterFactory {
         character.calcAC()
         character.calcPP()
         character.calcInitiative()
+        character.calcMaxHP()
         return character
     }
     
