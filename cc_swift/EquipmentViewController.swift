@@ -44,19 +44,14 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var equipment: Equipment = Equipment()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        equipment = EquipmentFactory.getEmptyEquipment(character: Character.Selected, context: context)
         
         // Do any additional setup after loading the view.
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
 
         equipmentTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-
-        equipment = Character.Selected.equipment!
 
         self.setMiscDisplayData()
     }
@@ -72,7 +67,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func setMiscDisplayData() {
-        let currency = equipment.currency!
+        let currency = Character.Selected.equipment!.currency!
         // Platinum
         platinumValue.text = String(currency.platinum)
 
@@ -125,23 +120,23 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         if section == 0 {
             if segControl.selectedSegmentIndex == 0 {
                 // Weapon
-                return equipment.weapons!.count
+                return Character.Selected.equipment!.weapons!.count
             }
             else if segControl.selectedSegmentIndex == 1 {
                 // Armor
-                return equipment.armor!.count
+                return Character.Selected.equipment!.armor!.count
             }
             else if segControl.selectedSegmentIndex == 2 {
                 // Tools
-                return equipment.tools!.count
+                return Character.Selected.equipment!.tools!.count
             }
             else if segControl.selectedSegmentIndex == 3 {
                 // Other
-                return equipment.other!.count
+                return Character.Selected.equipment!.other!.count
             }
             else {
                 // All
-                return equipment.weapons!.count + equipment.armor!.count + equipment.tools!.count + equipment.other!.count
+                return Character.Selected.equipment!.weapons!.count + Character.Selected.equipment!.armor!.count + Character.Selected.equipment!.tools!.count + Character.Selected.equipment!.other!.count
             }
         }
         else {
@@ -152,15 +147,18 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
         
-            let weapons = equipment.weapons
-            let allArmor = equipment.armor
-            let tools = equipment.tools
-            let other = equipment.other
-            //var allObjects: NSMutableSet = equipment.weapons?.mutableCopy() as! NSMutableSet
-            //allObjects = (allObjects as AnyObject).union(equipment.armor?.mutableCopy())
-            //allObjects = (allObjects as AnyObject).union(equipment.tools?.mutableCopy())
-            //allObjects = (allObjects as AnyObject).union(equipment.other?.mutableCopy())
-        
+            let weapons = Character.Selected.equipment!.weapons
+            let allArmor = Character.Selected.equipment!.armor
+            let tools = Character.Selected.equipment!.tools
+            let other = Character.Selected.equipment!.other
+            
+            var all_equipment:[Any] = []
+            all_equipment.append(contentsOf:weapons!.allObjects)
+            all_equipment.append(contentsOf:allArmor!.allObjects)
+            all_equipment.append(contentsOf:tools!.allObjects)
+            all_equipment.append(contentsOf:other!.allObjects)
+            all_equipment.sort {($0 as AnyObject).name < ($1 as AnyObject).name}
+            
             if segControl.selectedSegmentIndex == 0 {
                 // Weapon
                 let weapon = weapons?.allObjects[indexPath.row] as! Weapon
@@ -223,13 +221,14 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 return height
             }
             else {
-                /*
                 // All equipment
-                let item = allObjects[indexPath.row]
+                let item = all_equipment[indexPath.row]
 
                 if item is Weapon {
                     // Weapon
-                    let description = equipment.info + "\nWeight: " + item.weight + "\nCost: " + item.cost
+                    let weaponItem = item as! Weapon
+                    
+                    let description = weaponItem.info! + "\nWeight: " + weaponItem.weight! + "\nCost: " + weaponItem.cost!
                     let descriptionHeight = description.heightWithConstrainedWidth(width: view.frame.width, font: UIFont.systemFont(ofSize: 17))
         
                     let height = 30+5+30+5+21+descriptionHeight
@@ -237,8 +236,10 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 else if item is Armor {
                     // Armor
+                    let armorItem = item as! Armor
+                    
                     var stealthDisadvantage = ""
-                    if item.stealth_disadvantage {
+                    if armorItem.stealth_disadvantage {
                         stealthDisadvantage = "Yes"
                     }
                     else {
@@ -246,14 +247,14 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     }
         
                     var equipped = ""
-                    if item.equipped {
+                    if armorItem.equipped {
                         equipped = "Yes"
                     }
                     else {
                         equipped = "No"
                     }
         
-                    let description = equipment.info + "\nMinimum Strength: " + String(item.str_requirement) + "\nStealth Disadvantage: " + stealthDisadvantage + "\nEquipped: " + equipped + "\nWeight: " + item.weight + "\nCost: " + item.cost
+                    let description = armorItem.info! + "\nMinimum Strength: " + String(armorItem.str_requirement) + "\nStealth Disadvantage: " + stealthDisadvantage + "\nEquipped: " + equipped + "\nWeight: " + armorItem.weight! + "\nCost: " + armorItem.cost!
                     let descriptionHeight = description.heightWithConstrainedWidth(width: view.frame.width, font: UIFont.systemFont(ofSize: 17))
         
                     let height = 30+5+21+5+21+descriptionHeight
@@ -261,22 +262,25 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 else if item is Tool {
                     // Tools
-                    let description = equipment.info + "\nWeight: " + item.weight + "\nCost: " + item.cost
+                    let toolItem = item as! Tool
+                    let description = toolItem.info! + "\nWeight: " + toolItem.weight! + "\nCost: " + toolItem.cost!
                     let descriptionHeight = description.heightWithConstrainedWidth(width: view.frame.width, font: UIFont.systemFont(ofSize: 17))
         
                     let height = 30+5+21+5+21+descriptionHeight
                     return height//165
                 }
-                else {
+                else if item is Item {
                     // Other
-                    let description = equipment.info + "\nWeight: " + item.weight + "\nCost: " + item.cost
+                    let otherItem = item as! Item
+                    let description = otherItem.info! + "\nWeight: " + otherItem.weight! + "\nCost: " + otherItem.cost!
                     let descriptionHeight = description.heightWithConstrainedWidth(width: view.frame.width, font: UIFont.systemFont(ofSize: 17))
         
                     let height = 30+5+21+descriptionHeight
                     return height//165
                 }
-                 */
-                return 30
+                else {
+                    return 0
+                }
             }
         }
         else {
@@ -286,12 +290,17 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let weapons = equipment.weapons
-            let allArmor = equipment.armor
-            let tools = equipment.tools
-            let other = equipment.other
+            let weapons = Character.Selected.equipment!.weapons
+            let allArmor = Character.Selected.equipment!.armor
+            let tools = Character.Selected.equipment!.tools
+            let other = Character.Selected.equipment!.other
             
-            //let allObjects
+            var all_equipment:[Any] = []
+            all_equipment.append(contentsOf:weapons!.allObjects)
+            all_equipment.append(contentsOf:allArmor!.allObjects)
+            all_equipment.append(contentsOf:tools!.allObjects)
+            all_equipment.append(contentsOf:other!.allObjects)
+            all_equipment.sort {($0 as AnyObject).name < ($1 as AnyObject).name}
             
             if segControl.selectedSegmentIndex == 0 {
                 // Weapon
@@ -301,7 +310,6 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
                 var attackBonus = 0
                 var damageBonus = 0
-                let modDamage = damage
                 let abilityType: String = weapon.ability!.name!
                 switch abilityType {
                 case "STR":
@@ -470,134 +478,141 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 return cell
             }
             else {
-                /*
                 // All equipment
-                let equipment = allEquipment[indexPath.row]
-                if equipment["attack_bonus"].exists() {
-                    // Weapons
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell", for: indexPath) as! WeaponTableViewCell
-                    let attackBonusDict = equipment["attack_bonus"]
-                    let damageDict = equipment["damage"]
-        
+                let item = all_equipment[indexPath.row]
+                
+                if item is Weapon {
+                    // Weapon
+                    let weaponItem = item as! Weapon
+                    let damage:Damage = weaponItem.damage!
+                    
                     var attackBonus = 0
                     var damageBonus = 0
-                    let modDamage = damageDict["mod_damage"].bool
-                    let abilityType: String = attackBonusDict["ability"].string!
+                    let abilityType: String = weaponItem.ability!.name!
                     switch abilityType {
                     case "STR":
                         attackBonus += Character.Selected.strBonus //Add STR bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.strBonus
                         }
                     case "DEX":
                         attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.dexBonus
                         }
                     case "CON":
                         attackBonus += Character.Selected.conBonus //Add CON bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.conBonus
                         }
                     case "INT":
                         attackBonus += Character.Selected.intBonus //Add INT bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.intBonus
                         }
                     case "WIS":
                         attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.wisBonus
                         }
                     case "CHA":
                         attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                        if modDamage! {
+                        if damage.mod_damage {
                             damageBonus += Character.Selected.chaBonus
                         }
                     default: break
                     }
-        
-                    attackBonus = attackBonus + attackBonusDict["magic_bonus"].int! + attackBonusDict["misc_bonus"].int!
-                    damageBonus = damageBonus + damageDict["magic_bonus"].int! + damageDict["misc_bonus"].int!
-        
-                    var damageDieNumber = damageDict["die_number"].int
-                    var damageDie = damageDict["die_type"].int
-                    let extraDie = damageDict["extra_die"].bool
-                    if (extraDie)! {
-                        damageDieNumber = damageDieNumber! + damageDict["extra_die_number"].int!
-                        damageDie = damageDie! + damageDict["extra_die_type"].int!
+                    
+                    attackBonus = attackBonus + Int(weaponItem.magic_bonus) + Int(weaponItem.misc_bonus)
+                    damageBonus = damageBonus + Int(damage.magic_bonus) + Int(damage.misc_bonus)
+                    
+                    var damageDieNumber = damage.die_number
+                    var damageDie = damage.die_type
+                    let extraDie = damage.extra_die
+                    if (extraDie) {
+                        damageDieNumber = damageDieNumber + damage.extra_die_number
+                        damageDie = damageDie + damage.extra_die_type
                     }
-        
-                    let damageType = damageDict["damage_type"].string
-        
-                    cell.weaponName.text = equipment["name"].string?.capitalized
-                    cell.weaponReach.text = "Range: "+equipment["range"].string!
+                    
+                    let damageType = damage.damage_type
+                    
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell", for: indexPath) as! WeaponTableViewCell
+                    cell.weaponName.text = weaponItem.name?.capitalized
+                    cell.weaponReach.text = "Range: "+weaponItem.range!
                     cell.weaponModifier.text = "+"+String(attackBonus)
-                    let dieDamage = String(damageDieNumber!)+"d"+String(damageDie!)
+                    let dieDamage = String(damageDieNumber)+"d"+String(damageDie)
                     cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+" "+damageType!
-        
-                    cell.descView.text = equipment.info + "\nWeight: " + equipment.weight + "\nCost: " + equipment["cost"].string!
-                    if equipment["quantity"].int! <= 1 {
+                    
+                    cell.descView.text = weaponItem.info! + "\nWeight: " + weaponItem.weight! + "\nCost: " + weaponItem.cost!
+                    if weaponItem.quantity <= 1 {
                         cell.amountLabel.text = ""
                     }
                     else {
-                        cell.amountLabel.text = "x"+String(equipment["quantity"].int!)
+                        cell.amountLabel.text = "x"+String(weaponItem.quantity)
                     }
-        
+                    
                     return cell
                 }
-                else if equipment["str_requirement"].exists() {
-                    // Armor
+                else if item is Armor {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ArmorTableViewCell", for: indexPath) as! ArmorTableViewCell
-                    cell.armorName.text = equipment["name"].string
-        
-                    var armorValue = equipment["value"].int!
-                    armorValue += equipment["magic_bonus"].int!
-                    armorValue += equipment["misc_bonus"].int!
-        
-                    if (equipment["mod"].string != "") {
-                        cell.armorValue.text = String(armorValue) + "+" + equipment["mod"].string!
+                    let armorItem = item as! Armor
+                    cell.armorName.text = armorItem.name
+                    
+                    var armorValue = armorItem.value
+                    armorValue += armorItem.magic_bonus
+                    armorValue += armorItem.misc_bonus
+                    
+                    if (armorItem.ability_mod?.name != "") {
+                        cell.armorValue.text = String(armorValue) + "+" + (armorItem.ability_mod?.name!)!
                     }
                     else {
                         cell.armorValue.text = String(armorValue)
                     }
-        
+                    
                     var stealthDisadvantage = ""
-                    if equipment["stealth_disadvantage"].bool! {
+                    if armorItem.stealth_disadvantage {
                         stealthDisadvantage = "Yes"
                     }
                     else {
                         stealthDisadvantage = "No"
                     }
-        
+                    
                     var equipped = ""
-                    if equipment["equipped"].bool! {
+                    if armorItem.equipped {
                         equipped = "Yes"
                     }
                     else {
                         equipped = "No"
                     }
-        
-                    cell.descView.text = equipment.info + "\nMinimum Strength: " + String(equipment["str_requirement"].int!) + "\nStealth Disadvantage: " + stealthDisadvantage + "\nEquipped: " + equipped + "\nWeight: " + equipment.weight + "\nCost: " + equipment["cost"].string!
-                    if equipment["quantity"].int! <= 1 {
+                    
+                    var armorDescription = armorItem.info
+                    armorDescription = armorDescription! + "\nMinimum Strength: " + String(armorItem.str_requirement)
+                    armorDescription = armorDescription! + "\nStealth Disadvantage: " + stealthDisadvantage
+                    armorDescription = armorDescription! + "\nEquipped: " + equipped
+                    armorDescription = armorDescription! + "\nWeight: " + armorItem.weight!
+                    armorDescription = armorDescription! + "\nCost: " + armorItem.cost!
+                    cell.descView.text = armorDescription
+                    if armorItem.quantity <= 1 {
                         cell.amountLabel.text = ""
                     }
                     else {
-                        cell.amountLabel.text = "x"+String(equipment["quantity"].int!)
+                        cell.amountLabel.text = "x"+String(armorItem.quantity)
                     }
-        
+                    
                     return cell
                 }
-                else if equipment["ability"].exists() {
+                else if item is Tool {
                     // Tools
+                    let toolItem = item as! Tool
+                    
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ToolTableViewCell", for: indexPath) as! ToolTableViewCell
-        
-                    var toolValue: Int32 = 0
-                    if equipment["proficient"].bool! {
-                        toolValue += Character.Selected.proficiency_bonus
+                    
+                    var toolValue = 0
+                    if toolItem.proficient {
+                        toolValue += Character.Selected.proficiencyBonus
                     }
-        
-                    let abilityType: String = equipment["ability"].string!
+                    
+                    let abilityType: String = toolItem.ability!.name!
                     switch abilityType {
                     case "STR":
                         toolValue += Character.Selected.strBonus //Add STR bonus
@@ -613,39 +628,37 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                         toolValue += Character.Selected.chaBonus //Add CHA bonus
                     default: break
                     }
-        
-                    cell.toolName.text = equipment["name"].string
+                    
+                    cell.toolName.text = toolItem.name
                     cell.toolValue.text = "+"+String(toolValue)
-                    cell.descView.text = equipment.info + "\nWeight: " + equipment.weight + "\nCost: " + equipment["cost"].string!
-                    if equipment["quantity"].int! <= 1 {
+                    cell.descView.text = toolItem.info! + "\nWeight: " + toolItem.weight! + "\nCost: " + toolItem.cost!
+                    if toolItem.quantity <= 1 {
                         cell.amountLabel.text = ""
                     }
                     else {
-                        cell.amountLabel.text = "x"+String(equipment["quantity"].int!)
+                        cell.amountLabel.text = "x"+String(toolItem.quantity)
                     }
+                    return cell
+                }
+                else if item is Item {
+                    let otherItem = item as! Item
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "EquipmentTableViewCell", for: indexPath) as! EquipmentTableViewCell
+                    
+                    cell.equipmentName.text = otherItem.name
+                    cell.descView.text = otherItem.info! + "\nWeight: " + otherItem.weight! + "\nCost: " + otherItem.cost!
+                    if otherItem.quantity <= 1 {
+                        cell.amountLabel.text = ""
+                    }
+                    else {
+                        cell.amountLabel.text = "x"+String(otherItem.quantity)
+                    }
+                    
                     return cell
                 }
                 else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "EquipmentTableViewCell", for: indexPath) as! EquipmentTableViewCell
-        
-                    cell.equipmentName.text = equipment["name"].string!
-                    cell.descView.text = equipment.info + "\nWeight: " + equipment.weight + "\nCost: " + equipment["cost"].string!
-                    if equipment["quantity"].int! <= 1 {
-                        cell.amountLabel.text = ""
-                    }
-                    else {
-                        cell.amountLabel.text = "x"+String(equipment["quantity"].int!)
-                    }
-        
                     return cell
                 }
-                */
-                let cell = tableView.dequeueReusableCell(withIdentifier: "EquipmentTableViewCell", for: indexPath) as! EquipmentTableViewCell
-                cell.equipmentName.text = ""
-                cell.descView.text = ""
-                cell.amountLabel.text = ""
-                
-                return cell
             }
         }
         else {

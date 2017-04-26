@@ -77,34 +77,35 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
         
         if((Character.Selected.resources?.allObjects.count ?? 0)! > 0) {
-            // Resource
-            let resource = Character.Selected.resources?.allObjects[0] as! Resource
-
-            resourceTitle.text = resource.name ?? "Resource"
-            
-            let currentResourceValue: Int32 = resource.current_value
-            let maxResourceValue: Int32 = resource.max_value
-            let dieType: Int32 = resource.die_type
-            
-            var resourceDisplay = ""
-            if dieType == 0 {
-                if maxResourceValue == 0 {
-                    resourceDisplay = String(currentResourceValue)
-                }
-                else {
-                    resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+            for resource: Resource in Character.Selected.resources?.allObjects as! [Resource] {
+                if resource.spellcasting == false {
+                    resourceTitle.text = resource.name ?? "Resource"
+                    
+                    let currentResourceValue: Int32 = resource.current_value
+                    let maxResourceValue: Int32 = resource.max_value
+                    let dieType: Int32 = resource.die_type
+                    
+                    var resourceDisplay = ""
+                    if dieType == 0 {
+                        if maxResourceValue == 0 {
+                            resourceDisplay = String(currentResourceValue)
+                        }
+                        else {
+                            resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                        }
+                    }
+                    else {
+                        if maxResourceValue == 0 {
+                            resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
+                        }
+                        else {
+                            resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
+                        }
+                    }
+                    
+                    resourceValue.text = resourceDisplay
                 }
             }
-            else {
-                if maxResourceValue == 0 {
-                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
-                }
-                else {
-                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
-                }
-            }
-            
-            resourceValue.text = resourceDisplay
         }
         
         // Proficiency
@@ -237,32 +238,34 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 200:
             // Resource
-            let resource = Character.Selected.resources?.allObjects[0] as! Resource
-
-            resourceTitle.text = resource.name
-            let currentResourceValue: Int32 = resource.current_value
-            let maxResourceValue: Int32 = resource.max_value
-            let dieType: Int32 = resource.die_type
-            
-            var resourceDisplay = ""
-            if dieType == 0 {
-                if maxResourceValue == 0 {
-                    resourceDisplay = String(currentResourceValue)
-                }
-                else {
-                    resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+            for resource: Resource in Character.Selected.resources?.allObjects as! [Resource] {
+                if resource.spellcasting == false {
+                    resourceTitle.text = resource.name
+                    let currentResourceValue: Int32 = resource.current_value
+                    let maxResourceValue: Int32 = resource.max_value
+                    let dieType: Int32 = resource.die_type
+                    
+                    var resourceDisplay = ""
+                    if dieType == 0 {
+                        if maxResourceValue == 0 {
+                            resourceDisplay = String(currentResourceValue)
+                        }
+                        else {
+                            resourceDisplay = String(currentResourceValue)+"/"+String(maxResourceValue)
+                        }
+                    }
+                    else {
+                        if maxResourceValue == 0 {
+                            resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
+                        }
+                        else {
+                            resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
+                        }
+                    }
+                    
+                    resourceValue.text = resourceDisplay
                 }
             }
-            else {
-                if maxResourceValue == 0 {
-                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)
-                }
-                else {
-                    resourceDisplay = String(currentResourceValue)+"d"+String(dieType)+"/"+String(maxResourceValue)+"d"+String(dieType)
-                }
-            }
-            
-            resourceValue.text = resourceDisplay
             break
             
         case 300:
@@ -421,143 +424,146 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Create resource adjusting view
         let tempView = createBasicView()
         tempView.tag = 200
-        let resource = Character.Selected.resources?.allObjects[0] as! Resource
-
-        let currentResourceValue: Int32 = resource.current_value
-        let maxResourceValue: Int32 = resource.max_value
-        let dieType: Int32 = resource.die_type
-        
-        let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = resource.name
-        title.textAlignment = NSTextAlignment.center
-        title.tag = 201
-        tempView.addSubview(title)
-        
-        if dieType == 0 {
-            if maxResourceValue == 0 {
-                // current
-                let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:35, width:40, height:30))
-                currentResource.text = String(currentResourceValue)
-                currentResource.textAlignment = NSTextAlignment.center
-                currentResource.layer.borderWidth = 1.0
-                currentResource.layer.borderColor = UIColor.black.cgColor
-                currentResource.tag = 202
-                tempView.addSubview(currentResource)
-            }
-            else {
-                // current / max
-                let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-                currentResource.text = String(currentResourceValue)
-                currentResource.textAlignment = NSTextAlignment.center
-                currentResource.layer.borderWidth = 1.0
-                currentResource.layer.borderColor = UIColor.black.cgColor
-                currentResource.tag = 202
-                tempView.addSubview(currentResource)
+        for resource: Resource in Character.Selected.resources?.allObjects as! [Resource] {
+            if resource.spellcasting == false {
+                let currentResourceValue: Int32 = resource.current_value
+                let maxResourceValue: Int32 = resource.max_value
+                let dieType: Int32 = resource.die_type
                 
-                let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
-                slash.text = "/"
-                slash.textAlignment = NSTextAlignment.center
-                slash.tag = 205
-                tempView.addSubview(slash)
+                let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
+                title.text = resource.name
+                title.textAlignment = NSTextAlignment.center
+                title.tag = 201
+                tempView.addSubview(title)
                 
-                let maxResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-                maxResource.text = String(maxResourceValue)
-                maxResource.textAlignment = NSTextAlignment.center
-                maxResource.layer.borderWidth = 1.0
-                maxResource.layer.borderColor = UIColor.black.cgColor
-                maxResource.tag = 206
-                tempView.addSubview(maxResource)
+                if dieType == 0 {
+                    if maxResourceValue == 0 {
+                        // current
+                        let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:35, width:40, height:30))
+                        currentResource.text = String(currentResourceValue)
+                        currentResource.textAlignment = NSTextAlignment.center
+                        currentResource.layer.borderWidth = 1.0
+                        currentResource.layer.borderColor = UIColor.black.cgColor
+                        currentResource.tag = 202
+                        tempView.addSubview(currentResource)
+                    }
+                    else {
+                        // current / max
+                        let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
+                        currentResource.text = String(currentResourceValue)
+                        currentResource.textAlignment = NSTextAlignment.center
+                        currentResource.layer.borderWidth = 1.0
+                        currentResource.layer.borderColor = UIColor.black.cgColor
+                        currentResource.tag = 202
+                        tempView.addSubview(currentResource)
+                        
+                        let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
+                        slash.text = "/"
+                        slash.textAlignment = NSTextAlignment.center
+                        slash.tag = 205
+                        tempView.addSubview(slash)
+                        
+                        let maxResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
+                        maxResource.text = String(maxResourceValue)
+                        maxResource.textAlignment = NSTextAlignment.center
+                        maxResource.layer.borderWidth = 1.0
+                        maxResource.layer.borderColor = UIColor.black.cgColor
+                        maxResource.tag = 206
+                        tempView.addSubview(maxResource)
+                    }
+                }
+                else {
+                    if maxResourceValue == 0 {
+                        // current d die
+                        let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
+                        currentResource.text = String(currentResourceValue)
+                        currentResource.textAlignment = NSTextAlignment.center
+                        currentResource.layer.borderWidth = 1.0
+                        currentResource.layer.borderColor = UIColor.black.cgColor
+                        currentResource.tag = 202
+                        tempView.addSubview(currentResource)
+                        
+                        let d1 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
+                        d1.text = "d"
+                        d1.textAlignment = NSTextAlignment.center
+                        d1.tag = 203
+                        tempView.addSubview(d1)
+                        
+                        let rd1 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
+                        rd1.text = String(dieType)
+                        rd1.textAlignment = NSTextAlignment.center
+                        rd1.textColor = UIColor.darkGray
+                        rd1.layer.borderWidth = 1.0
+                        rd1.layer.borderColor = UIColor.darkGray.cgColor
+                        rd1.tag = 204
+                        tempView.addSubview(rd1)
+                    }
+                    else {
+                        // current d die / max d die
+                        let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:35, width:40, height:30))
+                        currentResource.text = String(currentResourceValue)
+                        currentResource.textAlignment = NSTextAlignment.center
+                        currentResource.layer.borderWidth = 1.0
+                        currentResource.layer.borderColor = UIColor.black.cgColor
+                        currentResource.tag = 202
+                        tempView.addSubview(currentResource)
+                        
+                        let d1 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:35, width:30, height:30))
+                        d1.text = "d"
+                        d1.textAlignment = NSTextAlignment.center
+                        d1.tag = 203
+                        tempView.addSubview(d1)
+                        
+                        let rd1 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
+                        rd1.text = String(dieType)
+                        rd1.textAlignment = NSTextAlignment.center
+                        rd1.isUserInteractionEnabled = false
+                        rd1.textColor = UIColor.darkGray
+                        rd1.layer.borderWidth = 1.0
+                        rd1.layer.borderColor = UIColor.darkGray.cgColor
+                        rd1.tag = 204
+                        tempView.addSubview(rd1)
+                        
+                        let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
+                        slash.text = "/"
+                        slash.textAlignment = NSTextAlignment.center
+                        slash.tag = 205
+                        tempView.addSubview(slash)
+                        
+                        let maxResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
+                        maxResource.text = String(maxResourceValue)
+                        maxResource.textAlignment = NSTextAlignment.center
+                        maxResource.layer.borderWidth = 1.0
+                        maxResource.layer.borderColor = UIColor.black.cgColor
+                        maxResource.tag = 206
+                        tempView.addSubview(maxResource)
+                        
+                        let d2 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+50, y:35, width:30, height:30))
+                        d2.text = "d"
+                        d2.textAlignment = NSTextAlignment.center
+                        d2.tag = 207
+                        tempView.addSubview(d2)
+                        
+                        let rd2 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:35, width:40, height:30))
+                        rd2.text = String(dieType)
+                        rd2.textAlignment = NSTextAlignment.center
+                        rd2.layer.borderWidth = 1.0
+                        rd2.layer.borderColor = UIColor.black.cgColor
+                        rd2.tag = 208
+                        tempView.addSubview(rd2)
+                    }
+                }
+                
+                let stepper = UIStepper.init(frame: CGRect.init(x:tempView.frame.size.width/2-47, y:90, width:94, height:29))
+                stepper.value = Double(currentResourceValue)
+                stepper.minimumValue = 0
+                stepper.maximumValue = Double(maxResourceValue)
+                stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+                stepper.tag = 209
+                tempView.addSubview(stepper)
+        
             }
         }
-        else {
-            if maxResourceValue == 0 {
-                // current d die
-                let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-                currentResource.text = String(currentResourceValue)
-                currentResource.textAlignment = NSTextAlignment.center
-                currentResource.layer.borderWidth = 1.0
-                currentResource.layer.borderColor = UIColor.black.cgColor
-                currentResource.tag = 202
-                tempView.addSubview(currentResource)
-                
-                let d1 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
-                d1.text = "d"
-                d1.textAlignment = NSTextAlignment.center
-                d1.tag = 203
-                tempView.addSubview(d1)
-                
-                let rd1 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-                rd1.text = String(dieType)
-                rd1.textAlignment = NSTextAlignment.center
-                rd1.textColor = UIColor.darkGray
-                rd1.layer.borderWidth = 1.0
-                rd1.layer.borderColor = UIColor.darkGray.cgColor
-                rd1.tag = 204
-                tempView.addSubview(rd1)
-            }
-            else {
-                // current d die / max d die
-                let currentResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:35, width:40, height:30))
-                currentResource.text = String(currentResourceValue)
-                currentResource.textAlignment = NSTextAlignment.center
-                currentResource.layer.borderWidth = 1.0
-                currentResource.layer.borderColor = UIColor.black.cgColor
-                currentResource.tag = 202
-                tempView.addSubview(currentResource)
-                
-                let d1 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:35, width:30, height:30))
-                d1.text = "d"
-                d1.textAlignment = NSTextAlignment.center
-                d1.tag = 203
-                tempView.addSubview(d1)
-                
-                let rd1 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-                rd1.text = String(dieType)
-                rd1.textAlignment = NSTextAlignment.center
-                rd1.isUserInteractionEnabled = false
-                rd1.textColor = UIColor.darkGray
-                rd1.layer.borderWidth = 1.0
-                rd1.layer.borderColor = UIColor.darkGray.cgColor
-                rd1.tag = 204
-                tempView.addSubview(rd1)
-                
-                let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
-                slash.text = "/"
-                slash.textAlignment = NSTextAlignment.center
-                slash.tag = 205
-                tempView.addSubview(slash)
-                
-                let maxResource = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-                maxResource.text = String(maxResourceValue)
-                maxResource.textAlignment = NSTextAlignment.center
-                maxResource.layer.borderWidth = 1.0
-                maxResource.layer.borderColor = UIColor.black.cgColor
-                maxResource.tag = 206
-                tempView.addSubview(maxResource)
-                
-                let d2 = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+50, y:35, width:30, height:30))
-                d2.text = "d"
-                d2.textAlignment = NSTextAlignment.center
-                d2.tag = 207
-                tempView.addSubview(d2)
-                
-                let rd2 = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:35, width:40, height:30))
-                rd2.text = String(dieType)
-                rd2.textAlignment = NSTextAlignment.center
-                rd2.layer.borderWidth = 1.0
-                rd2.layer.borderColor = UIColor.black.cgColor
-                rd2.tag = 208
-                tempView.addSubview(rd2)
-            }
-        }
-        
-        let stepper = UIStepper.init(frame: CGRect.init(x:tempView.frame.size.width/2-47, y:90, width:94, height:29))
-        stepper.value = Double(currentResourceValue)
-        stepper.minimumValue = 0
-        stepper.maximumValue = Double(maxResourceValue)
-        stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
-        stepper.tag = 209
-        tempView.addSubview(stepper)
         
         view.addSubview(tempView)
     }

@@ -14,10 +14,10 @@ class EquipmentFactory {
     
     static func getEquipment(character: Character, json: JSON, context: NSManagedObjectContext) -> Equipment {
         let equipment = Equipment(context: context)
-        
         var armor: [Armor] = []
         for (index,armorJSON):(String,JSON) in json["equipment"]["armor"] {
-            armor.append(ArmorFactory.getArmor(character: character, json: armorJSON, context: context))
+            let armor_object = ArmorFactory.getArmor(character: character, json: armorJSON, context: context)
+            armor.append(armor_object)
         }
         equipment.armor = NSSet(array: armor)
         
@@ -25,19 +25,22 @@ class EquipmentFactory {
         
         var item: [Item] = []
         for (index,itemJSON):(String,JSON) in json["equipment"]["other"] {
-            item.append(ItemFactory.getItem(json: itemJSON, context: context))
+            let item_object = ItemFactory.getItem(json: itemJSON, context: context)
+            item.append(item_object)
         }
         equipment.other = NSSet(array: item)
         
         var tool: [Tool] = []
         for (index,toolJSON):(String,JSON) in json["equipment"]["tools"] {
-            tool.append(ToolFactory.getTool(character: character, json: toolJSON, context: context))
+            let tool_object = ToolFactory.getTool(character: character, json: toolJSON, context: context)
+            tool.append(tool_object)
         }
         equipment.tools = NSSet(array: tool)
         
         var weapon: [Weapon] = []
         for (index,weaponJSON):(String,JSON) in json["equipment"]["weapons"] {
-            weapon.append(WeaponFactory.getWeapon(character: character, json:weaponJSON, context: context))
+            let weapon_object = WeaponFactory.getWeapon(character: character, json:weaponJSON, context: context)
+            weapon.append(weapon_object)
         }
         equipment.weapons = NSSet(array: weapon)
         

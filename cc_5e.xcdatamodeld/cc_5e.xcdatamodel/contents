@@ -190,7 +190,7 @@
         <element name="Class" positionX="-8210" positionY="-376" width="128" height="43"/>
         <element name="Currency" positionX="-8676" positionY="-9" width="128" height="43"/>
         <element name="Damage" positionX="-8550" positionY="99" width="128" height="43"/>
-        <element name="Equipment" positionX="-8595" positionY="-171" width="128" height="43"/>
+        <element name="Equipment" positionX="-8595" positionY="-171" width="128" height="120"/>
         <element name="Item" positionX="-8345" positionY="101" width="128" height="43"/>
         <element name="Race" positionX="-8667" positionY="-376" width="128" height="43"/>
         <element name="Resource" positionX="-8282" positionY="-475" width="128" height="28"/>

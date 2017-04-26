@@ -332,9 +332,9 @@
                   {
                   "name":"Sneak Attack",
                   "current_value":2,
-                  "max_value":2,
+                  "max_value":0,
                   "die_type":6,
-                  "spellcasting": true
+                  "spellcasting": false
                   },
                   {
                   "name":"Sorc. Points",
