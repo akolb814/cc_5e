@@ -18,6 +18,8 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    let addOptions = ["New Character", "Import", "Restore Character"]
+    
     var characters: [Character] = []
     
     override func viewDidLoad() {
@@ -45,6 +47,29 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
         return cell
     }
     
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let itemToMove = characters[sourceIndexPath.row]
+        characters.remove(at: destinationIndexPath.row)
+        characters.insert(itemToMove, at: sourceIndexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            let characterToBeDeleted = characters[indexPath.row]
+            context.delete(characterToBeDeleted)
+            do {
+                try context.save()
+            } catch _ {
+            }
+            characters.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        }
+    }
+    
     func loadCharactersFromDb() {
         do {
             characters = try context.fetch(Character.fetchRequest())
@@ -70,5 +95,8 @@ class CharacterSelectViewController: UIViewController, UITableViewDelegate, UITa
         self.present(alertView, animated:true, completion: nil)
     }
     
+    @IBAction func edit(_ sender: Any) {
+        tableView.isEditing = !tableView.isEditing
+    }
 
 }

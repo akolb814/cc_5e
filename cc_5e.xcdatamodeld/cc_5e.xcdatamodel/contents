@@ -131,6 +131,7 @@
         <attribute name="misc_bonus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proficiency" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="round_up" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="ability" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ability" syncable="YES"/>
     </entity>
     <entity name="Specialization" representedClassName="Specialization" syncable="YES" codeGenerationType="class">
@@ -195,7 +196,7 @@
         <element name="Race" positionX="-8667" positionY="-376" width="128" height="43"/>
         <element name="Resource" positionX="-8282" positionY="-475" width="128" height="28"/>
         <element name="SelectedCharacter" positionX="-8723" positionY="-477" width="128" height="43"/>
-        <element name="Skill" positionX="-8370" positionY="-369" width="128" height="43"/>
+        <element name="Skill" positionX="-8370" positionY="-369" width="128" height="30"/>
         <element name="Specialization" positionX="-8219" positionY="-288" width="128" height="43"/>
         <element name="Spell" positionX="-8046" positionY="-252" width="128" height="43"/>
         <element name="Spellcasting" positionX="-8057" positionY="-432" width="128" height="43"/>

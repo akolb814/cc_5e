@@ -597,13 +597,199 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let tempView = createBasicView()
         tempView.tag = 400
         
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+        tempView.addSubview(scrollView)
+        
         let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
         title.text = "Armor Class"
         title.textAlignment = NSTextAlignment.center
         title.tag = 401
-        tempView.addSubview(title)
+        scrollView.addSubview(title)
         
-        // Armor value, Shield Value, Dex Bonus, Max Dex, Misc Mod, Additional Ability Mod (Monk/Barb)
+        // Armor value
+        let armorValueLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-120, y: 30, width: 40, height: 30))
+        armorValueLabel.text = "Armor\nValue"
+        armorValueLabel.font = UIFont.systemFont(ofSize: 10)
+        armorValueLabel.textAlignment = NSTextAlignment.center
+        armorValueLabel.numberOfLines = 2
+        armorValueLabel.tag = 402
+        scrollView.addSubview(armorValueLabel)
+        
+        let armorValueField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:55, width:40, height:30))
+        armorValueField.text = String(10)
+        armorValueField.textAlignment = NSTextAlignment.center
+        armorValueField.layer.borderWidth = 1.0
+        armorValueField.layer.borderColor = UIColor.darkGray.cgColor
+        armorValueField.textColor = UIColor.darkGray
+        armorValueField.isEnabled = false
+        armorValueField.tag = 403
+        scrollView.addSubview(armorValueField)
+        
+        // Dex bonus
+        let dexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-70, y: 30, width: 40, height: 30))
+        dexLabel.text = "Dex\nBonus"
+        dexLabel.font = UIFont.systemFont(ofSize: 10)
+        dexLabel.textAlignment = NSTextAlignment.center
+        dexLabel.numberOfLines = 2
+        dexLabel.tag = 404
+        scrollView.addSubview(dexLabel)
+        
+        let dexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-70, y:55, width:40, height:30))
+        dexField.text = String(Character.Selected.dexBonus)
+        dexField.textAlignment = NSTextAlignment.center
+        dexField.layer.borderWidth = 1.0
+        dexField.layer.borderColor = UIColor.darkGray.cgColor
+        dexField.textColor = UIColor.darkGray
+        dexField.isEnabled = false
+        dexField.tag = 405
+        scrollView.addSubview(dexField)
+        
+        // Shield Value
+        let shieldLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-20, y: 30, width: 40, height: 30))
+        shieldLabel.text = "Shield\nValue"
+        shieldLabel.font = UIFont.systemFont(ofSize: 10)
+        shieldLabel.textAlignment = NSTextAlignment.center
+        shieldLabel.numberOfLines = 2
+        shieldLabel.tag = 406
+        scrollView.addSubview(shieldLabel)
+        
+        let shieldField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:55, width:40, height:30))
+        shieldField.text = String(0)
+        shieldField.textAlignment = NSTextAlignment.center
+        shieldField.layer.borderWidth = 1.0
+        shieldField.layer.borderColor = UIColor.darkGray.cgColor
+        shieldField.textColor = UIColor.darkGray
+        shieldField.isEnabled = false
+        shieldField.tag = 407
+        scrollView.addSubview(shieldField)
+        
+        // Max Dex
+        let maxDexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+30, y: 30, width: 40, height: 30))
+        maxDexLabel.text = "Max\nDex"
+        maxDexLabel.font = UIFont.systemFont(ofSize: 10)
+        maxDexLabel.textAlignment = NSTextAlignment.center
+        maxDexLabel.numberOfLines = 2
+        maxDexLabel.tag = 408
+        scrollView.addSubview(maxDexLabel)
+        
+        let maxDexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+30, y:55, width:40, height:30))
+        maxDexField.text = "-"
+        maxDexField.textAlignment = NSTextAlignment.center
+        maxDexField.layer.borderWidth = 1.0
+        shieldField.layer.borderColor = UIColor.darkGray.cgColor
+        shieldField.textColor = UIColor.darkGray
+        shieldField.isEnabled = false
+        maxDexField.tag = 409
+        scrollView.addSubview(maxDexField)
+        
+        // Misc Mod
+        let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+80, y: 30, width: 40, height: 30))
+        miscLabel.text = "Misc\nValue"
+        miscLabel.font = UIFont.systemFont(ofSize: 10)
+        miscLabel.textAlignment = NSTextAlignment.center
+        miscLabel.numberOfLines = 2
+        miscLabel.tag = 410
+        scrollView.addSubview(miscLabel)
+        
+        let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:55, width:40, height:30))
+        miscField.text = String(Character.Selected.ac_misc)
+        miscField.textAlignment = NSTextAlignment.center
+        miscField.layer.borderWidth = 1.0
+        miscField.layer.borderColor = UIColor.black.cgColor
+        miscField.tag = 411
+        scrollView.addSubview(miscField)
+        
+        //Additional Ability Mod (Monk/Barb)
+        let addAbilityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-120, y: 90, width: 90, height: 30))
+        addAbilityLabel.text = "Additional Mod"
+        addAbilityLabel.font = UIFont.systemFont(ofSize: 10)
+        addAbilityLabel.tag = 412
+        scrollView.addSubview(addAbilityLabel)
+        
+        let addAbilityField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:90, width:40, height:30))
+        addAbilityField.text = String(0)
+        addAbilityField.textAlignment = NSTextAlignment.center
+        addAbilityField.layer.borderWidth = 1.0
+        addAbilityField.layer.borderColor = UIColor.darkGray.cgColor
+        addAbilityField.textColor = UIColor.darkGray
+        addAbilityField.isEnabled = false
+        addAbilityField.tag = 413
+        scrollView.addSubview(addAbilityField)
+        
+        let addAbilitySeg = UISegmentedControl.init(frame: CGRect.init(x:10, y:130, width:tempView.frame.size.width-20, height:30))
+        addAbilitySeg.insertSegment(withTitle:"N/A", at:0, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"STR", at:1, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"DEX", at:2, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"CON", at:3, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"INT", at:4, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"WIS", at:5, animated:false)
+        addAbilitySeg.insertSegment(withTitle:"CHA", at:6, animated:false)
+        addAbilitySeg.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+        addAbilitySeg.selectedSegmentIndex = 0
+        addAbilitySeg.tag = 414
+        scrollView.addSubview(addAbilitySeg)
+        
+        let armorTable = UITableView.init(frame: CGRect.init(x:10, y:170, width:tempView.frame.size.width-20, height:80))
+        armorTable.tag = 415
+        armorTable.delegate = self
+        armorTable.dataSource = self
+        scrollView.addSubview(armorTable)
+        
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 260)
+        
+        
+        let allArmor: [Armor] = Character.Selected.equipment!.armor?.allObjects as! [Armor]
+        
+        for armor: Armor in allArmor {
+            if armor.equipped == true {
+                if armor.shield == true {
+                    let shieldValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                    shieldField.text = String(shieldValue)
+                }
+                else {
+                    let armorValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                    armorValueField.text = String(armorValue)
+                    let maxDex = armor.max_dex
+                    if maxDex == 0 {
+                        maxDexField.text = "-"
+                    }
+                    else {
+                        maxDexField.text = String(maxDex)
+                    }
+                }
+            }
+        }
+        
+        switch Character.Selected.additional_ac_mod! {
+        case "STR":
+            addAbilitySeg.selectedSegmentIndex = 1
+            addAbilityField.text = String(Character.Selected.strBonus)
+            break
+        case "DEX":
+            addAbilitySeg.selectedSegmentIndex = 2
+            addAbilityField.text = String(Character.Selected.dexBonus)
+            break
+        case "CON":
+            addAbilitySeg.selectedSegmentIndex = 3
+            addAbilityField.text = String(Character.Selected.conBonus)
+            break
+        case "INT":
+            addAbilitySeg.selectedSegmentIndex = 4
+            addAbilityField.text = String(Character.Selected.intBonus)
+            break
+        case "WIS":
+            addAbilitySeg.selectedSegmentIndex = 5
+            addAbilityField.text = String(Character.Selected.wisBonus)
+            break
+        case "CHA":
+            addAbilitySeg.selectedSegmentIndex = 6
+            addAbilityField.text = String(Character.Selected.chaBonus)
+            break
+        default:
+            addAbilitySeg.selectedSegmentIndex = 0
+            addAbilityField.text = "-"
+            break
+        }
         
         view.addSubview(tempView)
     }
@@ -808,98 +994,148 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // UITableView Delegate & Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        if tableView == weaponsTable{
+            return 2
+        }
+        else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return (Character.Selected.equipment?.weapons?.allObjects.count) ?? 0
+        if tableView.tag == 415 {
+            return (Character.Selected.equipment?.armor?.allObjects.count) ?? 0
         }
         else {
-            return 0
+            if section == 0 {
+                return (Character.Selected.equipment?.weapons?.allObjects.count) ?? 0
+            }
+            else {
+                return 1
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            // Existing weapon
-            return 70
+        if tableView.tag == 415 {
+            return 30
         }
         else {
-            // New weapon
-            return 30
+            if indexPath.section == 0 {
+                // Existing weapon
+                return 70
+            }
+            else {
+                // New weapon
+                return 30
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell", for: indexPath) as! WeaponTableViewCell
-            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
-            let damage = weapon.damage! as Damage
+        if tableView.tag == 415 {
+            let cell = weaponsTable.dequeueReusableCell(withIdentifier: "ArmorTableViewCell") as! ArmorTableViewCell
             
-            var attackBonus = 0
-            var damageBonus = 0
-            let modDamage = damage.mod_damage
-            let abilityType: String = (weapon.ability?.name)!
-            switch abilityType {
-            case "STR":
-                attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage {
-                    damageBonus += Character.Selected.strBonus
-                }
-            case "DEX":
-                attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage {
-                    damageBonus += Character.Selected.dexBonus
-                }
-            case "CON":
-                attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage {
-                    damageBonus += Character.Selected.conBonus
-                }
-            case "INT":
-                attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage {
-                    damageBonus += Character.Selected.intBonus
-                }
-            case "WIS":
-                attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage {
-                    damageBonus += Character.Selected.wisBonus
-                }
-            case "CHA":
-                attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage {
-                    damageBonus += Character.Selected.chaBonus
-                }
-            default: break
+            let armor = Character.Selected.equipment?.armor?.allObjects[indexPath.row] as! Armor            
+            var armorValue = armor.value
+            armorValue = armorValue + armor.magic_bonus
+            armorValue = armorValue + armor.misc_bonus
+            
+            if armor.equipped == true {
+                cell.armorName.textColor = UIColor.green
+                cell.armorValue.textColor = UIColor.green
             }
             
-            attackBonus = attackBonus +
-                Int(weapon.magic_bonus + weapon.misc_bonus)
-            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
-            
-            var damageDieNumber = damage.die_number
-            var damageDie = damage.die_type
-            let extraDie = damage.extra_die
-            if (extraDie) {
-                damageDieNumber = damageDieNumber + damage.extra_die_number
-                damageDie = damageDie + damage.extra_die_type
+            if Int(armor.str_requirement) > Character.Selected.strScore {
+                cell.armorName.textColor = UIColor.red
+                cell.armorValue.textColor = UIColor.red
             }
             
-            let damageType = damage.damage_type
-            
-            cell.weaponName.text = weapon.name
-            cell.weaponReach.text = "Range: " + weapon.range!
-            cell.weaponModifier.text = "+" + String(attackBonus)
-            let dieDamage = String(damageDieNumber)+"d"+String(damageDie)
-            cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+" "+damageType!
+            cell.armorName.text = armor.name
+            if armor.shield == true {
+                cell.armorValue.text = " + " + String(armorValue)
+            }
+            else {
+                if armor.ability_mod?.name == "" {
+                    cell.armorValue.text = String(armorValue)
+                }
+                else {
+                    cell.armorValue.text = String(armorValue) + " + " + (armor.ability_mod?.name)!
+                }
+            }
             
             return cell
         }
         else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NewTableViewCell", for: indexPath) as! NewTableViewCell
-            return cell
+            if indexPath.section == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "WeaponTableViewCell") as! WeaponTableViewCell
+                let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+                let damage = weapon.damage! as Damage
+                
+                var attackBonus = 0
+                var damageBonus = 0
+                let modDamage = damage.mod_damage
+                let abilityType: String = (weapon.ability?.name)!
+                switch abilityType {
+                case "STR":
+                    attackBonus += Character.Selected.strBonus //Add STR bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.strBonus
+                    }
+                case "DEX":
+                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.dexBonus
+                    }
+                case "CON":
+                    attackBonus += Character.Selected.conBonus //Add CON bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.conBonus
+                    }
+                case "INT":
+                    attackBonus += Character.Selected.intBonus //Add INT bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.intBonus
+                    }
+                case "WIS":
+                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.wisBonus
+                    }
+                case "CHA":
+                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.chaBonus
+                    }
+                default: break
+                }
+                
+                attackBonus = attackBonus +
+                    Int(weapon.magic_bonus + weapon.misc_bonus)
+                damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
+                
+                var damageDieNumber = damage.die_number
+                var damageDie = damage.die_type
+                let extraDie = damage.extra_die
+                if (extraDie) {
+                    damageDieNumber = damageDieNumber + damage.extra_die_number
+                    damageDie = damageDie + damage.extra_die_type
+                }
+                
+                let damageType = damage.damage_type
+                
+                cell.weaponName.text = weapon.name
+                cell.weaponReach.text = "Range: " + weapon.range!
+                cell.weaponModifier.text = "+" + String(attackBonus)
+                let dieDamage = String(damageDieNumber)+"d"+String(damageDie)
+                cell.weaponDamage.text = dieDamage+"+"+String(damageBonus)+" "+damageType!
+                
+                return cell
+            }
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "NewTableViewCell") as! NewTableViewCell
+                return cell
+            }
         }
     }
     
@@ -907,335 +1143,400 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Edit selected skill value
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.section == 0 {
-            let tempView = createBasicView()
-            tempView.tag = 700 + (indexPath.row * 100)
+        if tableView.tag == 415 {
+            // Select a new armor to equip
+            let allArmor = Character.Selected.equipment?.armor?.allObjects
+            let armor: Armor = allArmor?[indexPath.row] as! Armor
             
-            let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
-            let damage = weapon.damage! as Damage
+            armor.equipped = !armor.equipped
             
-            var attackBonus = 0
-            var damageBonus = 0
-            let modDamage = damage.mod_damage
-            let abilityType: String = (weapon.ability?.name)!
-            switch abilityType {
-            case "STR":
-                attackBonus += Character.Selected.strBonus //Add STR bonus
-                if modDamage {
-                    damageBonus += Character.Selected.strBonus
+            let parentView:UIView = tableView.superview!
+            for case let view in parentView.subviews {
+                if armor.shield == true {
+                    if view.tag == 307 {
+                        // Shield Value
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.value)
+                        }
+                        else {
+                            textField.text = "-"
+                        }
+                    }
                 }
-            case "DEX":
-                attackBonus += Character.Selected.dexBonus //Add DEX bonus
-                if modDamage {
-                    damageBonus += Character.Selected.dexBonus
+                else {
+                    if view.tag == 303 {
+                        // Armor Value
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.value)
+                        }
+                        else {
+                            textField.text = String(10)
+                        }
+                    }
+                    else if view.tag == 309 {
+                        // Max Dex
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.max_dex)
+                        }
+                        else {
+                            textField.text = "-"
+                        }
+                    }
                 }
-            case "CON":
-                attackBonus += Character.Selected.conBonus //Add CON bonus
-                if modDamage {
-                    damageBonus += Character.Selected.conBonus
-                }
-            case "INT":
-                attackBonus += Character.Selected.intBonus //Add INT bonus
-                if modDamage {
-                    damageBonus += Character.Selected.intBonus
-                }
-            case "WIS":
-                attackBonus += Character.Selected.wisBonus //Add WIS bonus
-                if modDamage {
-                    damageBonus += Character.Selected.wisBonus
-                }
-            case "CHA":
-                attackBonus += Character.Selected.chaBonus //Add CHA bonus
-                if modDamage {
-                    damageBonus += Character.Selected.chaBonus
-                }
-            default: break
             }
             
-            attackBonus = attackBonus + Int(weapon.magic_bonus + weapon.misc_bonus)
-            damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
-            
-            var damageDieNumber = damage.die_number
-            var damageDie = damage.die_type
-            let extraDie = damage.extra_die
-            if (extraDie) {
-                damageDieNumber = damageDieNumber + damage.extra_die_number
-                damageDie = damageDie + damage.extra_die_type
-            }
-            
-            let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
-            tempView.addSubview(scrollView)
-            
-            let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
-            title.text = weapon.name?.capitalized
-            title.textAlignment = NSTextAlignment.center
-            title.tag = 700 + (indexPath.row * 100) + 1
-            title.layer.borderWidth = 1.0
-            title.layer.borderColor = UIColor.black.cgColor
-            scrollView.addSubview(title)
-            
-            let reachLabel = UILabel.init(frame: CGRect.init(x: 10, y: 30, width: tempView.frame.size.width/2-15, height: 30))
-            reachLabel.text = "Range"
-            reachLabel.textAlignment = NSTextAlignment.center
-            reachLabel.tag = 700 + (indexPath.row * 100) + 2
-            scrollView.addSubview(reachLabel)
-            
-            let reachField = UITextField.init(frame: CGRect.init(x: 10, y: 55, width: tempView.frame.size.width/2-15, height: 40))
-            reachField.text = weapon.range
-            reachField.textAlignment = NSTextAlignment.center
-            reachField.layer.borderWidth = 1.0
-            reachField.layer.borderColor = UIColor.black.cgColor
-            reachField.tag = 700 + (indexPath.row * 100) + 3
-            scrollView.addSubview(reachField)
-            
-            let damageTypeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+5, y: 30, width: tempView.frame.size.width/2-15, height: 30))
-            damageTypeLabel.text = "Damage Type"
-            damageTypeLabel.textAlignment = NSTextAlignment.center
-            damageTypeLabel.tag = 700 + (indexPath.row * 100) + 4
-            scrollView.addSubview(damageTypeLabel)
-            
-            let damageTypePickerView = UIPickerView.init(frame: CGRect.init(x: tempView.frame.size.width/2+5, y: 55, width: tempView.frame.size.width/2-15, height: 40))
-            damageTypePickerView.dataSource = self
-            damageTypePickerView.delegate = self
-            damageTypePickerView.layer.borderWidth = 1.0
-            damageTypePickerView.layer.borderColor = UIColor.black.cgColor
-            damageTypePickerView.tag = 700 + (indexPath.row * 100) + 5
-            scrollView.addSubview(damageTypePickerView)
-            
-            let attackLabel = UILabel.init(frame: CGRect.init(x: 10, y: 90, width: tempView.frame.size.width-20, height: 30))
-            attackLabel.text = "Attack Ability"
-            attackLabel.textAlignment = NSTextAlignment.center
-            attackLabel.tag = 700 + (indexPath.row * 100) + 6
-            scrollView.addSubview(attackLabel)
-            
-            var aaIndex = 0
-            switch abilityType {
-            case "STR":
-                aaIndex = 0
-//                attributeField.text = String(Character.Selected.strBonus)
-            case "DEX":
-                aaIndex = 1
-//                attributeField.text = String(Character.Selected.dexBonus)
-            case "CON":
-                aaIndex = 2
-//                attributeField.text = String(Character.Selected.conBonus)
-            case "INT":
-                aaIndex = 3
-//                attributeField.text = String(Character.Selected.intBonus)
-            case "WIS":
-                aaIndex = 4
-//                attributeField.text = String(Character.Selected.wisBonus)
-            case "CHA":
-                aaIndex = 5
-//                attributeField.text = String(Character.Selected.chaBonus)
-            default: break
-            }
-            
-            let aa = UISegmentedControl.init(frame: CGRect.init(x:10, y:115, width:tempView.frame.size.width-20, height:30))
-            aa.insertSegment(withTitle:"STR", at:0, animated:false)
-            aa.insertSegment(withTitle:"DEX", at:1, animated:false)
-            aa.insertSegment(withTitle:"CON", at:2, animated:false)
-            aa.insertSegment(withTitle:"INT", at:3, animated:false)
-            aa.insertSegment(withTitle:"WIS", at:4, animated:false)
-            aa.insertSegment(withTitle:"CHA", at:5, animated:false)
-            aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
-            aa.selectedSegmentIndex = aaIndex
-            aa.tag = 700 + (indexPath.row * 100) + 7
-            scrollView.addSubview(aa)
-            
-            let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 145, width: 90, height: 30))
-            profLabel.text = "Proficiency\nBonus"
-            profLabel.font = UIFont.systemFont(ofSize: 10)
-            profLabel.textAlignment = NSTextAlignment.center
-            profLabel.numberOfLines = 2
-            profLabel.tag = 700 + (indexPath.row * 100) + 8
-            scrollView.addSubview(profLabel)
-            
-            let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:170, width:40, height:30))
-            profField.text = String(Character.Selected.proficiency_bonus)
-            profField.textAlignment = NSTextAlignment.center
-            profField.isEnabled = false
-            profField.textColor = UIColor.darkGray
-            profField.layer.borderWidth = 1.0
-            profField.layer.borderColor = UIColor.darkGray.cgColor
-            profField.tag = 700 + (indexPath.row * 100) + 9
-            scrollView.addSubview(profField)
-            
-            let dexLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 145, width: 90, height: 30))
-            dexLabel.text = "Dexterity\nBonus"
-            dexLabel.font = UIFont.systemFont(ofSize: 10)
-            dexLabel.textAlignment = NSTextAlignment.center
-            dexLabel.numberOfLines = 2
-            dexLabel.tag = 700 + (indexPath.row * 100) + 10
-            scrollView.addSubview(dexLabel)
-            
-            let dexField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:170, width:40, height:30))
-            dexField.text = String(Character.Selected.dexBonus)
-            dexField.textAlignment = NSTextAlignment.center
-            dexField.layer.borderWidth = 1.0
-            dexField.layer.borderColor = UIColor.black.cgColor
-            dexField.tag = 700 + (indexPath.row * 100) + 11
-            scrollView.addSubview(dexField)
-            
-            let magicLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 145, width: 90, height: 30))
-            magicLabel.text = "Magic Item\nAttack Bonus"
-            magicLabel.font = UIFont.systemFont(ofSize: 10)
-            magicLabel.textAlignment = NSTextAlignment.center
-            magicLabel.numberOfLines = 2
-            magicLabel.tag = 700 + (indexPath.row * 100) + 12
-            scrollView.addSubview(magicLabel)
-            
-            let magicField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:170, width:40, height:30))
-            magicField.text = String(0)//String(Character.Selected.miscInitBonus)
-            magicField.textAlignment = NSTextAlignment.center
-            magicField.layer.borderWidth = 1.0
-            magicField.layer.borderColor = UIColor.black.cgColor
-            magicField.tag = 700 + (indexPath.row * 100) + 13
-            scrollView.addSubview(magicField)
-            
-            let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 145, width: 90, height: 30))
-            miscLabel.text = "Misc\nAttack Bonus"
-            miscLabel.font = UIFont.systemFont(ofSize: 10)
-            miscLabel.textAlignment = NSTextAlignment.center
-            miscLabel.numberOfLines = 2
-            miscLabel.tag = 700 + (indexPath.row * 100) + 14
-            scrollView.addSubview(miscLabel)
-            
-            let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:170, width:40, height:30))
-            miscField.text = String(0)//String(Character.Selected.miscInitBonus)
-            miscField.textAlignment = NSTextAlignment.center
-            miscField.layer.borderWidth = 1.0
-            miscField.layer.borderColor = UIColor.black.cgColor
-            miscField.tag = 700 + (indexPath.row * 100) + 15
-            scrollView.addSubview(miscField)
-            
-            let profWithLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 205, width: 90, height: 40))
-            profWithLabel.text = "Proficient\nWith\nWeapon"
-            profWithLabel.font = UIFont.systemFont(ofSize: 10)
-            profWithLabel.textAlignment = NSTextAlignment.center
-            profWithLabel.numberOfLines = 3
-            profWithLabel.tag = 700 + (indexPath.row * 100) + 16
-            scrollView.addSubview(profWithLabel)
-            
-            let profWithSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-115, y: 245, width:51, height:31))
-            profWithSwitch.isOn = false
-            profWithSwitch.tag = 700 + (indexPath.row * 100) + 17
-            scrollView.addSubview(profWithSwitch)
-            
-            let abilityDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 205, width: 90, height: 40))
-            abilityDmgLabel.text = "Ability\nMod to\nDamage"
-            abilityDmgLabel.font = UIFont.systemFont(ofSize: 10)
-            abilityDmgLabel.textAlignment = NSTextAlignment.center
-            abilityDmgLabel.numberOfLines = 3
-            abilityDmgLabel.tag = 700 + (indexPath.row * 100) + 18
-            scrollView.addSubview(abilityDmgLabel)
-            
-            let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 245, width:51, height:31))
-            abilityDmgSwitch.isOn = false
-            abilityDmgSwitch.tag = 1109
-            scrollView.addSubview(abilityDmgSwitch)
-            
-            let magicDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 205, width: 90, height: 40))
-            magicDmgLabel.text = "Magic Item\nDamage\nBonus"
-            magicDmgLabel.font = UIFont.systemFont(ofSize: 10)
-            magicDmgLabel.textAlignment = NSTextAlignment.center
-            magicDmgLabel.numberOfLines = 3
-            magicDmgLabel.tag = 700 + (indexPath.row * 100) + 19
-            scrollView.addSubview(magicDmgLabel)
-            
-            let magicDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:245, width:40, height:30))
-            magicDmgField.text = String(0)//String(Character.Selected.miscInitBonus)
-            magicDmgField.textAlignment = NSTextAlignment.center
-            magicDmgField.layer.borderWidth = 1.0
-            magicDmgField.layer.borderColor = UIColor.black.cgColor
-            magicDmgField.tag = 700 + (indexPath.row * 100) + 20
-            scrollView.addSubview(magicDmgField)
-            
-            let miscDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 205, width: 90, height: 40))
-            miscDmgLabel.text = "Misc\nDamage\nBonus"
-            miscDmgLabel.font = UIFont.systemFont(ofSize: 10)
-            miscDmgLabel.textAlignment = NSTextAlignment.center
-            miscDmgLabel.numberOfLines = 3
-            miscDmgLabel.tag = 700 + (indexPath.row * 100) + 21
-            scrollView.addSubview(miscDmgLabel)
-            
-            let miscDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:245, width:40, height:30))
-            miscDmgField.text = String(0)//String(Character.Selected.miscInitBonus)
-            miscDmgField.textAlignment = NSTextAlignment.center
-            miscDmgField.layer.borderWidth = 1.0
-            miscDmgField.layer.borderColor = UIColor.black.cgColor
-            miscDmgField.tag = 700 + (indexPath.row * 100) + 22
-            scrollView.addSubview(miscDmgField)
-            
-            let weaponDmgLabel = UILabel.init(frame: CGRect.init(x: 10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
-            weaponDmgLabel.text = "Weapon Damage Die"
-            weaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
-            weaponDmgLabel.textAlignment = NSTextAlignment.center
-            weaponDmgLabel.tag = 700 + (indexPath.row * 100) + 23
-            scrollView.addSubview(weaponDmgLabel)
-            
-            let extraWeaponDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
-            extraWeaponDmgLabel.text = "Extra Damage Die"
-            extraWeaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
-            extraWeaponDmgLabel.textAlignment = NSTextAlignment.center
-            extraWeaponDmgLabel.tag = 700 + (indexPath.row * 100) + 24
-            scrollView.addSubview(extraWeaponDmgLabel)
-            
-            let weaponDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:320, width:40, height:30))
-            weaponDieAmount.text = String(1)//String(Character.Selected.miscInitBonus)
-            weaponDieAmount.textAlignment = NSTextAlignment.center
-            weaponDieAmount.layer.borderWidth = 1.0
-            weaponDieAmount.layer.borderColor = UIColor.black.cgColor
-            weaponDieAmount.tag = 700 + (indexPath.row * 100) + 25
-            scrollView.addSubview(weaponDieAmount)
-            
-            let weaponD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:320, width:20, height:30))
-            weaponD.text = "d"
-            weaponD.textAlignment = NSTextAlignment.center
-            weaponD.tag = 700 + (indexPath.row * 100) + 26
-            scrollView.addSubview(weaponD)
-            
-            let weaponDie = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:320, width:40, height:30))
-            weaponDie.text = String(6)//String(Character.Selected.miscInitBonus)
-            weaponDie.textAlignment = NSTextAlignment.center
-            weaponDie.layer.borderWidth = 1.0
-            weaponDie.layer.borderColor = UIColor.black.cgColor
-            weaponDie.tag = 700 + (indexPath.row * 100) + 27
-            scrollView.addSubview(weaponDie)
-            
-            let extraDieSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2+40, y: 305, width:51, height:31))
-            extraDieSwitch.isOn = false
-            extraDieSwitch.tag = 700 + (indexPath.row * 100) + 28
-            scrollView.addSubview(extraDieSwitch)
-            
-            let extraDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:340, width:40, height:30))
-            extraDieAmount.text = String(1)//String(Character.Selected.miscInitBonus)
-            extraDieAmount.textAlignment = NSTextAlignment.center
-            extraDieAmount.layer.borderWidth = 1.0
-            extraDieAmount.layer.borderColor = UIColor.black.cgColor
-            extraDieAmount.tag = 700 + (indexPath.row * 100) + 29
-            scrollView.addSubview(extraDieAmount)
-            
-            let extraD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+60, y:340, width:20, height:30))
-            extraD.text = "d"
-            extraD.textAlignment = NSTextAlignment.center
-            extraD.tag = 700 + (indexPath.row * 100) + 30
-            scrollView.addSubview(extraD)
-            
-            let extraDieField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:340, width:40, height:30))
-            extraDieField.text = String(6)//String(Character.Selected.miscInitBonus)
-            extraDieField.textAlignment = NSTextAlignment.center
-            extraDieField.layer.borderWidth = 1.0
-            extraDieField.layer.borderColor = UIColor.black.cgColor
-            extraDieField.tag = 700 + (indexPath.row * 100) + 31
-            scrollView.addSubview(extraDieField)
-            
-            scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 380)
-            
-            view.addSubview(tempView)
+            tableView.reloadData()
         }
         else {
-            
+            if indexPath.section == 0 {
+                let tempView = createBasicView()
+                tempView.tag = 700 + (indexPath.row * 100)
+                
+                let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+                let damage = weapon.damage! as Damage
+                
+                var attackBonus = 0
+                var damageBonus = 0
+                let modDamage = damage.mod_damage
+                let abilityType: String = (weapon.ability?.name)!
+                switch abilityType {
+                case "STR":
+                    attackBonus += Character.Selected.strBonus //Add STR bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.strBonus
+                    }
+                case "DEX":
+                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.dexBonus
+                    }
+                case "CON":
+                    attackBonus += Character.Selected.conBonus //Add CON bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.conBonus
+                    }
+                case "INT":
+                    attackBonus += Character.Selected.intBonus //Add INT bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.intBonus
+                    }
+                case "WIS":
+                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.wisBonus
+                    }
+                case "CHA":
+                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                    if modDamage {
+                        damageBonus += Character.Selected.chaBonus
+                    }
+                default: break
+                }
+                
+                attackBonus = attackBonus + Int(weapon.magic_bonus + weapon.misc_bonus)
+                damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
+                
+                var damageDieNumber = damage.die_number
+                var damageDie = damage.die_type
+                let extraDie = damage.extra_die
+                if (extraDie) {
+                    damageDieNumber = damageDieNumber + damage.extra_die_number
+                    damageDie = damageDie + damage.extra_die_type
+                }
+                
+                let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+                tempView.addSubview(scrollView)
+                
+                let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
+                title.text = weapon.name?.capitalized
+                title.textAlignment = NSTextAlignment.center
+                title.tag = 700 + (indexPath.row * 100) + 1
+                title.layer.borderWidth = 1.0
+                title.layer.borderColor = UIColor.black.cgColor
+                scrollView.addSubview(title)
+                
+                let reachLabel = UILabel.init(frame: CGRect.init(x: 10, y: 30, width: tempView.frame.size.width/2-15, height: 30))
+                reachLabel.text = "Range"
+                reachLabel.textAlignment = NSTextAlignment.center
+                reachLabel.tag = 700 + (indexPath.row * 100) + 2
+                scrollView.addSubview(reachLabel)
+                
+                let reachField = UITextField.init(frame: CGRect.init(x: 10, y: 55, width: tempView.frame.size.width/2-15, height: 40))
+                reachField.text = weapon.range
+                reachField.textAlignment = NSTextAlignment.center
+                reachField.layer.borderWidth = 1.0
+                reachField.layer.borderColor = UIColor.black.cgColor
+                reachField.tag = 700 + (indexPath.row * 100) + 3
+                scrollView.addSubview(reachField)
+                
+                let damageTypeLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+5, y: 30, width: tempView.frame.size.width/2-15, height: 30))
+                damageTypeLabel.text = "Damage Type"
+                damageTypeLabel.textAlignment = NSTextAlignment.center
+                damageTypeLabel.tag = 700 + (indexPath.row * 100) + 4
+                scrollView.addSubview(damageTypeLabel)
+                
+                let damageTypePickerView = UIPickerView.init(frame: CGRect.init(x: tempView.frame.size.width/2+5, y: 55, width: tempView.frame.size.width/2-15, height: 40))
+                damageTypePickerView.dataSource = self
+                damageTypePickerView.delegate = self
+                damageTypePickerView.layer.borderWidth = 1.0
+                damageTypePickerView.layer.borderColor = UIColor.black.cgColor
+                damageTypePickerView.tag = 700 + (indexPath.row * 100) + 5
+                scrollView.addSubview(damageTypePickerView)
+                
+                let attackLabel = UILabel.init(frame: CGRect.init(x: 10, y: 90, width: tempView.frame.size.width-20, height: 30))
+                attackLabel.text = "Attack Ability"
+                attackLabel.textAlignment = NSTextAlignment.center
+                attackLabel.tag = 700 + (indexPath.row * 100) + 6
+                scrollView.addSubview(attackLabel)
+                
+                var aaIndex = 0
+                var abilityName = ""
+                var abilityMod = 0
+                switch abilityType {
+                case "STR":
+                    aaIndex = 0
+                    abilityName = "Strength"
+                    abilityMod = Character.Selected.strBonus
+                case "DEX":
+                    aaIndex = 1
+                    abilityName = "Dexterity"
+                    abilityMod = Character.Selected.dexBonus
+                case "CON":
+                    aaIndex = 2
+                    abilityName = "Constitution"
+                    abilityMod = Character.Selected.conBonus
+                case "INT":
+                    aaIndex = 3
+                    abilityName = "Intelligence"
+                    abilityMod = Character.Selected.intBonus
+                case "WIS":
+                    aaIndex = 4
+                    abilityName = "Wisdom"
+                    abilityMod = Character.Selected.wisBonus
+                case "CHA":
+                    aaIndex = 5
+                    abilityName = "Charisma"
+                    abilityMod = Character.Selected.chaBonus
+                default: break
+                }
+                
+                let aa = UISegmentedControl.init(frame: CGRect.init(x:10, y:115, width:tempView.frame.size.width-20, height:30))
+                aa.insertSegment(withTitle:"STR", at:0, animated:false)
+                aa.insertSegment(withTitle:"DEX", at:1, animated:false)
+                aa.insertSegment(withTitle:"CON", at:2, animated:false)
+                aa.insertSegment(withTitle:"INT", at:3, animated:false)
+                aa.insertSegment(withTitle:"WIS", at:4, animated:false)
+                aa.insertSegment(withTitle:"CHA", at:5, animated:false)
+                aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+                aa.selectedSegmentIndex = aaIndex
+                aa.tag = 700 + (indexPath.row * 100) + 7
+                scrollView.addSubview(aa)
+                
+                let profLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 145, width: 90, height: 30))
+                profLabel.text = "Proficiency\nBonus"
+                profLabel.font = UIFont.systemFont(ofSize: 10)
+                profLabel.textAlignment = NSTextAlignment.center
+                profLabel.numberOfLines = 2
+                profLabel.tag = 700 + (indexPath.row * 100) + 8
+                scrollView.addSubview(profLabel)
+                
+                let profField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y:170, width:40, height:30))
+                profField.text = String(Character.Selected.proficiency_bonus)
+                profField.textAlignment = NSTextAlignment.center
+                profField.isEnabled = false
+                profField.textColor = UIColor.darkGray
+                profField.layer.borderWidth = 1.0
+                profField.layer.borderColor = UIColor.darkGray.cgColor
+                profField.tag = 700 + (indexPath.row * 100) + 9
+                scrollView.addSubview(profField)
+                
+                let abilityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 145, width: 90, height: 30))
+                abilityLabel.text = abilityName+"\nBonus"
+                abilityLabel.font = UIFont.systemFont(ofSize: 10)
+                abilityLabel.textAlignment = NSTextAlignment.center
+                abilityLabel.numberOfLines = 2
+                abilityLabel.tag = 700 + (indexPath.row * 100) + 10
+                scrollView.addSubview(abilityLabel)
+                
+                let abilityField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:170, width:40, height:30))
+                abilityField.text = String(abilityMod)
+                abilityField.textAlignment = NSTextAlignment.center
+                abilityField.isEnabled = false
+                abilityField.textColor = UIColor.darkGray
+                abilityField.layer.borderWidth = 1.0
+                abilityField.layer.borderColor = UIColor.black.cgColor
+                abilityField.tag = 700 + (indexPath.row * 100) + 11
+                scrollView.addSubview(abilityField)
+                
+                let magicLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 145, width: 90, height: 30))
+                magicLabel.text = "Magic Item\nAttack Bonus"
+                magicLabel.font = UIFont.systemFont(ofSize: 10)
+                magicLabel.textAlignment = NSTextAlignment.center
+                magicLabel.numberOfLines = 2
+                magicLabel.tag = 700 + (indexPath.row * 100) + 12
+                scrollView.addSubview(magicLabel)
+                
+                let magicField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:170, width:40, height:30))
+                magicField.text = String(weapon.magic_bonus)
+                magicField.textAlignment = NSTextAlignment.center
+                magicField.layer.borderWidth = 1.0
+                magicField.layer.borderColor = UIColor.black.cgColor
+                magicField.tag = 700 + (indexPath.row * 100) + 13
+                scrollView.addSubview(magicField)
+                
+                let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 145, width: 90, height: 30))
+                miscLabel.text = "Misc\nAttack Bonus"
+                miscLabel.font = UIFont.systemFont(ofSize: 10)
+                miscLabel.textAlignment = NSTextAlignment.center
+                miscLabel.numberOfLines = 2
+                miscLabel.tag = 700 + (indexPath.row * 100) + 14
+                scrollView.addSubview(miscLabel)
+                
+                let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:170, width:40, height:30))
+                miscField.text = String(weapon.misc_bonus)
+                miscField.textAlignment = NSTextAlignment.center
+                miscField.layer.borderWidth = 1.0
+                miscField.layer.borderColor = UIColor.black.cgColor
+                miscField.tag = 700 + (indexPath.row * 100) + 15
+                scrollView.addSubview(miscField)
+                
+                let profWithLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 205, width: 90, height: 40))
+                profWithLabel.text = "Proficient\nWith\nWeapon"
+                profWithLabel.font = UIFont.systemFont(ofSize: 10)
+                profWithLabel.textAlignment = NSTextAlignment.center
+                profWithLabel.numberOfLines = 3
+                profWithLabel.tag = 700 + (indexPath.row * 100) + 16
+                scrollView.addSubview(profWithLabel)
+                
+                let profWithSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-115, y: 245, width:51, height:31))
+                if (Character.Selected.weapon_proficiencies?.lowercased().contains(weapon.category!))! {
+                    profWithSwitch.isOn = true
+                }
+                else {
+                    profWithSwitch.isOn = false
+                }
+                profWithSwitch.tag = 700 + (indexPath.row * 100) + 17
+                scrollView.addSubview(profWithSwitch)
+                
+                let abilityDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 205, width: 90, height: 40))
+                abilityDmgLabel.text = "Ability\nMod to\nDamage"
+                abilityDmgLabel.font = UIFont.systemFont(ofSize: 10)
+                abilityDmgLabel.textAlignment = NSTextAlignment.center
+                abilityDmgLabel.numberOfLines = 3
+                abilityDmgLabel.tag = 700 + (indexPath.row * 100) + 18
+                scrollView.addSubview(abilityDmgLabel)
+                
+                let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 245, width:51, height:31))
+                abilityDmgSwitch.isOn = damage.mod_damage
+                
+                abilityDmgSwitch.tag = 1109
+                scrollView.addSubview(abilityDmgSwitch)
+                
+                let magicDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 205, width: 90, height: 40))
+                magicDmgLabel.text = "Magic Item\nDamage\nBonus"
+                magicDmgLabel.font = UIFont.systemFont(ofSize: 10)
+                magicDmgLabel.textAlignment = NSTextAlignment.center
+                magicDmgLabel.numberOfLines = 3
+                magicDmgLabel.tag = 700 + (indexPath.row * 100) + 19
+                scrollView.addSubview(magicDmgLabel)
+                
+                let magicDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:245, width:40, height:30))
+                magicDmgField.text = String(damage.magic_bonus)
+                magicDmgField.textAlignment = NSTextAlignment.center
+                magicDmgField.layer.borderWidth = 1.0
+                magicDmgField.layer.borderColor = UIColor.black.cgColor
+                magicDmgField.tag = 700 + (indexPath.row * 100) + 20
+                scrollView.addSubview(magicDmgField)
+                
+                let miscDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 205, width: 90, height: 40))
+                miscDmgLabel.text = "Misc\nDamage\nBonus"
+                miscDmgLabel.font = UIFont.systemFont(ofSize: 10)
+                miscDmgLabel.textAlignment = NSTextAlignment.center
+                miscDmgLabel.numberOfLines = 3
+                miscDmgLabel.tag = 700 + (indexPath.row * 100) + 21
+                scrollView.addSubview(miscDmgLabel)
+                
+                let miscDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:245, width:40, height:30))
+                miscDmgField.text = String(damage.misc_bonus)
+                miscDmgField.textAlignment = NSTextAlignment.center
+                miscDmgField.layer.borderWidth = 1.0
+                miscDmgField.layer.borderColor = UIColor.black.cgColor
+                miscDmgField.tag = 700 + (indexPath.row * 100) + 22
+                scrollView.addSubview(miscDmgField)
+                
+                let weaponDmgLabel = UILabel.init(frame: CGRect.init(x: 10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
+                weaponDmgLabel.text = "Weapon Damage Die"
+                weaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
+                weaponDmgLabel.textAlignment = NSTextAlignment.center
+                weaponDmgLabel.tag = 700 + (indexPath.row * 100) + 23
+                scrollView.addSubview(weaponDmgLabel)
+                
+                let extraWeaponDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
+                extraWeaponDmgLabel.text = "Extra Damage Die"
+                extraWeaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
+                extraWeaponDmgLabel.textAlignment = NSTextAlignment.center
+                extraWeaponDmgLabel.tag = 700 + (indexPath.row * 100) + 24
+                scrollView.addSubview(extraWeaponDmgLabel)
+                
+                let weaponDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:320, width:40, height:30))
+                weaponDieAmount.text = String(damage.die_number)
+                weaponDieAmount.textAlignment = NSTextAlignment.center
+                weaponDieAmount.layer.borderWidth = 1.0
+                weaponDieAmount.layer.borderColor = UIColor.black.cgColor
+                weaponDieAmount.tag = 700 + (indexPath.row * 100) + 25
+                scrollView.addSubview(weaponDieAmount)
+                
+                let weaponD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:320, width:20, height:30))
+                weaponD.text = "d"
+                weaponD.textAlignment = NSTextAlignment.center
+                weaponD.tag = 700 + (indexPath.row * 100) + 26
+                scrollView.addSubview(weaponD)
+                
+                let weaponDie = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:320, width:40, height:30))
+                weaponDie.text = String(damage.die_type)
+                weaponDie.textAlignment = NSTextAlignment.center
+                weaponDie.layer.borderWidth = 1.0
+                weaponDie.layer.borderColor = UIColor.black.cgColor
+                weaponDie.tag = 700 + (indexPath.row * 100) + 27
+                scrollView.addSubview(weaponDie)
+                
+                let extraDieSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2+40, y: 305, width:51, height:31))
+                extraDieSwitch.isOn = damage.extra_die
+                extraDieSwitch.tag = 700 + (indexPath.row * 100) + 28
+                scrollView.addSubview(extraDieSwitch)
+                
+                let extraDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:340, width:40, height:30))
+                extraDieAmount.text = String(damage.extra_die_number)
+                extraDieAmount.textAlignment = NSTextAlignment.center
+                extraDieAmount.layer.borderWidth = 1.0
+                extraDieAmount.layer.borderColor = UIColor.black.cgColor
+                extraDieAmount.tag = 700 + (indexPath.row * 100) + 29
+                scrollView.addSubview(extraDieAmount)
+                
+                let extraD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+60, y:340, width:20, height:30))
+                extraD.text = "d"
+                extraD.textAlignment = NSTextAlignment.center
+                extraD.tag = 700 + (indexPath.row * 100) + 30
+                scrollView.addSubview(extraD)
+                
+                let extraDieField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:340, width:40, height:30))
+                extraDieField.text = String(damage.extra_die_type)
+                extraDieField.textAlignment = NSTextAlignment.center
+                extraDieField.layer.borderWidth = 1.0
+                extraDieField.layer.borderColor = UIColor.black.cgColor
+                extraDieField.tag = 700 + (indexPath.row * 100) + 31
+                scrollView.addSubview(extraDieField)
+                
+                scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 380)
+                
+                view.addSubview(tempView)
+            }
+            else {
+                
+            }
         }
     }
     

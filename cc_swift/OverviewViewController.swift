@@ -1298,34 +1298,28 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 260)
         
-        let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
-        do {
-            let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
-            
-            for armor: Armor in fetchedArmor {
-                if armor.equipped == true {
-                    if armor.shield == true {
-                        let shieldValue = armor.value + armor.magic_bonus + armor.misc_bonus
-                        shieldField.text = String(shieldValue)
+        
+        let allArmor: [Armor] = Character.Selected.equipment!.armor?.allObjects as! [Armor]
+        
+        for armor: Armor in allArmor {
+            if armor.equipped == true {
+                if armor.shield == true {
+                    let shieldValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                    shieldField.text = String(shieldValue)
+                }
+                else {
+                    let armorValue = armor.value + armor.magic_bonus + armor.misc_bonus
+                    armorValueField.text = String(armorValue)
+                    let maxDex = armor.max_dex
+                    if maxDex == 0 {
+                        maxDexField.text = "-"
                     }
                     else {
-                        let armorValue = armor.value + armor.magic_bonus + armor.misc_bonus
-                        armorValueField.text = String(armorValue)
-                        let maxDex = armor.max_dex
-                        if maxDex == 0 {
-                            maxDexField.text = "-"
-                        }
-                        else {
-                            maxDexField.text = String(maxDex)
-                        }
+                        maxDexField.text = String(maxDex)
                     }
                 }
             }
-        } catch {
-            fatalError("Failed to fetch armor: \(error)")
         }
-        
         
         switch Character.Selected.additional_ac_mod! {
         case "STR":
@@ -2223,14 +2217,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     // UITableView Delegate & Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 315 {
-            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
-            do {
-                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
-                return fetchedArmor.count
-            } catch {
-                fatalError("Failed to fetch armor: \(error)")
-            }
+            let allArmor = Character.Selected.equipment?.armor?.allObjects
+            return (allArmor?.count)!
+            
         }
         else {
             return Character.Selected.skills!.count
@@ -2241,36 +2230,34 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         if tableView.tag == 315 {
             let cell = skillsTable.dequeueReusableCell(withIdentifier: "SkillTableViewCell", for: indexPath) as! SkillTableViewCell
             
-            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
-            do {
-                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
-                let armor = fetchedArmor[indexPath.row]
-                
-                var armorValue = armor.value
-                armorValue = armorValue + armor.magic_bonus
-                armorValue = armorValue + armor.misc_bonus
-                
-                if armor.equipped == true {
-                    cell.skillName.textColor = UIColor.green
-                    cell.skillValue.textColor = UIColor.green
-                }
-                
-                if Int(armor.str_requirement) > Character.Selected.strScore {
-                    cell.skillName.textColor = UIColor.red
-                    cell.skillValue.textColor = UIColor.red
-                }
-                
-                cell.skillName.text = armor.name
+            let allArmor = Character.Selected.equipment?.armor?.allObjects
+            let armor: Armor = allArmor?[indexPath.row] as! Armor
+            
+            var armorValue = armor.value
+            armorValue = armorValue + armor.magic_bonus
+            armorValue = armorValue + armor.misc_bonus
+            
+            if armor.equipped == true {
+                cell.skillName.textColor = UIColor.green
+                cell.skillValue.textColor = UIColor.green
+            }
+            
+            if Int(armor.str_requirement) > Character.Selected.strScore {
+                cell.skillName.textColor = UIColor.red
+                cell.skillValue.textColor = UIColor.red
+            }
+            
+            cell.skillName.text = armor.name
+            if armor.shield == true {
+                cell.skillValue.text = " + " + String(armorValue)
+            }
+            else {
                 if armor.ability_mod?.name == "" {
                     cell.skillValue.text = String(armorValue)
                 }
                 else {
                     cell.skillValue.text = String(armorValue) + " + " + (armor.ability_mod?.name)!
                 }
-                
-            } catch {
-                fatalError("Failed to fetch armor: \(error)")
             }
             
             return cell
@@ -2299,8 +2286,27 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             default: break
             }
             
-            if skill.proficiency {
-                skillValue += Character.Selected.proficiencyBonus
+            let isProficient = skill.proficiency
+            let hasExpertise = skill.expertise
+            if isProficient {
+                if hasExpertise {
+                    skillValue += (Character.Selected.proficiencyBonus*2)
+                }
+                else {
+                    skillValue += Character.Selected.proficiencyBonus
+                }
+                cell.skillValue.textColor = UIColor.green
+            }
+            else {
+                if hasExpertise {
+//                    if skill.round_up {
+//                        skillValue += roundUpTo(value: Float(Character.Selected.proficiencyBonus), multiplier: 2)
+//                    }
+//                    else {
+                        skillValue += (Character.Selected.proficiencyBonus/2)
+//                    }
+                }
+                cell.skillValue.textColor = UIColor.black
             }
             
             cell.skillName.text = skillName!+"("+attribute+")"
@@ -2315,60 +2321,58 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+//    func roundUpTo(value: Float, multiplier: Int) -> Int{
+//        let fractionNum = value / Float(multiplier)
+//        return Int(ceil(fractionNum)) * multiplier
+//    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Edit selected skill value
         tableView.deselectRow(at: indexPath, animated: true)
         
         if tableView.tag == 315 {
             // Select a new armor to equip
-            let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Armor")
-            do {
-                let fetchedArmor = try moc.fetch(fetchRequest) as! [Armor]
-                let armor = fetchedArmor[indexPath.row]
-                
-                armor.equipped = !armor.equipped
-                
-                let parentView:UIView = tableView.superview!
-                for case let view in parentView.subviews {
-                    if armor.shield == true {
-                        if view.tag == 307 {
-                            // Shield Value
-                            let textField = view as! UITextField
-                            if armor.equipped == true {
-                                textField.text = String(armor.value)
-                            }
-                            else {
-                                textField.text = "-"
-                            }
+            let allArmor = Character.Selected.equipment?.armor?.allObjects
+            let armor: Armor = allArmor?[indexPath.row] as! Armor
+            
+            armor.equipped = !armor.equipped
+            
+            let parentView:UIView = tableView.superview!
+            for case let view in parentView.subviews {
+                if armor.shield == true {
+                    if view.tag == 307 {
+                        // Shield Value
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.value)
                         }
-                    }
-                    else {
-                        if view.tag == 303 {
-                            // Armor Value
-                            let textField = view as! UITextField
-                            if armor.equipped == true {
-                                textField.text = String(armor.value)
-                            }
-                            else {
-                                textField.text = String(10)
-                            }
-                        }
-                        else if view.tag == 309 {
-                            // Max Dex
-                            let textField = view as! UITextField
-                            if armor.equipped == true {
-                                textField.text = String(armor.max_dex)
-                            }
-                            else {
-                                textField.text = "-"
-                            }
+                        else {
+                            textField.text = "-"
                         }
                     }
                 }
-                
-            } catch {
-                fatalError("Failed to fetch armor: \(error)")
+                else {
+                    if view.tag == 303 {
+                        // Armor Value
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.value)
+                        }
+                        else {
+                            textField.text = String(10)
+                        }
+                    }
+                    else if view.tag == 309 {
+                        // Max Dex
+                        let textField = view as! UITextField
+                        if armor.equipped == true {
+                            textField.text = String(armor.max_dex)
+                        }
+                        else {
+                            textField.text = "-"
+                        }
+                    }
+                }
             }
             
             tableView.reloadData()
@@ -2376,7 +2380,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             let tag = 1400+(100*indexPath.row)
             
-            let skill:Skill = Character.Selected.skills!.allObjects[indexPath.row] as! Skill
+            let skill = Character.Selected.getSkill(name: Types.SkillsStrings[indexPath.row])
             let skillName = skill.name
             
             let attribute = skill.ability?.name
@@ -2402,12 +2406,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 attributeDisplay = "Charisma"
                 attributeValue += Character.Selected.chaBonus
             default: break
-            }
-            
-            var profValue = 0
-            let isProficient = skill.proficiency
-            if isProficient {
-                profValue += Character.Selected.proficiencyBonus
             }
             
             // Create skill adjusting view
@@ -2480,7 +2478,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             tempView.addSubview(skillProfLabel)
             
             let skillProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
-            skillProfSwitch.isOn = false
+            skillProfSwitch.isOn = skill.proficiency
             skillProfSwitch.tag = tag+9
             tempView.addSubview(skillProfSwitch)
             
@@ -2496,6 +2494,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             tempView.addSubview(halfProfLabel)
             
             let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
+            halfProfSwitch.isOn = skill.expertise
             halfProfSwitch.tag = tag+11
             tempView.addSubview(halfProfSwitch)
             
@@ -2506,17 +2505,15 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             tempView.addSubview(roundUpLabel)
             
             let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
-            roundUpSwitch.isOn = false
+            roundUpSwitch.isOn = skill.round_up
             roundUpSwitch.tag = tag+13
             tempView.addSubview(roundUpSwitch)
             
             if halfProfLabel.text == "Double Proficiency" {
-                halfProfSwitch.isOn = false
                 roundUpLabel.isHidden = true
                 roundUpSwitch.isHidden = true
             }
             else {
-                halfProfSwitch.isOn = true
                 if halfProfSwitch.isOn {
                     roundUpLabel.isHidden = false
                     roundUpSwitch.isHidden = false

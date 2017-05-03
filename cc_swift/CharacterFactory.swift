@@ -55,7 +55,8 @@ class CharacterFactory {
             resources.add(ResourceFactory.getResource(json: resourceJSON, context: context))
         }
         
-        character.skills = getSkills(context: context, character: character)
+        let skills = json["skills"]
+        character.skills = getSkills(json: skills, context: context, character: character)
         character.background = BackgroundFactory.getBackground(json: json, context: context)
         character.spellcasting = SpellcastingFactory.getSpellcasting(character: character, json: json, context: context)
         character.equipment = EquipmentFactory.getEquipment(character: character, json: json, context:context)
@@ -124,18 +125,16 @@ class CharacterFactory {
         return subrace
     }
     
-    static func getSkills(context: NSManagedObjectContext, character: Character) -> NSSet {
+    static func getSkills(json: JSON, context: NSManagedObjectContext, character: Character) -> NSSet {
         var skills: [Skill] = []
-        for skillType in Types.SkillsStrings {
+        for (index,skillJSON):(String,JSON) in json {
             let skill = Skill(context: context)
-            skill.name = skillType
-            for skillAbilityCombo in Types.SkillToAbilityDictionary {
-                if skillAbilityCombo.key == skillType {
-                    skill.ability = character.getAbility(name: skillAbilityCombo.value)
-                }
-            }
-            skill.expertise = false
-            skill.proficiency = false
+            skill.name = skillJSON["skill"].string
+            skill.ability = character.getAbility(name: skillJSON["attribute"].string!)
+            skill.proficiency = skillJSON["proficient"].bool!
+            skill.expertise = skillJSON["expertise"].bool!
+            skill.misc_bonus = skillJSON["misc_bonus"].int32!
+            skill.round_up = skillJSON["round_up"].bool!
             skills.append(skill)
         }
         return NSSet(array: skills)
@@ -168,7 +167,7 @@ class CharacterFactory {
         character.weapon_proficiencies = ""
         character.proficiency_bonus = 2
         character.abilities = getEmptyAbilities(character: character, context: context)
-        character.skills = getSkills(context: context, character: character)
+        character.skills = getEmptySkills(context: context, character: character)
         character.race = getDefaultRace(context: context)
         
         let classes = character.mutableSetValue(forKey: "classes")
@@ -209,5 +208,22 @@ class CharacterFactory {
         let race = Race(context: context)
         race.name = "Human"
         return race
+    }
+    
+    static func getEmptySkills(context: NSManagedObjectContext, character: Character) -> NSSet {
+        var skills: [Skill] = []
+        for skillType in Types.SkillsStrings {
+            let skill = Skill(context: context)
+            skill.name = skillType
+            for skillAbilityCombo in Types.SkillToAbilityDictionary {
+                if skillAbilityCombo.key == skillType {
+                    skill.ability = character.getAbility(name: skillAbilityCombo.value)
+                }
+            }
+            skill.expertise = false
+            skill.proficiency = false
+            skills.append(skill)
+        }
+        return NSSet(array: skills)
     }
 }

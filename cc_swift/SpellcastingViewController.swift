@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class SpellcastingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SpellcastingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     // Spell Attack
     @IBOutlet weak var saView: UIView!
@@ -52,13 +52,36 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         spellsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        longPressGesture.minimumPressDuration = 0.5
+        longPressGesture.delegate = self
+        spellsTable.addGestureRecognizer(longPressGesture)
+        
         self.setMiscDisplayData()
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: Notification.Name(rawValue:"SpellSlotUpdate"), object: nil, queue: nil, using: spellSlotUpdate)
+    }
+    
+    func spellSlotUpdate(notification: Notification) -> Void {
+        spellsTable.reloadData()
     }
     
     func hideKeyboardOnTap(_ selector: Selector) {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+    }
+    
+    func handleLongPress(longPressGesture:UILongPressGestureRecognizer) {
+        let p = longPressGesture.location(in: spellsTable)
+        let indexPath = spellsTable.indexPathForRow(at: p)
+        if indexPath == nil {
+            print("Long press on table view, not row.")
+        }
+        else if (longPressGesture.state == UIGestureRecognizerState.began) {
+            print("Long press on row, at \(indexPath!.row)")
+        }
     }
     
     func dismissKeyboard() {
@@ -735,6 +758,8 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             let totalSlots = spellLevel.total_slots
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SpellLevelTableViewCell", for: indexPath) as! SpellLevelTableViewCell
+                cell.parentViewController = self
+                cell.spellLevelContent = spellLevel
                 
                 // 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th, 9th
                 var suffix = ""

@@ -36,6 +36,7 @@
 		EC2076C11E1DBBBF00FD7B4F /* ArmorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076C01E1DBBBF00FD7B4F /* ArmorTableViewCell.swift */; };
 		EC2076C31E1DBBD100FD7B4F /* ToolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076C21E1DBBD100FD7B4F /* ToolTableViewCell.swift */; };
 		EC2076C71E1DBBEE00FD7B4F /* EquipmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2076C61E1DBBEE00FD7B4F /* EquipmentTableViewCell.swift */; };
+		EC5260121EB25FF100B64EFF /* SettingsPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5260111EB25FF100B64EFF /* SettingsPopoverViewController.swift */; };
 		EC6630111E09DA30002BE9FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6630101E09DA30002BE9FF /* AppDelegate.swift */; };
 		EC6630131E09DA30002BE9FF /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6630121E09DA30002BE9FF /* OverviewViewController.swift */; };
 		EC6630151E09DA30002BE9FF /* CombatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6630141E09DA30002BE9FF /* CombatViewController.swift */; };
@@ -85,6 +86,7 @@
 		EC2076C01E1DBBBF00FD7B4F /* ArmorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArmorTableViewCell.swift; sourceTree = "<group>"; };
 		EC2076C21E1DBBD100FD7B4F /* ToolTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolTableViewCell.swift; sourceTree = "<group>"; };
 		EC2076C61E1DBBEE00FD7B4F /* EquipmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentTableViewCell.swift; sourceTree = "<group>"; };
+		EC5260111EB25FF100B64EFF /* SettingsPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPopoverViewController.swift; sourceTree = "<group>"; };
 		EC66300D1E09DA2F002BE9FF /* cc_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cc_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC6630101E09DA30002BE9FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC6630121E09DA30002BE9FF /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
@@ -139,13 +141,14 @@
 		8DABE5A71E707BF300EB173D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */,
 				EC14BC4E1E52706300EF3347 /* CharacterViewController.swift */,
 				EC6630121E09DA30002BE9FF /* OverviewViewController.swift */,
 				EC6630141E09DA30002BE9FF /* CombatViewController.swift */,
-				EC2076B61E1D827900FD7B4F /* SpellcastingViewController.swift */,
 				EC2076BC1E1DB6C200FD7B4F /* ProfileViewController.swift */,
+				EC2076B61E1D827900FD7B4F /* SpellcastingViewController.swift */,
 				EC2076BE1E1DB6FD00FD7B4F /* EquipmentViewController.swift */,
-				8DABE5A81E707C1300EB173D /* CharacterSelectViewController.swift */,
+				EC5260111EB25FF100B64EFF /* SettingsPopoverViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				EC2076BB1E1D836B00FD7B4F /* SpellTableViewCell.swift in Sources */,
 				EC6630151E09DA30002BE9FF /* CombatViewController.swift in Sources */,
 				8DABE6741E76D79000EB173D /* Skill.swift in Sources */,
+				EC5260121EB25FF100B64EFF /* SettingsPopoverViewController.swift in Sources */,
 				8D37DE5D1E89ABC3002DD453 /* ClassFactory.swift in Sources */,
 				EC2076BD1E1DB6C200FD7B4F /* ProfileViewController.swift in Sources */,
 				ECA969CF1EA7F78A0057AD3E /* SpecializationFactory.swift in Sources */,
