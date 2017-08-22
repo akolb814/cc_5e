@@ -95,23 +95,23 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         let spellAbility = spellcasting.ability!.name!
         switch spellAbility {
         case "STR":
-            spellAttack += Character.Selected.strBonus //Add STR bonus
-            spellDC += Character.Selected.strBonus
+            spellAttack = spellAttack + Character.Selected.strBonus //Add STR bonus
+            spellDC = spellDC + Character.Selected.strBonus
         case "DEX":
-            spellAttack += Character.Selected.dexBonus //Add DEX bonus
-            spellDC += Character.Selected.dexBonus
+            spellAttack = spellAttack + Character.Selected.dexBonus //Add DEX bonus
+            spellDC = spellDC + Character.Selected.dexBonus
         case "CON":
-            spellAttack += Character.Selected.conBonus //Add CON bonus
-            spellDC += Character.Selected.conBonus
+            spellAttack = spellAttack + Character.Selected.conBonus //Add CON bonus
+            spellDC = spellDC + Character.Selected.conBonus
         case "INT":
-            spellAttack += Character.Selected.intBonus //Add INT bonus
-            spellDC += Character.Selected.intBonus
+            spellAttack = spellAttack + Character.Selected.intBonus //Add INT bonus
+            spellDC = spellDC + Character.Selected.intBonus
         case "WIS":
-            spellAttack += Character.Selected.wisBonus //Add WIS bonus
-            spellDC += Character.Selected.wisBonus
+            spellAttack = spellAttack + Character.Selected.wisBonus //Add WIS bonus
+            spellDC = spellDC + Character.Selected.wisBonus
         case "CHA":
-            spellAttack += Character.Selected.chaBonus //Add CHA bonus
-            spellDC += Character.Selected.chaBonus
+            spellAttack = spellAttack + Character.Selected.chaBonus //Add CHA bonus
+            spellDC = spellDC + Character.Selected.chaBonus
         default: break
         }
         
@@ -738,7 +738,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                     height += descriptionHeight
                     height += 35
                     
-                    return height//540
+                    return height
                 }
                 else {
                     return 35
@@ -785,6 +785,9 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SpellTableViewCell", for: indexPath) as! SpellTableViewCell
+                
+                cell.level = indexPath.section
+                cell.parentViewController = self
                 
                 let spell = spellLevel.spells?.allObjects[indexPath.row-1] as! Spell
                 cell.spellName.text = spell.name

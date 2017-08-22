@@ -43,6 +43,7 @@ class CharacterFactory {
         
         character.current_hp = json["current_hp"].int32!
         character.current_hit_dice = json["current_hit_dice"].int32!
+        character.death_saves = json["death_saves"].arrayObject as! [String]
         
         let classes = character.mutableSetValue(forKey: "classes")
         for (index,classJSON):(String,JSON) in json["classes"] {
@@ -119,9 +120,23 @@ class CharacterFactory {
         return race
     }
     
+    static func getRace(name: String, subrace: String, context: NSManagedObjectContext) -> Race {
+        let race = Race(context: context)
+        race.name = name
+        race.features = ""
+        race.subrace = getSubrace(name: subrace, context: context)
+        return race
+    }
+    
     static func getSubrace(json: JSON, context: NSManagedObjectContext) -> Subrace {
         let subrace = Subrace(context: context)
         subrace.name = json["race"]["subrace"].string
+        return subrace
+    }
+    
+    static func getSubrace(name: String, context: NSManagedObjectContext) -> Subrace {
+        let subrace = Subrace(context: context)
+        subrace.name = name
         return subrace
     }
     

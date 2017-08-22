@@ -23,21 +23,21 @@ class Types {
     
     static let RaceStrings = ["Aarakocra", "Aasimar", "Dragonborn", "Dwarf", "Elf", "Genasi", "Gnome", "Goliath", "Half-Elf", "Halfling", "Half-Orc", "Human", "Tiefling", "Custom"]
     
-    static let SubraceToRaceDictionary: [String: Array] = [
-        "Aarakocra":[],
-        "Aasimar":[],
+    static let SubraceToRaceDictionary: [String: [String]] = [
+        "Aarakocra":[""],
+        "Aasimar":[""],
         "Dragonborn":[],
         "Dwarf":["Dark", "Hill", "Mountain"],
         "Elf":["Dark", "Eladrin", "High", "Wood"],
         "Genasi":["Air", "Earth", "Fire", "Water"],
         "Gnome":["Deep", "Forest", "Rock"],
-        "Goliath":[],
+        "Goliath":[""],
         "Half-Elf":["Half-Elf", "Variant"],
         "Halfling":["Ghastly", "Lightfoot", "Stout"],
-        "Half-Orc":[],
+        "Half-Orc":[""],
         "Human":["Human", "Variant"],
         "Tiefling":["Tiefling", "Variant"],
-        "Custom":[]
+        "Custom":[""]
     ]
     
     static let SkillToAbilityDictionary: [String: String] =  [

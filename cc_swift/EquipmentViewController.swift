@@ -308,45 +308,45 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 let weapon:Weapon = weapons?.allObjects[indexPath.row] as! Weapon
                 let damage:Damage = weapon.damage!
         
-                var attackBonus = 0
-                var damageBonus = 0
+                var attackBonus: Int32 = 0
+                var damageBonus: Int32 = 0
                 let abilityType: String = weapon.ability!.name!
                 switch abilityType {
                 case "STR":
-                    attackBonus += Character.Selected.strBonus //Add STR bonus
+                    attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.strBonus
+                        damageBonus = damageBonus + Character.Selected.strBonus
                     }
                 case "DEX":
-                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                    attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.dexBonus
+                        damageBonus = damageBonus + Character.Selected.dexBonus
                     }
                 case "CON":
-                    attackBonus += Character.Selected.conBonus //Add CON bonus
+                    attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.conBonus
+                        damageBonus = damageBonus + Character.Selected.conBonus
                     }
                 case "INT":
-                    attackBonus += Character.Selected.intBonus //Add INT bonus
+                    attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.intBonus
+                        damageBonus = damageBonus + Character.Selected.intBonus
                     }
                 case "WIS":
-                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                    attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.wisBonus
+                        damageBonus = damageBonus + Character.Selected.wisBonus
                     }
                 case "CHA":
-                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                    attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
                     if damage.mod_damage {
-                        damageBonus += Character.Selected.chaBonus
+                        damageBonus = damageBonus + Character.Selected.chaBonus
                     }
                 default: break
                 }
         
-                attackBonus = attackBonus + Int(weapon.magic_bonus) + Int(weapon.misc_bonus)
-                damageBonus = damageBonus + Int(damage.magic_bonus) + Int(damage.misc_bonus)
+                attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
+                damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
         
                 var damageDieNumber = damage.die_number
                 var damageDie = damage.die_type
@@ -428,7 +428,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ToolTableViewCell", for: indexPath) as! ToolTableViewCell
                 let tool:Tool = tools?.allObjects[indexPath.row] as! Tool
         
-                var toolValue = 0
+                var toolValue: Int32 = 0
                 if tool.proficient {
                     toolValue += Character.Selected.proficiencyBonus
                 }
@@ -486,45 +486,45 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     let weaponItem = item as! Weapon
                     let damage:Damage = weaponItem.damage!
                     
-                    var attackBonus = 0
-                    var damageBonus = 0
+                    var attackBonus: Int32 = 0
+                    var damageBonus: Int32 = 0
                     let abilityType: String = weaponItem.ability!.name!
                     switch abilityType {
                     case "STR":
-                        attackBonus += Character.Selected.strBonus //Add STR bonus
+                        attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.strBonus
+                            damageBonus = damageBonus + Character.Selected.strBonus
                         }
                     case "DEX":
-                        attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                        attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.dexBonus
+                            damageBonus = damageBonus + Character.Selected.dexBonus
                         }
                     case "CON":
-                        attackBonus += Character.Selected.conBonus //Add CON bonus
+                        attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.conBonus
+                            damageBonus = damageBonus + Character.Selected.conBonus
                         }
                     case "INT":
-                        attackBonus += Character.Selected.intBonus //Add INT bonus
+                        attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.intBonus
+                            damageBonus = damageBonus + Character.Selected.intBonus
                         }
                     case "WIS":
-                        attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                        attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.wisBonus
+                            damageBonus = damageBonus + Character.Selected.wisBonus
                         }
                     case "CHA":
-                        attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                        attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
                         if damage.mod_damage {
-                            damageBonus += Character.Selected.chaBonus
+                            damageBonus = damageBonus + Character.Selected.chaBonus
                         }
                     default: break
                     }
                     
-                    attackBonus = attackBonus + Int(weaponItem.magic_bonus) + Int(weaponItem.misc_bonus)
-                    damageBonus = damageBonus + Int(damage.magic_bonus) + Int(damage.misc_bonus)
+                    attackBonus = attackBonus + weaponItem.magic_bonus + weaponItem.misc_bonus
+                    damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
                     
                     var damageDieNumber = damage.die_number
                     var damageDie = damage.die_type
@@ -607,25 +607,25 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ToolTableViewCell", for: indexPath) as! ToolTableViewCell
                     
-                    var toolValue = 0
+                    var toolValue: Int32 = 0
                     if toolItem.proficient {
-                        toolValue += Character.Selected.proficiencyBonus
+                        toolValue = toolValue + Character.Selected.proficiencyBonus
                     }
                     
                     let abilityType: String = toolItem.ability!.name!
                     switch abilityType {
                     case "STR":
-                        toolValue += Character.Selected.strBonus //Add STR bonus
+                        toolValue = toolValue + Character.Selected.strBonus //Add STR bonus
                     case "DEX":
-                        toolValue += Character.Selected.dexBonus //Add DEX bonus
+                        toolValue = toolValue + Character.Selected.dexBonus //Add DEX bonus
                     case "CON":
-                        toolValue += Character.Selected.conBonus //Add CON bonus
+                        toolValue = toolValue + Character.Selected.conBonus //Add CON bonus
                     case "INT":
-                        toolValue += Character.Selected.intBonus //Add INT bonus
+                        toolValue = toolValue + Character.Selected.intBonus //Add INT bonus
                     case "WIS":
-                        toolValue += Character.Selected.wisBonus //Add WIS bonus
+                        toolValue = toolValue + Character.Selected.wisBonus //Add WIS bonus
                     case "CHA":
-                        toolValue += Character.Selected.chaBonus //Add CHA bonus
+                        toolValue = toolValue + Character.Selected.chaBonus //Add CHA bonus
                     default: break
                     }
                     

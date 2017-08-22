@@ -13,7 +13,7 @@ import SwiftyJSON
 class ClassFactory {
     
     static func getDefaultClass(context: NSManagedObjectContext) -> Class {
-        var defaultClass = getBarbarian(context: context)
+        let defaultClass = getBarbarian(context: context)
         defaultClass.primary = true
         return defaultClass
     }
@@ -30,7 +30,7 @@ class ClassFactory {
     }
     
     static func getBarbarian(context: NSManagedObjectContext) -> Class {
-        var barbarian = Class(context: context)
+        let barbarian = Class(context: context)
         barbarian.name = Types.Classes.Barbarian.rawValue
         barbarian.hit_die = 8
         barbarian.level = 1

@@ -44,7 +44,7 @@
         },
         "INT": {
             "score": 16,
-            "save_proficiency": false
+            "save_proficiency": true
         },
         "WIS": {
             "score": 8,
@@ -58,11 +58,11 @@
     "current_hit_dice": 1,
     "current_hp": 0,
     "max_hp": 0,
+    "death_saves": [],
     "ac": 16,
     "additional_ac_mod":"",
     "proficiency_bonus": 2,
     "initiative_misc_bonus": 0,
-    "save_proficiencies": ["DEX", "INT"],
     "skills": [{
                "skill": "Acrobatics",
                "attribute": "DEX",

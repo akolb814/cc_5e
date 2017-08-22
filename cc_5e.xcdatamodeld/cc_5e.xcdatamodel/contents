@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Ability" representedClassName="Ability" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="modifier" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -33,6 +33,7 @@
         <attribute name="bonds" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="current_hit_dice" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="current_hp" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="death_saves" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="experience" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="flaws" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -187,7 +188,7 @@
         <element name="Ability" positionX="-8424" positionY="-207" width="128" height="43"/>
         <element name="Armor" positionX="-8084" positionY="-13" width="128" height="43"/>
         <element name="Background" positionX="-8523" positionY="-378" width="128" height="43"/>
-        <element name="Character" positionX="-8505" positionY="-477" width="128" height="28"/>
+        <element name="Character" positionX="-8505" positionY="-477" width="128" height="750"/>
         <element name="Class" positionX="-8210" positionY="-376" width="128" height="43"/>
         <element name="Currency" positionX="-8676" positionY="-9" width="128" height="43"/>
         <element name="Damage" positionX="-8550" positionY="99" width="128" height="43"/>

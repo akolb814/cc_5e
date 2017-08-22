@@ -18,80 +18,80 @@ extension Character {
         return UIImage(named: "default_character_image")!
     }
     
-    var strBonus: Int {
-        return Int(getAbility(name: Types.Abilities.STR.rawValue).modifier)
+    var strBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.STR.rawValue).modifier)
     }
     
-    var dexBonus: Int {
-        return Int(getAbility(name: Types.Abilities.DEX.rawValue).modifier)
+    var dexBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.DEX.rawValue).modifier)
     }
     
-    var conBonus: Int {
-        return Int(getAbility(name: Types.Abilities.CON.rawValue).modifier)
+    var conBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CON.rawValue).modifier)
     }
     
-    var intBonus: Int {
-        return Int(getAbility(name: Types.Abilities.INT.rawValue).modifier)
+    var intBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.INT.rawValue).modifier)
     }
     
-    var wisBonus: Int {
-        return Int(getAbility(name: Types.Abilities.WIS.rawValue).modifier)
+    var wisBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.WIS.rawValue).modifier)
     }
     
-    var chaBonus: Int {
-        return Int(getAbility(name: Types.Abilities.CHA.rawValue).modifier)
+    var chaBonus: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CHA.rawValue).modifier)
     }
     
-    var strScore: Int {
-        return Int(getAbility(name: Types.Abilities.STR.rawValue).score)
+    var strScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.STR.rawValue).score)
     }
     
-    var dexScore: Int {
-        return Int(getAbility(name: Types.Abilities.DEX.rawValue).score)
+    var dexScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.DEX.rawValue).score)
     }
     
-    var conScore: Int {
-        return Int(getAbility(name: Types.Abilities.CON.rawValue).score)
+    var conScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CON.rawValue).score)
     }
     
-    var intScore: Int {
-        return Int(getAbility(name: Types.Abilities.INT.rawValue).score)
+    var intScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.INT.rawValue).score)
     }
     
-    var wisScore: Int {
-        return Int(getAbility(name: Types.Abilities.WIS.rawValue).score)
+    var wisScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.WIS.rawValue).score)
     }
     
-    var chaScore: Int {
-        return Int(getAbility(name: Types.Abilities.CHA.rawValue).score)
+    var chaScore: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CHA.rawValue).score)
     }
     
-    var strSave: Int {
-        return Int(getAbility(name: Types.Abilities.STR.rawValue).save)
+    var strSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.STR.rawValue).save)
     }
     
-    var dexSave: Int {
-        return Int(getAbility(name: Types.Abilities.DEX.rawValue).save)
+    var dexSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.DEX.rawValue).save)
     }
     
-    var conSave: Int {
-        return Int(getAbility(name: Types.Abilities.CON.rawValue).save)
+    var conSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CON.rawValue).save)
     }
     
-    var intSave: Int {
-        return Int(getAbility(name: Types.Abilities.INT.rawValue).save)
+    var intSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.INT.rawValue).save)
     }
     
-    var wisSave: Int {
-        return Int(getAbility(name: Types.Abilities.WIS.rawValue).save)
+    var wisSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.WIS.rawValue).save)
     }
     
-    var chaSave: Int {
-        return Int(getAbility(name: Types.Abilities.CHA.rawValue).save)
+    var chaSave: Int32 {
+        return Int32(getAbility(name: Types.Abilities.CHA.rawValue).save)
     }
     
-    var proficiencyBonus: Int {
-        return Int(proficiency_bonus)
+    var proficiencyBonus: Int32 {
+        return Int32(proficiency_bonus)
     }
     
     var primaryClass: Class {
@@ -111,7 +111,7 @@ extension Character {
         ability.save = (score-10)/2
         ability.save_proficiency = proficient
         if(ability.save_proficiency) {
-            ability.save += proficiencyBonus
+            ability.save = Int32(ability.save + proficiencyBonus)
         }
     }
     
@@ -163,7 +163,7 @@ extension Character {
     }
     
     func calcInitiative() {
-        var initiative = self.proficiency_bonus + self.dexBonus + self.initiative_misc
+        var initiative = Int32(self.proficiency_bonus + self.dexBonus + self.initiative_misc)
         if self.alert_feat == true {
             initiative = initiative + 5
         }
@@ -184,17 +184,17 @@ extension Character {
         var skillValue: Int32 = 0
         switch attribute! {
         case "STR":
-            skillValue += self.strBonus
+            skillValue = Int32(skillValue + self.strBonus)
         case "DEX":
-            skillValue += self.dexBonus
+            skillValue = Int32(skillValue + self.dexBonus)
         case "CON":
-            skillValue += self.conBonus
+            skillValue = Int32(skillValue + self.conBonus)
         case "INT":
-            skillValue += self.intBonus
+            skillValue = Int32(skillValue + self.intBonus)
         case "WIS":
-            skillValue += self.wisBonus
+            skillValue = Int32(skillValue + self.wisBonus)
         case "CHA":
-            skillValue += self.chaBonus
+            skillValue = Int32(skillValue + self.chaBonus)
         default: break
         }
         
@@ -215,7 +215,7 @@ extension Character {
                 
                 if armor.shield == false {
                     if armor.max_dex != 0 {
-                        if self.dexBonus <= Int(armor.max_dex) {
+                        if self.dexBonus <= armor.max_dex {
                             armorClass = armorClass + self.dexBonus
                         }
                         else {

@@ -14,6 +14,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var hpView: UIView!
     @IBOutlet weak var hpTitle: UILabel!
     @IBOutlet weak var hpValue: UILabel!
+    @IBOutlet weak var dsPass1: UIView!
+    @IBOutlet weak var dsPass2: UIView!
+    @IBOutlet weak var dsPass3: UIView!
+    @IBOutlet weak var dsFail1: UIView!
+    @IBOutlet weak var dsFail2: UIView!
+    @IBOutlet weak var dsFail3: UIView!
     @IBOutlet weak var hpButton: UIButton!
     
     // Resource
@@ -50,7 +56,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var weaponsTable: UITableView!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var hpEffectValue = 0
+    var hpEffectValue: Int32 = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +80,57 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func setMiscDisplayData() {
         // HP
-        hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
+        dsPass1.layer.cornerRadius = 10
+        dsPass1.layer.borderColor = UIColor.green.cgColor
+        dsPass1.layer.borderWidth = 0.5
+        
+        dsPass2.layer.cornerRadius = 10
+        dsPass2.layer.borderColor = UIColor.green.cgColor
+        dsPass2.layer.borderWidth = 0.5
+        
+        dsPass3.layer.cornerRadius = 10
+        dsPass3.layer.borderColor = UIColor.green.cgColor
+        dsPass3.layer.borderWidth = 0.5
+        
+        dsFail1.layer.cornerRadius = 10
+        dsFail1.layer.borderColor = UIColor.red.cgColor
+        dsFail1.layer.borderWidth = 0.5
+        
+        dsFail2.layer.cornerRadius = 10
+        dsFail2.layer.borderColor = UIColor.red.cgColor
+        dsFail2.layer.borderWidth = 0.5
+        
+        dsFail3.layer.cornerRadius = 10
+        dsFail3.layer.borderColor = UIColor.red.cgColor
+        dsFail3.layer.borderWidth = 0.5
+        
+        if Character.Selected.current_hp == 0 {
+            // Death Saves
+            hpTitle.text = "Death Saves"
+            hpValue.isHidden = true
+            hpValue.text = ""
+            
+            dsPass1.isHidden = false
+            dsPass2.isHidden = false
+            dsPass3.isHidden = false
+            dsFail1.isHidden = false
+            dsFail2.isHidden = false
+            dsFail3.isHidden = false
+            
+            updateDeathSaves()
+        }
+        else {
+            hpTitle.text = "HP"
+            hpValue.isHidden = false
+            hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
+            
+            dsPass1.isHidden = true
+            dsPass2.isHidden = true
+            dsPass3.isHidden = true
+            dsFail1.isHidden = true
+            dsFail2.isHidden = true
+            dsFail3.isHidden = true
+        }
         
         if((Character.Selected.resources?.allObjects.count ?? 0)! > 0) {
             for resource: Resource in Character.Selected.resources?.allObjects as! [Resource] {
@@ -169,7 +225,107 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         weaponsTable.layer.borderWidth = 1.0
         weaponsTable.layer.borderColor = UIColor.black.cgColor
     }
-
+    
+    func updateDeathSaves() {
+        print(Character.Selected.death_saves)
+        
+        var passes = 0
+        var fails = 0
+        
+        // Determine number of passes & fails
+        for counter in Character.Selected.death_saves {
+            if counter == "Pass" {
+                passes = passes + 1
+            }
+            else {
+                fails = fails + 1
+            }
+        }
+        
+        switch passes {
+        case 0:
+            dsPass1.backgroundColor = UIColor.clear
+            dsPass2.backgroundColor = UIColor.clear
+            dsPass3.backgroundColor = UIColor.clear
+            break
+            
+        case 1:
+            dsPass1.backgroundColor = UIColor.green
+            dsPass2.backgroundColor = UIColor.clear
+            dsPass3.backgroundColor = UIColor.clear
+            break
+            
+        case 2:
+            dsPass1.backgroundColor = UIColor.green
+            dsPass2.backgroundColor = UIColor.green
+            dsPass3.backgroundColor = UIColor.clear
+            break
+            
+        case 3:
+            // Stabalize
+            dsPass1.backgroundColor = UIColor.green
+            dsPass2.backgroundColor = UIColor.green
+            dsPass3.backgroundColor = UIColor.green
+            
+            Character.Selected.death_saves.removeAll()
+            Character.Selected.current_hp = 1
+            
+            hpTitle.text = "HP"
+            hpValue.isHidden = false
+            hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
+            
+            dsPass1.isHidden = true
+            dsPass2.isHidden = true
+            dsPass3.isHidden = true
+            dsFail1.isHidden = true
+            dsFail2.isHidden = true
+            dsFail3.isHidden = true
+            
+            updateDeathSaves()
+            break
+            
+        default:
+            dsPass1.backgroundColor = UIColor.green
+            dsPass2.backgroundColor = UIColor.green
+            dsPass3.backgroundColor = UIColor.green
+            break
+            
+        }
+        
+        switch fails {
+        case 0:
+            dsFail1.backgroundColor = UIColor.clear
+            dsFail2.backgroundColor = UIColor.clear
+            dsFail3.backgroundColor = UIColor.clear
+            break
+            
+        case 1:
+            dsFail1.backgroundColor = UIColor.red
+            dsFail2.backgroundColor = UIColor.clear
+            dsFail3.backgroundColor = UIColor.clear
+            break
+            
+        case 2:
+            dsFail1.backgroundColor = UIColor.red
+            dsFail2.backgroundColor = UIColor.red
+            dsFail3.backgroundColor = UIColor.clear
+            break
+            
+        case 3:
+            dsFail1.backgroundColor = UIColor.red
+            dsFail2.backgroundColor = UIColor.red
+            dsFail3.backgroundColor = UIColor.red
+            break
+            
+        default:
+            dsFail1.backgroundColor = UIColor.red
+            dsFail2.backgroundColor = UIColor.red
+            dsFail3.backgroundColor = UIColor.red
+            break
+        }
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -213,27 +369,51 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let segControl = view as! UISegmentedControl
                     if segControl.selectedSegmentIndex == 0 {
                         // Damage
-                        Character.Selected.current_hp -= hpEffectValue
+                        Character.Selected.current_hp = Int32(Character.Selected.current_hp - hpEffectValue)
                     }
                     else if segControl.selectedSegmentIndex == 1 {
                         // Heal
-                        Character.Selected.current_hp += hpEffectValue
+                        Character.Selected.current_hp = Int32(Character.Selected.current_hp + hpEffectValue)
                         if Character.Selected.current_hp > Character.Selected.max_hp {
                             Character.Selected.current_hp = Character.Selected.max_hp
                         }
                     }
                     else {
                         // Temp HP
-                        Character.Selected.current_hp += hpEffectValue
+                        Character.Selected.current_hp = Int32(Character.Selected.current_hp + hpEffectValue)
                     }
                 }
             }
             hpEffectValue = 0
-            hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
             
             if Character.Selected.current_hp == 0 {
                 // Death Saves
+                hpTitle.text = "Death Saves"
+                hpValue.isHidden = true
+                hpValue.text = ""
+                
+                dsPass1.isHidden = false
+                dsPass2.isHidden = false
+                dsPass3.isHidden = false
+                dsFail1.isHidden = false
+                dsFail2.isHidden = false
+                dsFail3.isHidden = false
+                
+                updateDeathSaves()
             }
+            else {
+                hpTitle.text = "HP"
+                hpValue.isHidden = false
+                hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
+                
+                dsPass1.isHidden = true
+                dsPass2.isHidden = true
+                dsPass3.isHidden = true
+                dsFail1.isHidden = true
+                dsFail2.isHidden = true
+                dsFail3.isHidden = true
+            }
+            
             break
             
         case 200:
@@ -336,7 +516,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func stepperChanged(stepper: UIStepper) {
         if stepper.tag == 107 {
             // HP
-            hpEffectValue = Int(stepper.value)
+            hpEffectValue = Int32(stepper.value)
             let parentView = stepper.superview
             for case let view in (parentView?.subviews)! {
                 if view.tag == 106 {
@@ -359,64 +539,88 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Edit HP
     @IBAction func hpAction(button: UIButton) {
-        // Create hit point adjusting view
-        let tempView = createBasicView()
-        tempView.tag = 100
-        
-        let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
-        title.text = "HP"
-        title.textAlignment = NSTextAlignment.center
-        title.tag = 101
-        tempView.addSubview(title)
-        
-        let currentHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
-        currentHP.text = String(Character.Selected.current_hp)
-        currentHP.textAlignment = NSTextAlignment.center
-        currentHP.layer.borderWidth = 1.0
-        currentHP.layer.borderColor = UIColor.black.cgColor
-        currentHP.tag = 102
-        tempView.addSubview(currentHP)
-        
-        let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
-        slash.text = "/"
-        slash.textAlignment = NSTextAlignment.center
-        slash.tag = 103
-        tempView.addSubview(slash)
-        
-        let maxHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
-        maxHP.text = String(Character.Selected.max_hp)
-        maxHP.textAlignment = NSTextAlignment.center
-        maxHP.layer.borderWidth = 1.0
-        maxHP.layer.borderColor = UIColor.black.cgColor
-        maxHP.tag = 104
-        tempView.addSubview(maxHP)
-        
-        let effectType = UISegmentedControl.init(frame: CGRect.init(x:10, y:75, width:tempView.frame.size.width-20, height:30))
-        effectType.insertSegment(withTitle:"Damage", at:0, animated:false)
-        effectType.insertSegment(withTitle:"Heal", at:1, animated:false)
-        effectType.insertSegment(withTitle:"Temp", at:2, animated:false)
-        effectType.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
-        effectType.selectedSegmentIndex = 0
-        effectType.tag = 105
-        tempView.addSubview(effectType)
-        
-        let effectValue = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:110, width:40, height:30))
-        effectValue.text = String(hpEffectValue)
-        effectValue.textAlignment = NSTextAlignment.center
-        effectValue.layer.borderWidth = 1.0
-        effectValue.layer.borderColor = UIColor.black.cgColor
-        effectValue.tag = 106
-        tempView.addSubview(effectValue)
-        
-        let stepper = UIStepper.init(frame: CGRect.init(x:tempView.frame.size.width/2-47, y:145, width:94, height:29))
-        stepper.value = 0
-        stepper.minimumValue = 0
-        stepper.maximumValue = 1000
-        stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
-        stepper.tag = 107
-        tempView.addSubview(stepper)
-        
-        view.addSubview(tempView)
+        if Character.Selected.current_hp == 0 {
+            // Create an alert view to select fail, cancel, pass
+            let alert: UIAlertController = UIAlertController(title: "Death Save", message: "", preferredStyle: .alert)
+            let pass: UIAlertAction = UIAlertAction(title: "Pass", style: .default, handler: { (action: UIAlertAction) in
+                Character.Selected.death_saves.append("Pass")
+                self.updateDeathSaves()
+            })
+            alert.addAction(pass)
+            
+            let fail: UIAlertAction = UIAlertAction(title: "Fail", style: .default, handler: { (action: UIAlertAction) in
+                Character.Selected.death_saves.append("Fail")
+                self.updateDeathSaves()
+            })
+            alert.addAction(fail)
+            
+            let cancel: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            alert.addAction(cancel)
+            
+            self.present(alert, animated: true)
+        }
+        else {
+            // Create hit point adjusting view
+            let tempView = createBasicView()
+            tempView.tag = 100
+            
+            let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
+            title.text = "HP"
+            title.textAlignment = NSTextAlignment.center
+            title.tag = 101
+            tempView.addSubview(title)
+            
+            let currentHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y:35, width:40, height:30))
+            currentHP.text = String(Character.Selected.current_hp)
+            currentHP.textAlignment = NSTextAlignment.center
+            currentHP.layer.borderWidth = 1.0
+            currentHP.layer.borderColor = UIColor.black.cgColor
+            currentHP.tag = 102
+            tempView.addSubview(currentHP)
+            
+            let slash = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-15, y:35, width:30, height:30))
+            slash.text = "/"
+            slash.textAlignment = NSTextAlignment.center
+            slash.tag = 103
+            tempView.addSubview(slash)
+            
+            let maxHP = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+10, y:35, width:40, height:30))
+            maxHP.text = String(Character.Selected.max_hp)
+            maxHP.textAlignment = NSTextAlignment.center
+            maxHP.layer.borderWidth = 1.0
+            maxHP.layer.borderColor = UIColor.black.cgColor
+            maxHP.tag = 104
+            tempView.addSubview(maxHP)
+            
+            let effectType = UISegmentedControl.init(frame: CGRect.init(x:10, y:75, width:tempView.frame.size.width-20, height:30))
+            effectType.insertSegment(withTitle:"Damage", at:0, animated:false)
+            effectType.insertSegment(withTitle:"Heal", at:1, animated:false)
+            effectType.insertSegment(withTitle:"Temp", at:2, animated:false)
+            effectType.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+            effectType.selectedSegmentIndex = 0
+            effectType.tag = 105
+            tempView.addSubview(effectType)
+            
+            let effectValue = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-20, y:110, width:40, height:30))
+            effectValue.text = String(hpEffectValue)
+            effectValue.textAlignment = NSTextAlignment.center
+            effectValue.layer.borderWidth = 1.0
+            effectValue.layer.borderColor = UIColor.black.cgColor
+            effectValue.tag = 106
+            tempView.addSubview(effectValue)
+            
+            let stepper = UIStepper.init(frame: CGRect.init(x:tempView.frame.size.width/2-47, y:145, width:94, height:29))
+            stepper.value = 0
+            stepper.minimumValue = 0
+            stepper.maximumValue = 1000
+            stepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+            stepper.tag = 107
+            tempView.addSubview(stepper)
+            
+            view.addSubview(tempView)
+        }
     }
     
     // Edit Resource
@@ -1046,7 +1250,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.armorValue.textColor = UIColor.green
             }
             
-            if Int(armor.str_requirement) > Character.Selected.strScore {
+            if armor.str_requirement > Character.Selected.strScore {
                 cell.armorName.textColor = UIColor.red
                 cell.armorValue.textColor = UIColor.red
             }
@@ -1072,47 +1276,46 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
                 let damage = weapon.damage! as Damage
                 
-                var attackBonus = 0
-                var damageBonus = 0
+                var attackBonus: Int32 = 0
+                var damageBonus: Int32 = 0
                 let modDamage = damage.mod_damage
                 let abilityType: String = (weapon.ability?.name)!
                 switch abilityType {
                 case "STR":
-                    attackBonus += Character.Selected.strBonus //Add STR bonus
+                    attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
                     if modDamage {
-                        damageBonus += Character.Selected.strBonus
+                        damageBonus = damageBonus + Character.Selected.strBonus
                     }
                 case "DEX":
-                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                    attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
                     if modDamage {
-                        damageBonus += Character.Selected.dexBonus
+                        damageBonus = damageBonus + Character.Selected.dexBonus
                     }
                 case "CON":
-                    attackBonus += Character.Selected.conBonus //Add CON bonus
+                    attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
                     if modDamage {
-                        damageBonus += Character.Selected.conBonus
+                        damageBonus = damageBonus + Character.Selected.conBonus
                     }
                 case "INT":
-                    attackBonus += Character.Selected.intBonus //Add INT bonus
+                    attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
                     if modDamage {
-                        damageBonus += Character.Selected.intBonus
+                        damageBonus = damageBonus + Character.Selected.intBonus
                     }
                 case "WIS":
-                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                    attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
                     if modDamage {
-                        damageBonus += Character.Selected.wisBonus
+                        damageBonus = damageBonus + Character.Selected.wisBonus
                     }
                 case "CHA":
-                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                    attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
                     if modDamage {
-                        damageBonus += Character.Selected.chaBonus
+                        damageBonus = damageBonus + Character.Selected.chaBonus
                     }
                 default: break
                 }
                 
-                attackBonus = attackBonus +
-                    Int(weapon.magic_bonus + weapon.misc_bonus)
-                damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
+                attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
+                damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
                 
                 var damageDieNumber = damage.die_number
                 var damageDie = damage.die_type
@@ -1198,46 +1401,46 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
                 let damage = weapon.damage! as Damage
                 
-                var attackBonus = 0
-                var damageBonus = 0
+                var attackBonus: Int32 = 0
+                var damageBonus: Int32 = 0
                 let modDamage = damage.mod_damage
                 let abilityType: String = (weapon.ability?.name)!
                 switch abilityType {
                 case "STR":
-                    attackBonus += Character.Selected.strBonus //Add STR bonus
+                    attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
                     if modDamage {
-                        damageBonus += Character.Selected.strBonus
+                        damageBonus = damageBonus + Character.Selected.strBonus
                     }
                 case "DEX":
-                    attackBonus += Character.Selected.dexBonus //Add DEX bonus
+                    attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
                     if modDamage {
-                        damageBonus += Character.Selected.dexBonus
+                        damageBonus = damageBonus + Character.Selected.dexBonus
                     }
                 case "CON":
-                    attackBonus += Character.Selected.conBonus //Add CON bonus
+                    attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
                     if modDamage {
-                        damageBonus += Character.Selected.conBonus
+                        damageBonus = damageBonus + Character.Selected.conBonus
                     }
                 case "INT":
-                    attackBonus += Character.Selected.intBonus //Add INT bonus
+                    attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
                     if modDamage {
-                        damageBonus += Character.Selected.intBonus
+                        damageBonus = damageBonus + Character.Selected.intBonus
                     }
                 case "WIS":
-                    attackBonus += Character.Selected.wisBonus //Add WIS bonus
+                    attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
                     if modDamage {
-                        damageBonus += Character.Selected.wisBonus
+                        damageBonus = damageBonus + Character.Selected.wisBonus
                     }
                 case "CHA":
-                    attackBonus += Character.Selected.chaBonus //Add CHA bonus
+                    attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
                     if modDamage {
-                        damageBonus += Character.Selected.chaBonus
+                        damageBonus = damageBonus + Character.Selected.chaBonus
                     }
                 default: break
                 }
                 
-                attackBonus = attackBonus + Int(weapon.magic_bonus + weapon.misc_bonus)
-                damageBonus = damageBonus + Int(damage.magic_bonus + damage.misc_bonus)
+                attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
+                damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
                 
                 var damageDieNumber = damage.die_number
                 var damageDie = damage.die_type
@@ -1294,7 +1497,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 var aaIndex = 0
                 var abilityName = ""
-                var abilityMod = 0
+                var abilityMod: Int32 = 0
                 switch abilityType {
                 case "STR":
                     aaIndex = 0
