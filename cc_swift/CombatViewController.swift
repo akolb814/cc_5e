@@ -56,6 +56,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var weaponsTable: UITableView!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var hpEffectValue: Int32 = 0
     
     override func viewDidLoad() {
@@ -497,6 +498,178 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             break
             
         default:
+            if parentView.tag >= 700 {
+                let baseTag = parentView.tag
+                let index = (baseTag - 700)/100
+                
+                let weapon = Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon
+                let damage = weapon.damage! as Damage
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                weapon.name = textField.text
+                            }
+                            else if view.tag == baseTag + 3 {
+                                // Range - TF
+                                let textField = view as! UITextField
+                                weapon.range = textField.text
+                            }
+                            else if view.tag == baseTag + 5 {
+                                // Damage Type - Picker
+                                let picker = view as! UIPickerView
+                                damage.damage_type = Types.DamageStrings[picker.selectedRow(inComponent: 0)]
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Attack Ability Mod - Segmented Control
+                                let segControl = view as! UISegmentedControl
+                                switch segControl.selectedSegmentIndex {
+                                case 0:
+                                    // STR
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                    break
+                                case 1:
+                                    // DEX
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                    break
+                                case 2:
+                                    // CON
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                    break
+                                case 3:
+                                    // INT
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                    break
+                                case 4:
+                                    // WIS
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                    break
+                                case 5:
+                                    // CHA
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                    break
+                                default:
+                                    break
+                                }
+                            }
+                            else if view.tag == baseTag + 13 {
+                                // Magic Attack Bonus - TF
+                                let textField = view as! UITextField
+                                weapon.magic_bonus = Int32(textField.text!)!
+                                
+                            }
+                            else if view.tag == baseTag + 15 {
+                                // Misc Attack Bonus - TF
+                                let textField = view as! UITextField
+                                weapon.misc_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 17 {
+                                // TODO: Proficient With Weapon - Switch
+                                let profSwitch = view as! UISwitch
+//                                Character.Selected.weapon_proficiencies
+                            }
+                            else if view.tag == baseTag + 19 {
+                                // Ability Mod to Damage - Switch
+                                let amdSwitch = view as! UISwitch
+                                damage.mod_damage = amdSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 21 {
+                                // Magic Damage Bonus - TF
+                                let textField = view as! UITextField
+                                damage.magic_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 23 {
+                                // Misc Damage Bonus - TF
+                                let textField = view as! UITextField
+                                damage.misc_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 26 {
+                                // Weapon Damage Die Amount - TF
+                                let textField = view as! UITextField
+                                damage.die_number = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 28 {
+                                // Weapon Damage Die - TF
+                                let textField = view as! UITextField
+                                damage.die_type = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 29 {
+                                // Extra Die - Switch
+                                let extraDieSwitch = view as! UISwitch
+                                damage.extra_die = extraDieSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 30 {
+                                // Extra Die Amount - TF
+                                let textField = view as! UITextField
+                                damage.extra_die_number = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 32 {
+                                // Extra Die - TF
+                                let textField = view as! UITextField
+                                damage.extra_die_type = Int32(textField.text!)!
+                            }
+                        }
+                    }
+                }
+                
+                var attackBonus: Int32 = 0
+                var damageBonus: Int32 = 0
+                let modDamage = damage.mod_damage
+                let abilityType: String = (weapon.ability?.name)!
+                switch abilityType {
+                case "STR":
+                    attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.strBonus
+                    }
+                case "DEX":
+                    attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.dexBonus
+                    }
+                case "CON":
+                    attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.conBonus
+                    }
+                case "INT":
+                    attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.intBonus
+                    }
+                case "WIS":
+                    attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.wisBonus
+                    }
+                case "CHA":
+                    attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
+                    if modDamage {
+                        damageBonus = damageBonus + Character.Selected.chaBonus
+                    }
+                default: break
+                }
+                
+                attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
+                damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
+                
+                var damageDieNumber = damage.die_number
+                var damageDie = damage.die_type
+                let extraDie = damage.extra_die
+                if (extraDie) {
+                    damageDieNumber = damageDieNumber + damage.extra_die_number
+                    damageDie = damageDie + damage.extra_die_type
+                }
+                
+                weapon.damage = damage
+                Character.Selected.equipment?.removeFromWeapons(Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon)
+                Character.Selected.equipment?.addToWeapons(weapon)
+                
+                weaponsTable.reloadData()
+            }
             break
             
         }
@@ -510,7 +683,58 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func segmentChanged(segControl: UISegmentedControl) {
+        let parentView:UIScrollView = segControl.superview! as! UIScrollView
+        let baseTag = parentView.superview!.tag
         
+        var bonus = ""
+        var title = ""
+        switch segControl.selectedSegmentIndex {
+        case 0:
+            // STR
+            bonus = String(Character.Selected.strBonus)
+            title = "Strength"
+            break
+        case 1:
+            // DEX
+            bonus = String(Character.Selected.dexBonus)
+            title = "Dexterity"
+            break
+        case 2:
+            // CON
+            bonus = String(Character.Selected.conBonus)
+            title = "Constitution"
+            break
+        case 3:
+            // INT
+            bonus = String(Character.Selected.intBonus)
+            title = "Intelligence"
+            break
+        case 4:
+            // WIS
+            bonus = String(Character.Selected.wisBonus)
+            title = "Wisdom"
+            break
+        case 5:
+            // CHA
+            bonus = String(Character.Selected.chaBonus)
+            title = "Charisma"
+            break
+        default:
+            break
+        }
+        
+        for case let view in parentView.subviews {
+            if view.tag == baseTag + 10 {
+                // Attribute Label
+                let attributeLabel = view as! UILabel
+                attributeLabel.text = title+"\nBonus"
+            }
+            else if view.tag == baseTag + 11 {
+                // Attribute Textfield
+                let attributeTextField = view as! UITextField
+                attributeTextField.text = bonus
+            }
+        }
     }
     
     func stepperChanged(stepper: UIStepper) {
@@ -1487,6 +1711,8 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 damageTypePickerView.layer.borderWidth = 1.0
                 damageTypePickerView.layer.borderColor = UIColor.black.cgColor
                 damageTypePickerView.tag = 700 + (indexPath.row * 100) + 5
+                let row = Types.DamageStrings.index(of: damage.damage_type!.capitalized)
+                damageTypePickerView.selectRow(row!, inComponent: 0, animated: false)
                 scrollView.addSubview(damageTypePickerView)
                 
                 let attackLabel = UILabel.init(frame: CGRect.init(x: 10, y: 90, width: tempView.frame.size.width-20, height: 30))
@@ -1635,7 +1861,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 245, width:51, height:31))
                 abilityDmgSwitch.isOn = damage.mod_damage
                 
-                abilityDmgSwitch.tag = 1109
+                abilityDmgSwitch.tag = 700 + (indexPath.row * 100) + 19
                 scrollView.addSubview(abilityDmgSwitch)
                 
                 let magicDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 205, width: 90, height: 40))
@@ -1643,7 +1869,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 magicDmgLabel.font = UIFont.systemFont(ofSize: 10)
                 magicDmgLabel.textAlignment = NSTextAlignment.center
                 magicDmgLabel.numberOfLines = 3
-                magicDmgLabel.tag = 700 + (indexPath.row * 100) + 19
+                magicDmgLabel.tag = 700 + (indexPath.row * 100) + 20
                 scrollView.addSubview(magicDmgLabel)
                 
                 let magicDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y:245, width:40, height:30))
@@ -1651,7 +1877,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 magicDmgField.textAlignment = NSTextAlignment.center
                 magicDmgField.layer.borderWidth = 1.0
                 magicDmgField.layer.borderColor = UIColor.black.cgColor
-                magicDmgField.tag = 700 + (indexPath.row * 100) + 20
+                magicDmgField.tag = 700 + (indexPath.row * 100) + 21
                 scrollView.addSubview(magicDmgField)
                 
                 let miscDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 205, width: 90, height: 40))
@@ -1659,7 +1885,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 miscDmgLabel.font = UIFont.systemFont(ofSize: 10)
                 miscDmgLabel.textAlignment = NSTextAlignment.center
                 miscDmgLabel.numberOfLines = 3
-                miscDmgLabel.tag = 700 + (indexPath.row * 100) + 21
+                miscDmgLabel.tag = 700 + (indexPath.row * 100) + 22
                 scrollView.addSubview(miscDmgLabel)
                 
                 let miscDmgField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:245, width:40, height:30))
@@ -1667,48 +1893,48 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 miscDmgField.textAlignment = NSTextAlignment.center
                 miscDmgField.layer.borderWidth = 1.0
                 miscDmgField.layer.borderColor = UIColor.black.cgColor
-                miscDmgField.tag = 700 + (indexPath.row * 100) + 22
+                miscDmgField.tag = 700 + (indexPath.row * 100) + 23
                 scrollView.addSubview(miscDmgField)
                 
                 let weaponDmgLabel = UILabel.init(frame: CGRect.init(x: 10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
                 weaponDmgLabel.text = "Weapon Damage Die"
                 weaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
                 weaponDmgLabel.textAlignment = NSTextAlignment.center
-                weaponDmgLabel.tag = 700 + (indexPath.row * 100) + 23
+                weaponDmgLabel.tag = 700 + (indexPath.row * 100) + 24
                 scrollView.addSubview(weaponDmgLabel)
                 
                 let extraWeaponDmgLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+10, y: 280, width: tempView.frame.size.width/2-20, height: 30))
                 extraWeaponDmgLabel.text = "Extra Damage Die"
                 extraWeaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
                 extraWeaponDmgLabel.textAlignment = NSTextAlignment.center
-                extraWeaponDmgLabel.tag = 700 + (indexPath.row * 100) + 24
+                extraWeaponDmgLabel.tag = 700 + (indexPath.row * 100) + 25
                 scrollView.addSubview(extraWeaponDmgLabel)
                 
-                let weaponDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:320, width:40, height:30))
+                let weaponDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-140, y:320, width:40, height:30))
                 weaponDieAmount.text = String(damage.die_number)
                 weaponDieAmount.textAlignment = NSTextAlignment.center
                 weaponDieAmount.layer.borderWidth = 1.0
                 weaponDieAmount.layer.borderColor = UIColor.black.cgColor
-                weaponDieAmount.tag = 700 + (indexPath.row * 100) + 25
+                weaponDieAmount.tag = 700 + (indexPath.row * 100) + 26
                 scrollView.addSubview(weaponDieAmount)
                 
-                let weaponD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:320, width:20, height:30))
+                let weaponD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-100, y:320, width:20, height:30))
                 weaponD.text = "d"
                 weaponD.textAlignment = NSTextAlignment.center
-                weaponD.tag = 700 + (indexPath.row * 100) + 26
+                weaponD.tag = 700 + (indexPath.row * 100) + 27
                 scrollView.addSubview(weaponD)
                 
-                let weaponDie = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-60, y:320, width:40, height:30))
+                let weaponDie = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-80, y:320, width:40, height:30))
                 weaponDie.text = String(damage.die_type)
                 weaponDie.textAlignment = NSTextAlignment.center
                 weaponDie.layer.borderWidth = 1.0
                 weaponDie.layer.borderColor = UIColor.black.cgColor
-                weaponDie.tag = 700 + (indexPath.row * 100) + 27
+                weaponDie.tag = 700 + (indexPath.row * 100) + 28
                 scrollView.addSubview(weaponDie)
                 
                 let extraDieSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2+40, y: 305, width:51, height:31))
                 extraDieSwitch.isOn = damage.extra_die
-                extraDieSwitch.tag = 700 + (indexPath.row * 100) + 28
+                extraDieSwitch.tag = 700 + (indexPath.row * 100) + 29
                 scrollView.addSubview(extraDieSwitch)
                 
                 let extraDieAmount = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+20, y:340, width:40, height:30))
@@ -1716,13 +1942,13 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 extraDieAmount.textAlignment = NSTextAlignment.center
                 extraDieAmount.layer.borderWidth = 1.0
                 extraDieAmount.layer.borderColor = UIColor.black.cgColor
-                extraDieAmount.tag = 700 + (indexPath.row * 100) + 29
+                extraDieAmount.tag = 700 + (indexPath.row * 100) + 30
                 scrollView.addSubview(extraDieAmount)
                 
                 let extraD = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2+60, y:340, width:20, height:30))
                 extraD.text = "d"
                 extraD.textAlignment = NSTextAlignment.center
-                extraD.tag = 700 + (indexPath.row * 100) + 30
+                extraD.tag = 700 + (indexPath.row * 100) + 31
                 scrollView.addSubview(extraD)
                 
                 let extraDieField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y:340, width:40, height:30))
@@ -1730,7 +1956,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 extraDieField.textAlignment = NSTextAlignment.center
                 extraDieField.layer.borderWidth = 1.0
                 extraDieField.layer.borderColor = UIColor.black.cgColor
-                extraDieField.tag = 700 + (indexPath.row * 100) + 31
+                extraDieField.tag = 700 + (indexPath.row * 100) + 32
                 scrollView.addSubview(extraDieField)
                 
                 scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 380)
@@ -1743,6 +1969,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // UIPickerViewDelegate & UIPickerViewDataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

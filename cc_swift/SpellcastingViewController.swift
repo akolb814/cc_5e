@@ -45,7 +45,6 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //spellcasting = SpellcastingFactory.getEmptySpellcasting(context: context)
         spellcasting = Character.Selected.spellcasting!
         // Do any additional setup after loading the view.
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
@@ -81,6 +80,215 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         }
         else if (longPressGesture.state == UIGestureRecognizerState.began) {
             print("Long press on row, at \(indexPath!.row)")
+            // Get selected spell
+            let spellLevel = spellcasting.spells_by_level?.allObjects[(indexPath?.section)!] as! Spells_by_Level
+            let spell = spellLevel.spells?.allObjects[(indexPath?.row)!-1] as! Spell
+            
+            let baseTag = (1000 * ((indexPath?.section)!+1)) + (100*((indexPath?.row)!-1))
+            // Create spell adjusting view
+            let tempView = createBasicView()
+            tempView.tag = baseTag
+            
+            let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+            tempView.addSubview(scrollView)
+            
+            let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
+            title.text = "Edit Spell"
+            title.textAlignment = NSTextAlignment.center
+            title.tag = baseTag + 1
+            scrollView.addSubview(title)
+            
+            // Name - tf
+            let nameLabel = UILabel.init(frame: CGRect.init(x: 20, y: 30, width: tempView.frame.size.width-140, height: 20))
+            nameLabel.text = "Spell Name"
+            nameLabel.font = UIFont.systemFont(ofSize: 10)
+            nameLabel.textAlignment = NSTextAlignment.left
+            nameLabel.numberOfLines = 1
+            nameLabel.tag = baseTag + 2
+            scrollView.addSubview(nameLabel)
+            
+            let nameField = UITextField.init(frame: CGRect.init(x:20, y:50, width:tempView.frame.size.width-120, height:30))
+            nameField.text = spell.name
+            nameField.textAlignment = NSTextAlignment.left
+            nameField.isEnabled = true
+            nameField.textColor = UIColor.black
+            nameField.layer.borderWidth = 1.0
+            nameField.layer.borderColor = UIColor.black.cgColor
+            nameField.tag = baseTag + 3
+            scrollView.addSubview(nameField)
+            
+            // Concentration - switch
+            let concentrationLabel = UILabel(frame: CGRect.init(x: tempView.frame.size.width - 100, y: 30, width: 80, height: 20))
+            concentrationLabel.text = "Concentration"
+            concentrationLabel.font = UIFont.systemFont(ofSize: 10)
+            concentrationLabel.textAlignment = NSTextAlignment.right
+            concentrationLabel.numberOfLines = 1
+            concentrationLabel.tag = baseTag + 4
+            scrollView.addSubview(concentrationLabel)
+            
+            let concentrationSwitch = UISwitch(frame: CGRect.init(x: tempView.frame.size.width - 71, y: 50, width:51, height:31))
+            concentrationSwitch.isOn = spell.concentration
+            concentrationSwitch.tag = baseTag + 5
+            scrollView.addSubview(concentrationSwitch)
+            
+            // School - tf
+            let schoolLabel = UILabel.init(frame: CGRect.init(x: 20, y: 80, width: tempView.frame.size.width-140, height: 20))
+            schoolLabel.text = "School"
+            schoolLabel.font = UIFont.systemFont(ofSize: 10)
+            schoolLabel.textAlignment = NSTextAlignment.left
+            schoolLabel.numberOfLines = 1
+            schoolLabel.tag = baseTag + 6
+            scrollView.addSubview(schoolLabel)
+            
+            let schoolField = UITextField.init(frame: CGRect.init(x:20, y:100, width:tempView.frame.size.width-120, height:30))
+            schoolField.text = spell.school
+            schoolField.textAlignment = NSTextAlignment.left
+            schoolField.isEnabled = true
+            schoolField.textColor = UIColor.black
+            schoolField.layer.borderWidth = 1.0
+            schoolField.layer.borderColor = UIColor.black.cgColor
+            schoolField.tag = baseTag + 7
+            scrollView.addSubview(schoolField)
+            
+            // Prepared - switch
+            let preparedLabel = UILabel(frame: CGRect.init(x: tempView.frame.size.width - 100, y: 80, width: 80, height: 20))
+            preparedLabel.text = "Prepared"
+            preparedLabel.font = UIFont.systemFont(ofSize: 10)
+            preparedLabel.textAlignment = NSTextAlignment.right
+            preparedLabel.numberOfLines = 1
+            preparedLabel.tag = baseTag + 8
+            scrollView.addSubview(preparedLabel)
+            
+            let preparedSwitch = UISwitch(frame: CGRect.init(x: tempView.frame.size.width - 71, y: 100, width:51, height:31))
+            preparedSwitch.isOn = spell.prepared
+            preparedSwitch.tag = baseTag + 9
+            scrollView.addSubview(preparedSwitch)
+            
+            // Casting time - tf
+            let castingLabel = UILabel.init(frame: CGRect.init(x: 20, y: 130, width: tempView.frame.size.width-40, height: 20))
+            castingLabel.text = "Casting Time"
+            castingLabel.font = UIFont.systemFont(ofSize: 10)
+            castingLabel.textAlignment = NSTextAlignment.left
+            castingLabel.numberOfLines = 1
+            castingLabel.tag = baseTag + 10
+            scrollView.addSubview(castingLabel)
+            
+            let castingField = UITextField.init(frame: CGRect.init(x:20, y:150, width:tempView.frame.size.width-40, height:30))
+            castingField.text = spell.casting_time
+            castingField.textAlignment = NSTextAlignment.left
+            castingField.isEnabled = false
+            castingField.textColor = UIColor.black
+            castingField.layer.borderWidth = 1.0
+            castingField.layer.borderColor = UIColor.black.cgColor
+            castingField.tag = baseTag + 11
+            scrollView.addSubview(castingField)
+            
+            // Range - tf
+            let rangeLabel = UILabel.init(frame: CGRect.init(x: 20, y: 180, width: tempView.frame.size.width-40, height: 20))
+            rangeLabel.text = "Range"
+            rangeLabel.font = UIFont.systemFont(ofSize: 10)
+            rangeLabel.textAlignment = NSTextAlignment.left
+            rangeLabel.numberOfLines = 1
+            rangeLabel.tag = baseTag + 12
+            scrollView.addSubview(rangeLabel)
+            
+            let rangeField = UITextField.init(frame: CGRect.init(x:20, y:200, width:tempView.frame.size.width-40, height:30))
+            rangeField.text = spell.range
+            rangeField.textAlignment = NSTextAlignment.left
+            rangeField.isEnabled = true
+            rangeField.textColor = UIColor.black
+            rangeField.layer.borderWidth = 1.0
+            rangeField.layer.borderColor = UIColor.black.cgColor
+            rangeField.tag = baseTag + 13
+            scrollView.addSubview(rangeField)
+            
+            // Components - tf
+            let componentsLabel = UILabel.init(frame: CGRect.init(x: 20, y: 230, width: tempView.frame.size.width-40, height: 20))
+            componentsLabel.text = "Components"
+            componentsLabel.font = UIFont.systemFont(ofSize: 10)
+            componentsLabel.textAlignment = NSTextAlignment.left
+            componentsLabel.numberOfLines = 1
+            componentsLabel.tag = baseTag + 14
+            scrollView.addSubview(componentsLabel)
+            
+            let componentsField = UITextField.init(frame: CGRect.init(x:20, y:250, width:tempView.frame.size.width-40, height:30))
+            componentsField.text = spell.components
+            componentsField.textAlignment = NSTextAlignment.left
+            componentsField.isEnabled = true
+            componentsField.textColor = UIColor.black
+            componentsField.layer.borderWidth = 1.0
+            componentsField.layer.borderColor = UIColor.black.cgColor
+            componentsField.tag = baseTag + 15
+            scrollView.addSubview(componentsField)
+            
+            // Duration - tf
+            let durationLabel = UILabel.init(frame: CGRect.init(x: 20, y: 280, width: tempView.frame.size.width-40, height: 20))
+            durationLabel.text = "Duration"
+            durationLabel.font = UIFont.systemFont(ofSize: 10)
+            durationLabel.textAlignment = NSTextAlignment.left
+            durationLabel.numberOfLines = 1
+            durationLabel.tag = baseTag + 16
+            scrollView.addSubview(durationLabel)
+            
+            let durationField = UITextField.init(frame: CGRect.init(x:20, y:300, width:tempView.frame.size.width-40, height:30))
+            durationField.text = spell.duration
+            durationField.textAlignment = NSTextAlignment.left
+            durationField.isEnabled = true
+            durationField.textColor = UIColor.black
+            durationField.layer.borderWidth = 1.0
+            durationField.layer.borderColor = UIColor.black.cgColor
+            durationField.tag = baseTag + 17
+            scrollView.addSubview(durationField)
+            
+            // Info - tv
+            let infoLabel = UILabel.init(frame: CGRect.init(x: 20, y: 330, width: tempView.frame.size.width-40, height: 20))
+            infoLabel.text = "Description"
+            infoLabel.font = UIFont.systemFont(ofSize: 10)
+            infoLabel.textAlignment = NSTextAlignment.left
+            infoLabel.numberOfLines = 1
+            infoLabel.tag = baseTag + 18
+            scrollView.addSubview(infoLabel)
+            
+            let infoView = UITextView.init(frame: CGRect.init(x: 20, y: 350, width: tempView.frame.size.width-40, height: 100))
+            infoView.text = spell.info
+            infoView.textColor = UIColor.black
+            infoView.layer.borderWidth = 1.0
+            infoView.layer.borderColor = UIColor.black.cgColor
+            infoView.tag = baseTag + 19
+            
+            let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+            var infoFrame = infoView.frame
+            infoFrame.size.height = infoContentSize.height
+            infoView.frame = infoFrame
+            
+            scrollView.addSubview(infoView)
+            
+            // Higher level - tv
+            let hlLabel = UILabel.init(frame: CGRect.init(x: 20, y: infoView.frame.origin.y + infoView.frame.size.height, width: tempView.frame.size.width-40, height: 20))
+            hlLabel.text = "Higher Level"
+            hlLabel.font = UIFont.systemFont(ofSize: 10)
+            hlLabel.textAlignment = NSTextAlignment.left
+            hlLabel.numberOfLines = 1
+            hlLabel.tag = baseTag + 20
+            scrollView.addSubview(hlLabel)
+            
+            let hlView = UITextView.init(frame: CGRect.init(x: 20, y: hlLabel.frame.origin.y + hlLabel.frame.size.height, width: tempView.frame.size.width-40, height: 50))
+            hlView.text = spell.higher_level
+            hlView.textColor = UIColor.black
+            hlView.layer.borderWidth = 1.0
+            hlView.layer.borderColor = UIColor.black.cgColor
+            hlView.tag = baseTag + 21
+            
+            let hlContentSize = hlView.sizeThatFits(hlView.bounds.size)
+            var hlFrame = hlView.frame
+            hlFrame.size.height = hlContentSize.height
+            hlView.frame = hlFrame
+            
+            scrollView.addSubview(hlView)
+            
+            scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: hlView.frame.origin.y + hlView.frame.size.height + 10)
+            
+            view.addSubview(tempView)
         }
     }
     
@@ -207,7 +415,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     func stepperChanged(stepper: UIStepper) {
         if stepper.tag == 409 {
-            // HD
+            // Resource
             let parentView = stepper.superview
             for case let view in (parentView?.subviews)! {
                 if view.tag == 402 {
@@ -223,14 +431,244 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         switch parentView.tag {
         case 100:
-            
+            // Spell Attack
+            for case let view in parentView.subviews {
+                if view.tag == 107 {
+                    // Misc bonus
+                    let miscTextField = view as! UITextField
+                    Character.Selected.spellcasting?.attack_bonus = Int32(miscTextField.text!)!
+                }
+                else if view.tag == 109 {
+                    // seg control
+                    let segControl = view as! UISegmentedControl
+                    switch segControl.selectedSegmentIndex {
+                    case 0:
+                        // STR
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                        break
+                    case 1:
+                        // DEX
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                        break
+                    case 2:
+                        // CON
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                        break
+                    case 3:
+                        // INT
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                        break
+                    case 4:
+                        // WIS
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                        break
+                    case 5:
+                        // CHA
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                        break
+                    default:
+                        break
+                    }
+                }
+            }
+            setMiscDisplayData()
             break
             
         case 200:
+            // Spell DC
+            for case let view in parentView.subviews {
+                if view.tag == 209 {
+                    // Misc bonus
+                    let miscTextField = view as! UITextField
+                    Character.Selected.spellcasting?.dc_bonus = Int32(miscTextField.text!)!
+                }
+                else if view.tag == 211 {
+                    // seg control
+                    let segControl = view as! UISegmentedControl
+                    switch segControl.selectedSegmentIndex {
+                    case 0:
+                        // STR
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                        break
+                    case 1:
+                        // DEX
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                        break
+                    case 2:
+                        // CON
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                        break
+                    case 3:
+                        // INT
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                        break
+                    case 4:
+                        // WIS
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                        break
+                    case 5:
+                        // CHA
+                        Character.Selected.spellcasting?.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                        break
+                    default:
+                        break
+                    }
+                }
+            }
+            setMiscDisplayData()
+            break
+        
+        case 300:
+            // Caster Level
+            for case let view in parentView.subviews {
+                if view.tag == 302 {
+                    // Caster Level
+                    let clTextField = view as! UITextField
+                    Character.Selected.spellcasting?.caster_level = Int32(clTextField.text!)!
+                }
+            }
+            setMiscDisplayData()
+            break
             
+        case 400:
+            // Resource
+            var newCurrentResourceValue: Int32!
+            var newDieType: Int32!
+            var newMaxResourceValue: Int32!
+            for case let view in parentView.subviews {
+                if view.tag == 402 {
+                    // Current remaining
+                    let textField = view as! UITextField
+                    newCurrentResourceValue = Int32(textField.text!)
+                }
+                else if view.tag == 404 || view.tag == 408 {
+                    // Die type
+                    let textField = view as! UITextField
+                    newDieType = Int32(textField.text!)
+                }
+                else if view.tag == 406 {
+                    // Max
+                    let textField = view as! UITextField
+                    newMaxResourceValue = Int32(textField.text!)
+                }
+            }
+            
+            for resource: Resource in Character.Selected.resources?.allObjects as! [Resource] {
+                if resource.spellcasting == true {
+                    
+                    if newCurrentResourceValue == nil {
+                        newCurrentResourceValue = resource.current_value
+                    }
+                    else if newMaxResourceValue == nil {
+                        newMaxResourceValue = resource.max_value
+                    }
+                    else if newDieType == nil {
+                        newDieType = resource.die_type
+                    }
+                    
+                    resourceTitle.text = resource.name
+                    resource.current_value = newCurrentResourceValue
+                    resource.max_value = newMaxResourceValue
+                    resource.die_type = newDieType
+                    
+                    var resourceDisplay = ""
+                    if resource.die_type == 0 {
+                        if resource.max_value == 0 {
+                            resourceDisplay = String(resource.current_value)
+                        }
+                        else {
+                            resourceDisplay = String(resource.current_value)+"/"+String(resource.max_value)
+                        }
+                    }
+                    else {
+                        if resource.max_value == 0 {
+                            resourceDisplay = String(resource.current_value)+"d"+String(resource.die_type)
+                        }
+                        else {
+                            resourceDisplay = String(resource.current_value)+"d"+String(resource.die_type)+"/"+String(resource.max_value)+"d"+String(resource.die_type)
+                        }
+                    }
+                    
+                    resourceValue.text = resourceDisplay
+                }
+            }
             break
             
         default:
+            if parentView.tag >= 1000 {
+                // Spell detail view
+                let array = String(parentView.tag).characters.flatMap{Int(String($0))}
+                let spellSection = array[0]
+                let spellIndex = array [1]
+                let spellLevel = spellcasting.spells_by_level?.allObjects[spellSection-1] as! Spells_by_Level
+                let spell = spellLevel.spells?.allObjects[spellIndex] as! Spell
+                
+                let baseTag = (spellSection*1000)+(spellIndex*100)
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag+3 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                spell.name = textField.text
+                            }
+                            else if view.tag == baseTag+5 {
+                                // Concentration - Switch
+                                let cSwitch = view as! UISwitch
+                                spell.concentration = cSwitch.isOn
+                            }
+                            else if view.tag == baseTag+7 {
+                                // School - TF
+                                let textField = view as! UITextField
+                                spell.school = textField.text
+                            }
+                            else if view.tag == baseTag+9 {
+                                // Prepared - Switch
+                                let pSwitch = view as! UISwitch
+                                spell.prepared = pSwitch.isOn
+                            }
+                            else if view.tag == baseTag+11 {
+                                // Casting Time - TF
+                                let textField = view as! UITextField
+                                spell.casting_time = textField.text
+                            }
+                            else if view.tag == baseTag+13 {
+                                // Range - TF
+                                let textField = view as! UITextField
+                                spell.range = textField.text
+                            }
+                            else if view.tag == baseTag+15 {
+                                // Components - TF
+                                let textField = view as! UITextField
+                                spell.components = textField.text
+                            }
+                            else if view.tag == baseTag+17 {
+                                // Duration - TF
+                                let textField = view as! UITextField
+                                spell.duration = textField.text
+                            }
+                            else if view.tag == baseTag+19 {
+                                // Info - TV
+                                let textView = view as! UITextView
+                                spell.info = textView.text
+                            }
+                            else if view.tag == baseTag+21 {
+                                // Higher Level - TV
+                                let textView = view as! UITextView
+                                spell.higher_level = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                spellLevel.removeFromSpells(spellLevel.spells?.allObjects[spellIndex] as! Spell)
+                spellLevel.addToSpells(spell)
+                spellcasting.removeFromSpells_by_level(spellcasting.spells_by_level?.allObjects[spellSection-1] as! Spells_by_Level)
+                spellcasting.addToSpells_by_level(spellLevel)
+                
+                spellsTable.reloadData()
+            }
+            
             break
             
         }
@@ -244,7 +682,57 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func segmentChanged(segControl: UISegmentedControl) {
+        let parentView:UIView = segControl.superview!
         
+        var bonus = ""
+        var title = ""
+        switch segControl.selectedSegmentIndex {
+        case 0:
+            // STR
+            bonus = String(Character.Selected.strBonus)
+            title = "Strength"
+            break
+        case 1:
+            // DEX
+            bonus = String(Character.Selected.dexBonus)
+            title = "Dexterity"
+            break
+        case 2:
+            // CON
+            bonus = String(Character.Selected.conBonus)
+            title = "Constitution"
+            break
+        case 3:
+            // INT
+            bonus = String(Character.Selected.intBonus)
+            title = "Intelligence"
+            break
+        case 4:
+            // WIS
+            bonus = String(Character.Selected.wisBonus)
+            title = "Wisdom"
+            break
+        case 5:
+            // CHA
+            bonus = String(Character.Selected.chaBonus)
+            title = "Charisma"
+            break
+        default:
+            break
+        }
+        
+        for case let view in parentView.subviews {
+            if view.tag == 104 || view.tag == 206 {
+                // Attribute Label
+                let attributeLabel = view as! UILabel
+                attributeLabel.text = title+"\nBonus"
+            }
+            else if view.tag == 105 || view.tag == 207 {
+                // Attribute Textfield
+                let attributeTextField = view as! UITextField
+                attributeTextField.text = bonus
+            }
+        }
     }
     
     // Edit Spell Attack
@@ -303,7 +791,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:60, width:40, height:30))
-        miscField.text = String(0)//String(Character.Selected.miscInitBonus)
+        miscField.text = String((Character.Selected.spellcasting?.attack_bonus)!)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -356,7 +844,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         sa.insertSegment(withTitle:"CHA", at:5, animated:false)
         sa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         sa.selectedSegmentIndex = saIndex
-        sa.tag = 108
+        sa.tag = 109
         tempView.addSubview(sa)
         
         attributeLabel.text = saText+"\nBonus"
@@ -436,7 +924,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+70, y:60, width:40, height:30))
-        miscField.text = String(0)//Character.Selected.spellcasting?.dc_bonus)
+        miscField.text = String((Character.Selected.spellcasting?.dc_bonus)!)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -497,7 +985,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     // Edit Caster Level
     @IBAction func clAction(button: UIButton) {
-        // Create spell attack adjusting view
+        // Create caster level adjusting view
         let tempView = createBasicView()
         tempView.tag = 300
         
@@ -520,7 +1008,6 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     
     // Edit Resource
     @IBAction func resourceAction(button: UIButton) {
-        // Create spell attack adjusting view
         // Create resource adjusting view
         let tempView = createBasicView()
         tempView.tag = 400
@@ -828,7 +1315,6 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                 var expanded = spellLevel.expanded
                 expanded = !expanded
                 spellLevel.expanded = expanded
-                //spellcastingDict.spells_by_level?.allObjects[indexPath.section] = spellLevelDict
                 tableView.reloadData()
             }
             else {
@@ -837,8 +1323,6 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                 var expanded = spell.expanded
                 expanded = !expanded
                 spell.expanded = expanded
-                //spellLevelDict["prepared_spells"][indexPath.row-1] = spellDict
-                //spellcastingDict["spells"][indexPath.section] = spellLevelDict
                 tableView.reloadData()
             }
         }
