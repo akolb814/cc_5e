@@ -45,6 +45,9 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+    var quantityEffectValue: Int32 = 0
+    var strRequirementEffectValue: Int32 = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -742,35 +745,51 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
             
             if segControl.selectedSegmentIndex == 0 {
                 // Weapon
-                createWeaponDetailView(indexPath: indexPath)
+                let weapon:Weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
+                let baseTag = indexPath.row * 100
+                createWeaponDetailView(weapon: weapon, baseTag: baseTag)
             }
             else if segControl.selectedSegmentIndex == 1 {
                 // Armor
+                let armor:Armor = Character.Selected.equipment?.armor!.allObjects[indexPath.row] as! Armor
+                let baseTag = indexPath.row * 100
+                createArmorDetailView(armor: armor, baseTag: baseTag)
             }
             else if segControl.selectedSegmentIndex == 2 {
                 // Tools
+                let tool:Tool = Character.Selected.equipment?.tools!.allObjects[indexPath.row] as! Tool
+                let baseTag = indexPath.row * 100
+                createToolDetailView(tool: tool, baseTag: baseTag)
             }
             else if segControl.selectedSegmentIndex == 3 {
                 // Other
+                let item:Item = Character.Selected.equipment?.other!.allObjects[indexPath.row] as! Item
+                let baseTag = indexPath.row * 100
+                createItemDetailView(item: item, baseTag: baseTag)
             }
             else {
                 // All equipment
                 let item = all_equipment[indexPath.row]
                 
                 if item is Weapon {
-                    
+                    let baseTag = indexPath.row * 100
+                    createWeaponDetailView(weapon: item as! Weapon, baseTag: baseTag)
                 }
                 else if item is Armor {
-                    
+                    let baseTag = indexPath.row * 100
+                    createArmorDetailView(armor: item as! Armor, baseTag: baseTag)
                 }
                 else if item is Tool {
-                    
+                    let baseTag = indexPath.row * 100
+                    createToolDetailView(tool: item as! Tool, baseTag: baseTag)
                 }
                 else if item is Item {
-                    
+                    let baseTag = indexPath.row * 100
+                    createItemDetailView(item: item as! Item, baseTag: baseTag)
                 }
                 else {
-                    
+                    let baseTag = indexPath.row * 100
+                    createItemDetailView(item: item as! Item, baseTag: baseTag)
                 }
             }
         }
@@ -806,174 +825,772 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     func applyAction(button: UIButton) {
         let parentView:UIView = button.superview!
         
-        let baseTag = parentView.tag
-        let index = baseTag/100
-        
-        let weapon = Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon
-        let damage = weapon.damage! as Damage
-        
-        for case let view in parentView.subviews {
-            if let scrollView = view as? UIScrollView {
-                for case let view in scrollView.subviews {
-                    if view.tag == baseTag + 1 {
-                        // Name - TF
-                        let textField = view as! UITextField
-                        weapon.name = textField.text
-                    }
-                    else if view.tag == baseTag + 3 {
-                        // Range - TF
-                        let textField = view as! UITextField
-                        weapon.range = textField.text
-                    }
-                    else if view.tag == baseTag + 5 {
-                        // Damage Type - Picker
-                        let picker = view as! UIPickerView
-                        damage.damage_type = Types.DamageStrings[picker.selectedRow(inComponent: 0)]
-                    }
-                    else if view.tag == baseTag + 7 {
-                        // Attack Ability Mod - Segmented Control
-                        let segControl = view as! UISegmentedControl
-                        switch segControl.selectedSegmentIndex {
-                        case 0:
-                            // STR
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
-                            break
-                        case 1:
-                            // DEX
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
-                            break
-                        case 2:
-                            // CON
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
-                            break
-                        case 3:
-                            // INT
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
-                            break
-                        case 4:
-                            // WIS
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
-                            break
-                        case 5:
-                            // CHA
-                            weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
-                            break
-                        default:
-                            break
+        if segControl.selectedSegmentIndex == 0 {
+            // Weapons
+            let baseTag = parentView.tag
+            let index = baseTag/100
+            
+            let weapon = Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon
+            let damage = weapon.damage! as Damage
+            
+            for case let view in parentView.subviews {
+                if let scrollView = view as? UIScrollView {
+                    for case let view in scrollView.subviews {
+                        if view.tag == baseTag + 1 {
+                            // Name - TF
+                            let textField = view as! UITextField
+                            weapon.name = textField.text
                         }
-                    }
-                    else if view.tag == baseTag + 13 {
-                        // Magic Attack Bonus - TF
-                        let textField = view as! UITextField
-                        weapon.magic_bonus = Int32(textField.text!)!
-                        
-                    }
-                    else if view.tag == baseTag + 15 {
-                        // Misc Attack Bonus - TF
-                        let textField = view as! UITextField
-                        weapon.misc_bonus = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 17 {
-                        // TODO: Proficient With Weapon - Switch
-                        let profSwitch = view as! UISwitch
-                        //                                Character.Selected.weapon_proficiencies
-                    }
-                    else if view.tag == baseTag + 19 {
-                        // Ability Mod to Damage - Switch
-                        let amdSwitch = view as! UISwitch
-                        damage.mod_damage = amdSwitch.isOn
-                    }
-                    else if view.tag == baseTag + 21 {
-                        // Magic Damage Bonus - TF
-                        let textField = view as! UITextField
-                        damage.magic_bonus = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 23 {
-                        // Misc Damage Bonus - TF
-                        let textField = view as! UITextField
-                        damage.misc_bonus = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 26 {
-                        // Weapon Damage Die Amount - TF
-                        let textField = view as! UITextField
-                        damage.die_number = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 28 {
-                        // Weapon Damage Die - TF
-                        let textField = view as! UITextField
-                        damage.die_type = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 29 {
-                        // Extra Die - Switch
-                        let extraDieSwitch = view as! UISwitch
-                        damage.extra_die = extraDieSwitch.isOn
-                    }
-                    else if view.tag == baseTag + 30 {
-                        // Extra Die Amount - TF
-                        let textField = view as! UITextField
-                        damage.extra_die_number = Int32(textField.text!)!
-                    }
-                    else if view.tag == baseTag + 32 {
-                        // Extra Die - TF
-                        let textField = view as! UITextField
-                        damage.extra_die_type = Int32(textField.text!)!
+                        else if view.tag == baseTag + 3 {
+                            // Range - TF
+                            let textField = view as! UITextField
+                            weapon.range = textField.text
+                        }
+                        else if view.tag == baseTag + 5 {
+                            // Damage Type - Picker
+                            let picker = view as! UIPickerView
+                            damage.damage_type = Types.DamageStrings[picker.selectedRow(inComponent: 0)]
+                        }
+                        else if view.tag == baseTag + 7 {
+                            // Attack Ability Mod - Segmented Control
+                            let segControl = view as! UISegmentedControl
+                            switch segControl.selectedSegmentIndex {
+                            case 0:
+                                // STR
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                break
+                            case 1:
+                                // DEX
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                break
+                            case 2:
+                                // CON
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                break
+                            case 3:
+                                // INT
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                break
+                            case 4:
+                                // WIS
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                break
+                            case 5:
+                                // CHA
+                                weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                break
+                            default:
+                                break
+                            }
+                        }
+                        else if view.tag == baseTag + 13 {
+                            // Magic Attack Bonus - TF
+                            let textField = view as! UITextField
+                            weapon.magic_bonus = Int32(textField.text!)!
+                            
+                        }
+                        else if view.tag == baseTag + 15 {
+                            // Misc Attack Bonus - TF
+                            let textField = view as! UITextField
+                            weapon.misc_bonus = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 17 {
+                            // TODO: Proficient With Weapon - Switch
+                            let profSwitch = view as! UISwitch
+    //                        Character.Selected.weapon_proficiencies
+                        }
+                        else if view.tag == baseTag + 19 {
+                            // Ability Mod to Damage - Switch
+                            let amdSwitch = view as! UISwitch
+                            damage.mod_damage = amdSwitch.isOn
+                        }
+                        else if view.tag == baseTag + 21 {
+                            // Magic Damage Bonus - TF
+                            let textField = view as! UITextField
+                            damage.magic_bonus = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 23 {
+                            // Misc Damage Bonus - TF
+                            let textField = view as! UITextField
+                            damage.misc_bonus = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 26 {
+                            // Weapon Damage Die Amount - TF
+                            let textField = view as! UITextField
+                            damage.die_number = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 28 {
+                            // Weapon Damage Die - TF
+                            let textField = view as! UITextField
+                            damage.die_type = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 29 {
+                            // Extra Die - Switch
+                            let extraDieSwitch = view as! UISwitch
+                            damage.extra_die = extraDieSwitch.isOn
+                        }
+                        else if view.tag == baseTag + 30 {
+                            // Extra Die Amount - TF
+                            let textField = view as! UITextField
+                            damage.extra_die_number = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 32 {
+                            // Extra Die - TF
+                            let textField = view as! UITextField
+                            damage.extra_die_type = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 34 {
+                            // Quantity - TF
+                            let textField = view as! UITextField
+                            weapon.quantity = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 36 {
+                            // Weight - TF
+                            let textField = view as! UITextField
+                            weapon.weight = textField.text
+                        }
+                        else if view.tag == baseTag + 38 {
+                            // Cost - TF
+                            let textField = view as! UITextField
+                            weapon.cost = textField.text
+                        }
+                        else if view.tag == baseTag + 41 {
+                            // Description - TV
+                            let textView = view as! UITextView
+                            weapon.info = textView.text
+                        }
                     }
                 }
             }
+            
+            weapon.damage = damage
+            Character.Selected.equipment?.removeFromWeapons(Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon)
+            Character.Selected.equipment?.addToWeapons(weapon)
         }
-        
-        var attackBonus: Int32 = 0
-        var damageBonus: Int32 = 0
-        let modDamage = damage.mod_damage
-        let abilityType: String = (weapon.ability?.name)!
-        switch abilityType {
-        case "STR":
-            attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.strBonus
+        else if segControl.selectedSegmentIndex == 1 {
+            // Armor
+            let baseTag = parentView.tag
+            let index = baseTag/100
+            
+            let armor = Character.Selected.equipment?.armor!.allObjects[index] as! Armor
+            
+            for case let view in parentView.subviews {
+                if let scrollView = view as? UIScrollView {
+                    for case let view in scrollView.subviews {
+                        if view.tag == baseTag + 1 {
+                            // Name - TF
+                            let textField = view as! UITextField
+                            armor.name = textField.text
+                        }
+                        else if view.tag == baseTag + 7 {
+                            // Magic Bonus - TF
+                            let textField = view as! UITextField
+                            armor.magic_bonus = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 9 {
+                            // Misc Bonus - TF
+                            let textField = view as! UITextField
+                            armor.misc_bonus = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 10 {
+                            // Ability Mod - Segmented Control
+                            let segControl = view as! UISegmentedControl
+                            switch segControl.selectedSegmentIndex {
+                            case 0:
+                                // STR
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                break
+                            case 1:
+                                // DEX
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                break
+                            case 2:
+                                // CON
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                break
+                            case 3:
+                                // INT
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                break
+                            case 4:
+                                // WIS
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                break
+                            case 5:
+                                // CHA
+                                armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                break
+                            default:
+                                break
+                            }
+                        }
+                        else if view.tag == baseTag + 12 {
+                            // Stealth Disadvantage - Switch
+                            let stealthDisadvantageSwitch = view as! UISwitch
+                            armor.stealth_disadvantage = stealthDisadvantageSwitch.isOn
+                        }
+                        else if view.tag == baseTag + 14 {
+                            // Equipped - Switch
+                            let equippedSwitch = view as! UISwitch
+                            armor.equipped = equippedSwitch.isOn
+                        }
+                        else if view.tag == baseTag + 16 {
+                            // Quantity - TF
+                            let textField = view as! UITextField
+                            armor.quantity = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 19 {
+                            // Str Requirement - TF
+                            let textField = view as! UITextField
+                            armor.str_requirement = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 22 {
+                            // Weight - TF
+                            let textField = view as! UITextField
+                            armor.weight = textField.text
+                        }
+                        else if view.tag == baseTag + 24 {
+                            // Cost - TF
+                            let textField = view as! UITextField
+                            armor.cost = textField.text
+                        }
+                        else if view.tag == baseTag + 26 {
+                            // Description - TV
+                            let textView = view as! UITextView
+                            armor.info = textView.text
+                        }
+                    }
+                }
             }
-        case "DEX":
-            attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.dexBonus
-            }
-        case "CON":
-            attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.conBonus
-            }
-        case "INT":
-            attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.intBonus
-            }
-        case "WIS":
-            attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.wisBonus
-            }
-        case "CHA":
-            attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
-            if modDamage {
-                damageBonus = damageBonus + Character.Selected.chaBonus
-            }
-        default: break
+            
+            Character.Selected.equipment?.removeFromArmor(Character.Selected.equipment?.armor!.allObjects[index] as! Armor)
+            Character.Selected.equipment?.addToArmor(armor)
         }
-        
-        attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
-        damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
-        
-        var damageDieNumber = damage.die_number
-        var damageDie = damage.die_type
-        let extraDie = damage.extra_die
-        if (extraDie) {
-            damageDieNumber = damageDieNumber + damage.extra_die_number
-            damageDie = damageDie + damage.extra_die_type
+        else if segControl.selectedSegmentIndex == 2 {
+            // Tool
+            let baseTag = parentView.tag
+            let index = baseTag/100
+            
+            let tool = Character.Selected.equipment?.tools!.allObjects[index] as! Tool
+            
+            for case let view in parentView.subviews {
+                if let scrollView = view as? UIScrollView {
+                    for case let view in scrollView.subviews {
+                        if view.tag == baseTag + 1 {
+                            // Name - TF
+                            let textField = view as! UITextField
+                            tool.name = textField.text
+                        }
+                        else if view.tag == baseTag + 3 {
+                            // Proficient - Switch
+                            let proficientSwitch = view as! UISwitch
+                            tool.proficient = proficientSwitch.isOn
+                        }
+                        else if view.tag == baseTag + 7 {
+                            // Ability - Segmented Control
+                            let segControl = view as! UISegmentedControl
+                            switch segControl.selectedSegmentIndex {
+                            case 0:
+                                // STR
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                break
+                            case 1:
+                                // DEX
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                break
+                            case 2:
+                                // CON
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                break
+                            case 3:
+                                // INT
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                break
+                            case 4:
+                                // WIS
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                break
+                            case 5:
+                                // CHA
+                                tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                break
+                            default:
+                                break
+                            }
+                        }
+                        else if view.tag == baseTag + 9 {
+                            // Weight - TF
+                            let textField = view as! UITextField
+                            tool.weight = textField.text
+                        }
+                        else if view.tag == baseTag + 11 {
+                            // Cost - TF
+                            let textField = view as! UITextField
+                            tool.cost = textField.text
+                        }
+                        else if view.tag == baseTag + 13 {
+                            // Quantity - TF
+                            let textField = view as! UITextField
+                            tool.quantity = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 16 {
+                            // Description - TV
+                            let textView = view as! UITextView
+                            tool.info = textView.text
+                        }
+                    }
+                }
+            }
+            
+            Character.Selected.equipment?.removeFromTools(Character.Selected.equipment?.tools!.allObjects[index] as! Tool)
+            Character.Selected.equipment?.addToTools(tool)
         }
-        
-        weapon.damage = damage
-        Character.Selected.equipment?.removeFromWeapons(Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon)
-        Character.Selected.equipment?.addToWeapons(weapon)
+        else if segControl.selectedSegmentIndex == 3 {
+            // Item
+            let baseTag = parentView.tag
+            let index = baseTag/100
+            
+            let item = Character.Selected.equipment?.other!.allObjects[index] as! Item
+            
+            for case let view in parentView.subviews {
+                if let scrollView = view as? UIScrollView {
+                    for case let view in scrollView.subviews {
+                        if view.tag == baseTag + 1 {
+                            // Name - TF
+                            let textField = view as! UITextField
+                            item.name = textField.text
+                        }
+                        else if view.tag == baseTag + 3 {
+                            // Weight - TF
+                            let textField = view as! UITextField
+                            item.weight = textField.text
+                        }
+                        else if view.tag == baseTag + 5 {
+                            // Cost - TF
+                            let textField = view as! UITextField
+                            item.cost = textField.text
+                        }
+                        else if view.tag == baseTag + 7 {
+                            // Quantity - TF
+                            let textField = view as! UITextField
+                            item.quantity = Int32(textField.text!)!
+                        }
+                        else if view.tag == baseTag + 10 {
+                            // Description - TV
+                            let textView = view as! UITextView
+                            item.info = textView.text
+                        }
+                    }
+                }
+            }
+            
+            Character.Selected.equipment?.removeFromOther(Character.Selected.equipment?.other!.allObjects[index] as! Item)
+            Character.Selected.equipment?.addToOther(item)
+        }
+        else if segControl.selectedSegmentIndex == 4 {
+            // All
+            let baseTag = parentView.tag
+            let index = baseTag/100
+            
+            let weapons = Character.Selected.equipment!.weapons
+            let allArmor = Character.Selected.equipment!.armor
+            let tools = Character.Selected.equipment!.tools
+            let other = Character.Selected.equipment!.other
+            
+            var all_equipment:[Any] = []
+            all_equipment.append(contentsOf:weapons!.allObjects)
+            all_equipment.append(contentsOf:allArmor!.allObjects)
+            all_equipment.append(contentsOf:tools!.allObjects)
+            all_equipment.append(contentsOf:other!.allObjects)
+            all_equipment.sort {($0 as AnyObject).name < ($1 as AnyObject).name}
+            
+            let item = all_equipment[index]
+            
+            if item is Weapon {
+                let weapon = Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon
+                let damage = weapon.damage! as Damage
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                weapon.name = textField.text
+                            }
+                            else if view.tag == baseTag + 3 {
+                                // Range - TF
+                                let textField = view as! UITextField
+                                weapon.range = textField.text
+                            }
+                            else if view.tag == baseTag + 5 {
+                                // Damage Type - Picker
+                                let picker = view as! UIPickerView
+                                damage.damage_type = Types.DamageStrings[picker.selectedRow(inComponent: 0)]
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Attack Ability Mod - Segmented Control
+                                let segControl = view as! UISegmentedControl
+                                switch segControl.selectedSegmentIndex {
+                                case 0:
+                                    // STR
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                    break
+                                case 1:
+                                    // DEX
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                    break
+                                case 2:
+                                    // CON
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                    break
+                                case 3:
+                                    // INT
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                    break
+                                case 4:
+                                    // WIS
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                    break
+                                case 5:
+                                    // CHA
+                                    weapon.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                    break
+                                default:
+                                    break
+                                }
+                            }
+                            else if view.tag == baseTag + 13 {
+                                // Magic Attack Bonus - TF
+                                let textField = view as! UITextField
+                                weapon.magic_bonus = Int32(textField.text!)!
+                                
+                            }
+                            else if view.tag == baseTag + 15 {
+                                // Misc Attack Bonus - TF
+                                let textField = view as! UITextField
+                                weapon.misc_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 17 {
+                                // TODO: Proficient With Weapon - Switch
+                                let profSwitch = view as! UISwitch
+                                //                        Character.Selected.weapon_proficiencies
+                            }
+                            else if view.tag == baseTag + 19 {
+                                // Ability Mod to Damage - Switch
+                                let amdSwitch = view as! UISwitch
+                                damage.mod_damage = amdSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 21 {
+                                // Magic Damage Bonus - TF
+                                let textField = view as! UITextField
+                                damage.magic_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 23 {
+                                // Misc Damage Bonus - TF
+                                let textField = view as! UITextField
+                                damage.misc_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 26 {
+                                // Weapon Damage Die Amount - TF
+                                let textField = view as! UITextField
+                                damage.die_number = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 28 {
+                                // Weapon Damage Die - TF
+                                let textField = view as! UITextField
+                                damage.die_type = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 29 {
+                                // Extra Die - Switch
+                                let extraDieSwitch = view as! UISwitch
+                                damage.extra_die = extraDieSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 30 {
+                                // Extra Die Amount - TF
+                                let textField = view as! UITextField
+                                damage.extra_die_number = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 32 {
+                                // Extra Die - TF
+                                let textField = view as! UITextField
+                                damage.extra_die_type = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 34 {
+                                // Quantity - TF
+                                let textField = view as! UITextField
+                                weapon.quantity = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 36 {
+                                // Weight - TF
+                                let textField = view as! UITextField
+                                weapon.weight = textField.text
+                            }
+                            else if view.tag == baseTag + 38 {
+                                // Cost - TF
+                                let textField = view as! UITextField
+                                weapon.cost = textField.text
+                            }
+                            else if view.tag == baseTag + 41 {
+                                // Description - TV
+                                let textView = view as! UITextView
+                                weapon.info = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                weapon.damage = damage
+                Character.Selected.equipment?.removeFromWeapons(Character.Selected.equipment?.weapons?.allObjects[index] as! Weapon)
+                Character.Selected.equipment?.addToWeapons(weapon)
+            }
+            else if item is Armor {
+                let armor = Character.Selected.equipment?.armor!.allObjects[index] as! Armor
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                armor.name = textField.text
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Magic Bonus - TF
+                                let textField = view as! UITextField
+                                armor.magic_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 9 {
+                                // Misc Bonus - TF
+                                let textField = view as! UITextField
+                                armor.misc_bonus = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 10 {
+                                // Ability Mod - Segmented Control
+                                let segControl = view as! UISegmentedControl
+                                switch segControl.selectedSegmentIndex {
+                                case 0:
+                                    // STR
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                    break
+                                case 1:
+                                    // DEX
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                    break
+                                case 2:
+                                    // CON
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                    break
+                                case 3:
+                                    // INT
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                    break
+                                case 4:
+                                    // WIS
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                    break
+                                case 5:
+                                    // CHA
+                                    armor.ability_mod = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                    break
+                                default:
+                                    break
+                                }
+                            }
+                            else if view.tag == baseTag + 12 {
+                                // Stealth Disadvantage - Switch
+                                let stealthDisadvantageSwitch = view as! UISwitch
+                                armor.stealth_disadvantage = stealthDisadvantageSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 14 {
+                                // Equipped - Switch
+                                let equippedSwitch = view as! UISwitch
+                                armor.equipped = equippedSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 16 {
+                                // Quantity - TF
+                                let textField = view as! UITextField
+                                armor.quantity = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 19 {
+                                // Str Requirement - TF
+                                let textField = view as! UITextField
+                                armor.str_requirement = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 22 {
+                                // Weight - TF
+                                let textField = view as! UITextField
+                                armor.weight = textField.text
+                            }
+                            else if view.tag == baseTag + 24 {
+                                // Cost - TF
+                                let textField = view as! UITextField
+                                armor.cost = textField.text
+                            }
+                            else if view.tag == baseTag + 26 {
+                                // Description - TV
+                                let textView = view as! UITextView
+                                armor.info = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                Character.Selected.equipment?.removeFromArmor(Character.Selected.equipment?.armor!.allObjects[index] as! Armor)
+                Character.Selected.equipment?.addToArmor(armor)
+            }
+            else if item is Tool {
+                let tool = Character.Selected.equipment?.tools!.allObjects[index] as! Tool
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                tool.name = textField.text
+                            }
+                            else if view.tag == baseTag + 3 {
+                                // Proficient - Switch
+                                let proficientSwitch = view as! UISwitch
+                                tool.proficient = proficientSwitch.isOn
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Ability - Segmented Control
+                                let segControl = view as! UISegmentedControl
+                                switch segControl.selectedSegmentIndex {
+                                case 0:
+                                    // STR
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "STR", context: context)
+                                    break
+                                case 1:
+                                    // DEX
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "DEX", context: context)
+                                    break
+                                case 2:
+                                    // CON
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CON", context: context)
+                                    break
+                                case 3:
+                                    // INT
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "INT", context: context)
+                                    break
+                                case 4:
+                                    // WIS
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "WIS", context: context)
+                                    break
+                                case 5:
+                                    // CHA
+                                    tool.ability = CharacterFactory.getAbility(character: Character.Selected, name: "CHA", context: context)
+                                    break
+                                default:
+                                    break
+                                }
+                            }
+                            else if view.tag == baseTag + 9 {
+                                // Weight - TF
+                                let textField = view as! UITextField
+                                tool.weight = textField.text
+                            }
+                            else if view.tag == baseTag + 11 {
+                                // Cost - TF
+                                let textField = view as! UITextField
+                                tool.cost = textField.text
+                            }
+                            else if view.tag == baseTag + 13 {
+                                // Quantity - TF
+                                let textField = view as! UITextField
+                                tool.quantity = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 16 {
+                                // Description - TV
+                                let textView = view as! UITextView
+                                tool.info = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                Character.Selected.equipment?.removeFromTools(Character.Selected.equipment?.tools!.allObjects[index] as! Tool)
+                Character.Selected.equipment?.addToTools(tool)
+            }
+            else if item is Item {
+                let item = Character.Selected.equipment?.other!.allObjects[index] as! Item
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                item.name = textField.text
+                            }
+                            else if view.tag == baseTag + 3 {
+                                // Weight - TF
+                                let textField = view as! UITextField
+                                item.weight = textField.text
+                            }
+                            else if view.tag == baseTag + 5 {
+                                // Cost - TF
+                                let textField = view as! UITextField
+                                item.cost = textField.text
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Quantity - TF
+                                let textField = view as! UITextField
+                                item.quantity = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 10 {
+                                // Description - TV
+                                let textView = view as! UITextView
+                                item.info = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                Character.Selected.equipment?.removeFromOther(Character.Selected.equipment?.other!.allObjects[index] as! Item)
+                Character.Selected.equipment?.addToOther(item)
+            }
+            else {
+                let item = Character.Selected.equipment?.other!.allObjects[index] as! Item
+                
+                for case let view in parentView.subviews {
+                    if let scrollView = view as? UIScrollView {
+                        for case let view in scrollView.subviews {
+                            if view.tag == baseTag + 1 {
+                                // Name - TF
+                                let textField = view as! UITextField
+                                item.name = textField.text
+                            }
+                            else if view.tag == baseTag + 3 {
+                                // Weight - TF
+                                let textField = view as! UITextField
+                                item.weight = textField.text
+                            }
+                            else if view.tag == baseTag + 5 {
+                                // Cost - TF
+                                let textField = view as! UITextField
+                                item.cost = textField.text
+                            }
+                            else if view.tag == baseTag + 7 {
+                                // Quantity - TF
+                                let textField = view as! UITextField
+                                item.quantity = Int32(textField.text!)!
+                            }
+                            else if view.tag == baseTag + 10 {
+                                // Description - TV
+                                let textView = view as! UITextView
+                                item.info = textView.text
+                            }
+                        }
+                    }
+                }
+                
+                Character.Selected.equipment?.removeFromOther(Character.Selected.equipment?.other!.allObjects[index] as! Item)
+                Character.Selected.equipment?.addToOther(item)
+            }
+        }
         
         equipmentTable.reloadData()
         
@@ -985,12 +1602,10 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         parentView?.removeFromSuperview()
     }
     
-    func createWeaponDetailView(indexPath: IndexPath) {
+    func createWeaponDetailView(weapon: Weapon, baseTag: Int) {
         let tempView = createBasicView()
-        let baseTag = indexPath.row * 100
         tempView.tag = baseTag
         
-        let weapon = Character.Selected.equipment?.weapons?.allObjects[indexPath.row] as! Weapon
         let damage = weapon.damage! as Damage
         
         var attackBonus: Int32 = 0
@@ -1079,7 +1694,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         damageTypePickerView.layer.borderWidth = 1.0
         damageTypePickerView.layer.borderColor = UIColor.black.cgColor
         damageTypePickerView.tag = baseTag + 5
-        let row = Types.DamageStrings.index(of: damage.damage_type!)
+        let row = Types.DamageStrings.index(of: damage.damage_type!.capitalized)
         damageTypePickerView.selectRow(row!, inComponent: 0, animated: false)
         scrollView.addSubview(damageTypePickerView)
         
@@ -1228,7 +1843,6 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 245, width:51, height:31))
         abilityDmgSwitch.isOn = damage.mod_damage
-        
         abilityDmgSwitch.tag = baseTag + 19
         scrollView.addSubview(abilityDmgSwitch)
         
@@ -1327,9 +1941,618 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         extraDieField.tag = baseTag + 32
         scrollView.addSubview(extraDieField)
         
-        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 380)
+        let quantityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 380, width: 90, height: 30))
+        quantityLabel.text = "Quantity"
+        quantityLabel.textAlignment = NSTextAlignment.center
+        quantityLabel.tag = baseTag + 33
+        scrollView.addSubview(quantityLabel)
+        
+        let quantityField = UITextField.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 410, width: 40, height: 30))
+        quantityField.text = String(weapon.quantity)
+        quantityField.textAlignment = NSTextAlignment.center
+        quantityField.layer.borderWidth = 1.0
+        quantityField.layer.borderColor = UIColor.black.cgColor
+        quantityField.tag = baseTag + 34
+        scrollView.addSubview(quantityField)
+        
+        let quantityStepper = UIStepper.init(frame: CGRect.init(x: tempView.frame.size.width/2+75, y: 410, width: 94, height: 29))
+        quantityStepper.value = Double(weapon.quantity)
+        quantityStepper.minimumValue = 0
+        quantityStepper.maximumValue = 9999
+        quantityStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        quantityStepper.tag = baseTag + 35
+        scrollView.addSubview(quantityStepper)
+        
+        let weightLabel = UILabel.init(frame: CGRect.init(x: 10, y: 450, width: tempView.frame.size.width - 20, height: 30))
+        weightLabel.text = "Weight"
+        weightLabel.textAlignment = NSTextAlignment.center
+        weightLabel.tag = baseTag + 36
+        scrollView.addSubview(weightLabel)
+        
+        let weightField = UITextField.init(frame: CGRect.init(x: 10, y: 480, width: tempView.frame.size.width - 20, height: 30))
+        weightField.text = weapon.weight
+        weightField.textAlignment = NSTextAlignment.center
+        weightField.layer.borderWidth = 1.0
+        weightField.layer.borderColor = UIColor.black.cgColor
+        weightField.tag = baseTag + 37
+        scrollView.addSubview(weightField)
+        
+        let costLabel = UILabel.init(frame: CGRect.init(x: 10, y: 520, width: tempView.frame.size.width - 20, height: 30))
+        costLabel.text = "Cost"
+        costLabel.textAlignment = NSTextAlignment.center
+        costLabel.tag = baseTag + 38
+        scrollView.addSubview(costLabel)
+        
+        let costField = UITextField.init(frame: CGRect.init(x: 10, y: 550, width: tempView.frame.size.width - 20, height: 30))
+        costField.text = weapon.cost
+        costField.textAlignment = NSTextAlignment.center
+        costField.layer.borderWidth = 1.0
+        costField.layer.borderColor = UIColor.black.cgColor
+        costField.tag = baseTag + 39
+        scrollView.addSubview(costField)
+        
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 10, y: 590, width: tempView.frame.size.width - 20, height: 30))
+        infoLabel.text = "Description"
+        infoLabel.textAlignment = .center
+        infoLabel.tag = baseTag + 40
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 520, width: tempView.frame.size.width - 20, height: 100))
+        infoView.text = weapon.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        infoView.layer.borderColor = UIColor.black.cgColor
+        infoView.tag = baseTag + 41
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 520 + infoView.frame.size.height + 10)
         
         view.addSubview(tempView)
+    }
+    
+    func createArmorDetailView(armor: Armor, baseTag: Int) {
+        let tempView = createBasicView()
+        tempView.tag = baseTag
+        
+        let abilityType: String = (armor.ability_mod?.name)!
+        var aaIndex = 0
+        var abilityName = ""
+        var abilityMod: Int32 = 0
+        switch abilityType {
+        case "STR":
+            aaIndex = 0
+            abilityName = "Strength"
+            abilityMod = Character.Selected.strBonus
+        case "DEX":
+            aaIndex = 1
+            abilityName = "Dexterity"
+            abilityMod = Character.Selected.dexBonus
+        case "CON":
+            aaIndex = 2
+            abilityName = "Constitution"
+            abilityMod = Character.Selected.conBonus
+        case "INT":
+            aaIndex = 3
+            abilityName = "Intelligence"
+            abilityMod = Character.Selected.intBonus
+        case "WIS":
+            aaIndex = 4
+            abilityName = "Wisdom"
+            abilityMod = Character.Selected.wisBonus
+        case "CHA":
+            aaIndex = 5
+            abilityName = "Charisma"
+            abilityMod = Character.Selected.chaBonus
+        default: break
+        }
+        
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+        tempView.addSubview(scrollView)
+        
+        let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
+        title.text = armor.name?.capitalized
+        title.textAlignment = NSTextAlignment.center
+        title.tag = baseTag + 1
+        title.layer.borderWidth = 1.0
+        title.layer.borderColor = UIColor.black.cgColor
+        scrollView.addSubview(title)
+        
+        let baseValueLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 45, width: 90, height: 30))
+        baseValueLabel.text = "Base\nValue"
+        baseValueLabel.font = UIFont.systemFont(ofSize: 10)
+        baseValueLabel.textAlignment = NSTextAlignment.center
+        baseValueLabel.numberOfLines = 2
+        baseValueLabel.tag = baseTag + 2
+        scrollView.addSubview(baseValueLabel)
+        
+        let baseValueField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-110, y: 80, width:40, height:30))
+        baseValueField.text = String(armor.value)
+        baseValueField.textAlignment = NSTextAlignment.center
+        baseValueField.isEnabled = false
+        baseValueField.textColor = UIColor.darkGray
+        baseValueField.layer.borderWidth = 1.0
+        baseValueField.layer.borderColor = UIColor.darkGray.cgColor
+        baseValueField.tag = baseTag + 3
+        scrollView.addSubview(baseValueField)
+        
+        let abilityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 45, width: 90, height: 30))
+        abilityLabel.text = abilityName+"\nBonus"
+        abilityLabel.font = UIFont.systemFont(ofSize: 10)
+        abilityLabel.textAlignment = NSTextAlignment.center
+        abilityLabel.numberOfLines = 2
+        abilityLabel.tag = baseTag + 4
+        scrollView.addSubview(abilityLabel)
+        
+        let abilityField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2-50, y: 80, width:40, height:30))
+        abilityField.text = String(abilityMod)
+        abilityField.textAlignment = NSTextAlignment.center
+        abilityField.isEnabled = false
+        abilityField.textColor = UIColor.darkGray
+        abilityField.layer.borderWidth = 1.0
+        abilityField.layer.borderColor = UIColor.black.cgColor
+        abilityField.tag = baseTag + 5
+        scrollView.addSubview(abilityField)
+        
+        let magicLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-10, y: 45, width: 90, height: 30))
+        magicLabel.text = "Magic Item\nBonus"
+        magicLabel.font = UIFont.systemFont(ofSize: 10)
+        magicLabel.textAlignment = NSTextAlignment.center
+        magicLabel.numberOfLines = 2
+        magicLabel.tag = baseTag + 6
+        scrollView.addSubview(magicLabel)
+        
+        let magicField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+15, y: 80, width:40, height:30))
+        magicField.text = String(armor.magic_bonus)
+        magicField.textAlignment = NSTextAlignment.center
+        magicField.layer.borderWidth = 1.0
+        magicField.layer.borderColor = UIColor.black.cgColor
+        magicField.tag = baseTag + 7
+        scrollView.addSubview(magicField)
+        
+        let miscLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+55, y: 45, width: 90, height: 30))
+        miscLabel.text = "Misc\nBonus"
+        miscLabel.font = UIFont.systemFont(ofSize: 10)
+        miscLabel.textAlignment = NSTextAlignment.center
+        miscLabel.numberOfLines = 2
+        miscLabel.tag = baseTag + 8
+        scrollView.addSubview(miscLabel)
+        
+        let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+80, y: 80, width:40, height:30))
+        miscField.text = String(armor.misc_bonus)
+        miscField.textAlignment = NSTextAlignment.center
+        miscField.layer.borderWidth = 1.0
+        miscField.layer.borderColor = UIColor.black.cgColor
+        miscField.tag = baseTag + 9
+        scrollView.addSubview(miscField)
+        
+        let aa = UISegmentedControl.init(frame: CGRect.init(x:10, y:120, width:tempView.frame.size.width-20, height:30))
+        aa.insertSegment(withTitle:"STR", at:0, animated:false)
+        aa.insertSegment(withTitle:"DEX", at:1, animated:false)
+        aa.insertSegment(withTitle:"CON", at:2, animated:false)
+        aa.insertSegment(withTitle:"INT", at:3, animated:false)
+        aa.insertSegment(withTitle:"WIS", at:4, animated:false)
+        aa.insertSegment(withTitle:"CHA", at:5, animated:false)
+        aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+        aa.selectedSegmentIndex = aaIndex
+        aa.tag = baseTag + 10
+        scrollView.addSubview(aa)
+        
+        let stealthDisadvantageLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-135, y: 160, width: 90, height: 30))
+        stealthDisadvantageLabel.text = "Stealth\nDisadvantage"
+        stealthDisadvantageLabel.font = UIFont.systemFont(ofSize: 10)
+        stealthDisadvantageLabel.textAlignment = NSTextAlignment.center
+        stealthDisadvantageLabel.numberOfLines = 2
+        stealthDisadvantageLabel.tag = baseTag + 11
+        scrollView.addSubview(stealthDisadvantageLabel)
+        
+        let stealthDisadvantageSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-115, y: 200, width:51, height:31))
+        stealthDisadvantageSwitch.isOn = armor.stealth_disadvantage
+        stealthDisadvantageSwitch.tag = baseTag + 12
+        scrollView.addSubview(stealthDisadvantageSwitch)
+        
+        let equippedLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2-75, y: 160, width: 90, height: 30))
+        equippedLabel.text = "Equipped"
+        equippedLabel.font = UIFont.systemFont(ofSize: 10)
+        equippedLabel.textAlignment = NSTextAlignment.center
+        equippedLabel.numberOfLines = 1
+        equippedLabel.tag = baseTag + 13
+        scrollView.addSubview(equippedLabel)
+        
+        let equippedSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2-50, y: 200, width:51, height:31))
+        equippedSwitch.isOn = armor.equipped
+        equippedSwitch.tag = baseTag + 14
+        scrollView.addSubview(equippedSwitch)
+        
+        let quantityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 160, width: 90, height: 30))
+        quantityLabel.text = "Quantity"
+        quantityLabel.textAlignment = NSTextAlignment.center
+        quantityLabel.tag = baseTag + 15
+        scrollView.addSubview(quantityLabel)
+        
+        let quantityField = UITextField.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 200, width: 40, height: 30))
+        quantityField.text = String(armor.quantity)
+        quantityField.textAlignment = NSTextAlignment.center
+        quantityField.layer.borderWidth = 1.0
+        quantityField.layer.borderColor = UIColor.black.cgColor
+        quantityField.tag = baseTag + 16
+        scrollView.addSubview(quantityField)
+        
+        let quantityStepper = UIStepper.init(frame: CGRect.init(x: tempView.frame.size.width/2+75, y: 200, width: 94, height: 29))
+        quantityStepper.value = Double(armor.quantity)
+        quantityStepper.minimumValue = 0
+        quantityStepper.maximumValue = 9999
+        quantityStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        quantityStepper.tag = baseTag + 17
+        scrollView.addSubview(quantityStepper)
+        
+        let strRequirementLabel = UILabel.init(frame: CGRect.init(x: 10, y: 240, width: 180, height: 30))
+        strRequirementLabel.text = "Strength Requirement"
+        strRequirementLabel.textAlignment = NSTextAlignment.center
+        strRequirementLabel.tag = baseTag + 18
+        scrollView.addSubview(strRequirementLabel)
+        
+        let strRequirementField = UITextField.init(frame: CGRect.init(x: 10, y: 270, width: tempView.frame.size.width - 124, height: 30))
+        strRequirementField.text = String(armor.str_requirement)
+        strRequirementField.textAlignment = NSTextAlignment.center
+        strRequirementField.layer.borderWidth = 1.0
+        strRequirementField.layer.borderColor = UIColor.black.cgColor
+        strRequirementField.tag = baseTag + 19
+        scrollView.addSubview(strRequirementField)
+        
+        let strRequirementStepper = UIStepper.init(frame: CGRect.init(x: strRequirementField.frame.size.width + 15, y: 270, width: 94, height: 29))
+        strRequirementStepper.value = Double(armor.str_requirement)
+        strRequirementStepper.minimumValue = 0
+        strRequirementStepper.maximumValue = 9999
+        strRequirementStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        strRequirementStepper.tag = baseTag + 20
+        scrollView.addSubview(strRequirementStepper)
+        
+        let weightLabel = UILabel.init(frame: CGRect.init(x: 10, y: 310, width: tempView.frame.size.width - 20, height: 30))
+        weightLabel.text = "Weight"
+        weightLabel.textAlignment = NSTextAlignment.center
+        weightLabel.tag = baseTag + 21
+        scrollView.addSubview(weightLabel)
+        
+        let weightField = UITextField.init(frame: CGRect.init(x: 10, y: 340, width: tempView.frame.size.width - 20, height: 30))
+        weightField.text = armor.weight
+        weightField.textAlignment = NSTextAlignment.center
+        weightField.layer.borderWidth = 1.0
+        weightField.layer.borderColor = UIColor.black.cgColor
+        weightField.tag = baseTag + 22
+        scrollView.addSubview(weightField)
+        
+        let costLabel = UILabel.init(frame: CGRect.init(x: 10, y: 380, width: tempView.frame.size.width - 20, height: 30))
+        costLabel.text = "Cost"
+        costLabel.textAlignment = NSTextAlignment.center
+        costLabel.tag = baseTag + 23
+        scrollView.addSubview(costLabel)
+        
+        let costField = UITextField.init(frame: CGRect.init(x: 10, y: 410, width: tempView.frame.size.width - 20, height: 30))
+        costField.text = armor.cost
+        costField.textAlignment = NSTextAlignment.center
+        costField.layer.borderWidth = 1.0
+        costField.layer.borderColor = UIColor.black.cgColor
+        costField.tag = baseTag + 24
+        scrollView.addSubview(costField)
+        
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 10, y: 450, width: tempView.frame.size.width - 20, height: 30))
+        infoLabel.text = "Description"
+        infoLabel.textAlignment = .center
+        infoLabel.tag = baseTag + 25
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 480, width: tempView.frame.size.width - 20, height: 100))
+        infoView.text = armor.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        infoView.layer.borderColor = UIColor.black.cgColor
+        infoView.tag = baseTag + 26
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 480 + infoView.frame.size.height + 10)
+        
+        view.addSubview(tempView)
+    }
+    
+    func createToolDetailView(tool: Tool, baseTag: Int) {
+        let tempView = createBasicView()
+        tempView.tag = baseTag
+        
+        let abilityType: String = (tool.ability?.name)!
+        var aaIndex = 0
+        var abilityName = ""
+        var abilityMod: Int32 = 0
+        switch abilityType {
+        case "STR":
+            aaIndex = 0
+            abilityName = "Strength"
+            abilityMod = Character.Selected.strBonus
+        case "DEX":
+            aaIndex = 1
+            abilityName = "Dexterity"
+            abilityMod = Character.Selected.dexBonus
+        case "CON":
+            aaIndex = 2
+            abilityName = "Constitution"
+            abilityMod = Character.Selected.conBonus
+        case "INT":
+            aaIndex = 3
+            abilityName = "Intelligence"
+            abilityMod = Character.Selected.intBonus
+        case "WIS":
+            aaIndex = 4
+            abilityName = "Wisdom"
+            abilityMod = Character.Selected.wisBonus
+        case "CHA":
+            aaIndex = 5
+            abilityName = "Charisma"
+            abilityMod = Character.Selected.chaBonus
+        default: break
+        }
+        
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+        tempView.addSubview(scrollView)
+        
+        let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
+        title.text = tool.name?.capitalized
+        title.textAlignment = NSTextAlignment.center
+        title.tag = baseTag + 1
+        title.layer.borderWidth = 1.0
+        title.layer.borderColor = UIColor.black.cgColor
+        scrollView.addSubview(title)
+        
+        let proficientLabel = UILabel.init(frame: CGRect.init(x: 10, y: 45, width: tempView.frame.size.width/2 - 20, height: 30))
+        proficientLabel.text = "Proficient"
+        proficientLabel.textAlignment = NSTextAlignment.center
+        proficientLabel.numberOfLines = 2
+        proficientLabel.tag = baseTag + 2
+        scrollView.addSubview(proficientLabel)
+        
+        let proficientSwitch = UISwitch.init(frame: CGRect.init(x: tempView.frame.size.width/2 - 51 - 110, y: 80, width: 51, height: 31))
+        proficientSwitch.isOn = tool.proficient
+        proficientSwitch.tag = baseTag + 3
+        scrollView.addSubview(proficientSwitch)
+        
+        let proficientField = UITextField.init(frame: CGRect.init(x: tempView.frame.size.width/2 - 40 - 40, y: 80, width: 40, height: 30))
+        proficientField.text = String(Character.Selected.proficiencyBonus)
+        proficientField.textAlignment = NSTextAlignment.center
+        proficientField.isEnabled = false
+        proficientField.textColor = UIColor.darkGray
+        proficientField.layer.borderWidth = 1.0
+        proficientField.layer.borderColor = UIColor.darkGray.cgColor
+        proficientField.tag = baseTag + 4
+        scrollView.addSubview(proficientField)
+        
+        let abilityModLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2 + 10, y: 45, width: tempView.frame.size.width/2 - 20, height: 30))
+        abilityModLabel.text = abilityName + " Mod"
+        abilityModLabel.textAlignment = NSTextAlignment.center
+        abilityModLabel.numberOfLines = 2
+        abilityModLabel.tag = baseTag + 5
+        scrollView.addSubview(abilityModLabel)
+        
+        let abilityModField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2 + 70, y: 80, width:40, height:30))
+        abilityModField.text = String(abilityMod)
+        abilityModField.textAlignment = NSTextAlignment.center
+        abilityModField.isEnabled = false
+        abilityModField.textColor = UIColor.darkGray
+        abilityModField.layer.borderWidth = 1.0
+        abilityModField.layer.borderColor = UIColor.black.cgColor
+        abilityModField.tag = baseTag + 6
+        scrollView.addSubview(abilityModField)
+        
+        let aa = UISegmentedControl.init(frame: CGRect.init(x:10, y:120, width:tempView.frame.size.width-20, height:30))
+        aa.insertSegment(withTitle:"STR", at:0, animated:false)
+        aa.insertSegment(withTitle:"DEX", at:1, animated:false)
+        aa.insertSegment(withTitle:"CON", at:2, animated:false)
+        aa.insertSegment(withTitle:"INT", at:3, animated:false)
+        aa.insertSegment(withTitle:"WIS", at:4, animated:false)
+        aa.insertSegment(withTitle:"CHA", at:5, animated:false)
+        aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+        aa.selectedSegmentIndex = aaIndex
+        aa.tag = baseTag + 7
+        scrollView.addSubview(aa)
+        
+        let weightLabel = UILabel.init(frame: CGRect.init(x: 10, y: 160, width: tempView.frame.size.width - 20, height: 30))
+        weightLabel.text = "Weight"
+        weightLabel.textAlignment = NSTextAlignment.center
+        weightLabel.tag = baseTag + 8
+        scrollView.addSubview(weightLabel)
+        
+        let weightField = UITextField.init(frame: CGRect.init(x: 10, y: 190, width: tempView.frame.size.width - 20, height: 30))
+        weightField.text = tool.weight
+        weightField.textAlignment = NSTextAlignment.center
+        weightField.layer.borderWidth = 1.0
+        weightField.layer.borderColor = UIColor.black.cgColor
+        weightField.tag = baseTag + 9
+        scrollView.addSubview(weightField)
+        
+        let costLabel = UILabel.init(frame: CGRect.init(x: 10, y: 230, width: tempView.frame.size.width - 20, height: 30))
+        costLabel.text = "Cost"
+        costLabel.textAlignment = NSTextAlignment.center
+        costLabel.tag = baseTag + 10
+        scrollView.addSubview(costLabel)
+        
+        let costField = UITextField.init(frame: CGRect.init(x: 10, y: 260, width: tempView.frame.size.width - 20, height: 30))
+        costField.text = tool.cost
+        costField.textAlignment = NSTextAlignment.center
+        costField.layer.borderWidth = 1.0
+        costField.layer.borderColor = UIColor.black.cgColor
+        costField.tag = baseTag + 11
+        scrollView.addSubview(costField)
+        
+        let quantityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 300, width: 90, height: 30))
+        quantityLabel.text = "Quantity"
+        quantityLabel.textAlignment = NSTextAlignment.center
+        quantityLabel.tag = baseTag + 12
+        scrollView.addSubview(quantityLabel)
+        
+        let quantityField = UITextField.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 330, width: 40, height: 30))
+        quantityField.text = String(tool.quantity)
+        quantityField.textAlignment = NSTextAlignment.center
+        quantityField.layer.borderWidth = 1.0
+        quantityField.layer.borderColor = UIColor.black.cgColor
+        quantityField.tag = baseTag + 13
+        scrollView.addSubview(quantityField)
+        
+        let quantityStepper = UIStepper.init(frame: CGRect.init(x: tempView.frame.size.width/2+75, y: 330, width: 94, height: 29))
+        quantityStepper.value = Double(tool.quantity)
+        quantityStepper.minimumValue = 0
+        quantityStepper.maximumValue = 9999
+        quantityStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        quantityStepper.tag = baseTag + 14
+        scrollView.addSubview(quantityStepper)
+        
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 10, y: 370, width: tempView.frame.size.width - 20, height: 30))
+        infoLabel.text = "Description"
+        infoLabel.textAlignment = .center
+        infoLabel.tag = baseTag + 15
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 400, width: tempView.frame.size.width - 20, height: 100))
+        infoView.text = tool.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        infoView.layer.borderColor = UIColor.black.cgColor
+        infoView.tag = baseTag + 16
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 400 + infoView.frame.size.height + 10)
+        
+        view.addSubview(tempView)
+    }
+    
+    func createItemDetailView(item: Item, baseTag: Int) {
+        let tempView = createBasicView()
+        tempView.tag = baseTag
+        
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: tempView.frame.size.width, height: tempView.frame.size.height-50))
+        tempView.addSubview(scrollView)
+        
+        let title = UITextField.init(frame: CGRect.init(x:10, y:5, width:tempView.frame.size.width-20, height:30))
+        title.text = item.name?.capitalized
+        title.textAlignment = NSTextAlignment.center
+        title.tag = baseTag + 1
+        title.layer.borderWidth = 1.0
+        title.layer.borderColor = UIColor.black.cgColor
+        scrollView.addSubview(title)
+        
+        let weightLabel = UILabel.init(frame: CGRect.init(x: 10, y: 45, width: tempView.frame.size.width - 20, height: 30))
+        weightLabel.text = "Weight"
+        weightLabel.textAlignment = NSTextAlignment.center
+        weightLabel.tag = baseTag + 2
+        scrollView.addSubview(weightLabel)
+        
+        let weightField = UITextField.init(frame: CGRect.init(x: 10, y: 80, width: tempView.frame.size.width - 20, height: 30))
+        weightField.text = item.weight
+        weightField.textAlignment = NSTextAlignment.center
+        weightField.layer.borderWidth = 1.0
+        weightField.layer.borderColor = UIColor.black.cgColor
+        weightField.tag = baseTag + 3
+        scrollView.addSubview(weightField)
+        
+        let costLabel = UILabel.init(frame: CGRect.init(x: 10, y: 120, width: tempView.frame.size.width - 20, height: 30))
+        costLabel.text = "Cost"
+        costLabel.textAlignment = NSTextAlignment.center
+        costLabel.tag = baseTag + 4
+        scrollView.addSubview(costLabel)
+        
+        let costField = UITextField.init(frame: CGRect.init(x: 10, y: 150, width: tempView.frame.size.width - 20, height: 30))
+        costField.text = item.cost
+        costField.textAlignment = NSTextAlignment.center
+        costField.layer.borderWidth = 1.0
+        costField.layer.borderColor = UIColor.black.cgColor
+        costField.tag = baseTag + 5
+        scrollView.addSubview(costField)
+        
+        let quantityLabel = UILabel.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 190, width: 90, height: 30))
+        quantityLabel.text = "Quantity"
+        quantityLabel.textAlignment = NSTextAlignment.center
+        quantityLabel.tag = baseTag + 6
+        scrollView.addSubview(quantityLabel)
+        
+        let quantityField = UITextField.init(frame: CGRect.init(x: tempView.frame.size.width/2+25, y: 220, width: 40, height: 30))
+        quantityField.text = String(item.quantity)
+        quantityField.textAlignment = NSTextAlignment.center
+        quantityField.layer.borderWidth = 1.0
+        quantityField.layer.borderColor = UIColor.black.cgColor
+        quantityField.tag = baseTag + 7
+        scrollView.addSubview(quantityField)
+        
+        let quantityStepper = UIStepper.init(frame: CGRect.init(x: tempView.frame.size.width/2+75, y: 220, width: 94, height: 29))
+        quantityStepper.value = Double(item.quantity)
+        quantityStepper.minimumValue = 0
+        quantityStepper.maximumValue = 9999
+        quantityStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        quantityStepper.tag = baseTag + 8
+        scrollView.addSubview(quantityStepper)
+        
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 10, y: 260, width: tempView.frame.size.width - 20, height: 30))
+        infoLabel.text = "Description"
+        infoLabel.textAlignment = .center
+        infoLabel.tag = baseTag + 9
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 290, width: tempView.frame.size.width - 20, height: 100))
+        infoView.text = item.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        infoView.layer.borderColor = UIColor.black.cgColor
+        infoView.tag = baseTag + 10
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 290 + infoView.frame.size.height + 10)
+        
+        view.addSubview(tempView)
+    }
+    
+    func stepperChanged(stepper: UIStepper) {
+        let baseTag = (stepper.superview?.tag)! / 100
+        if stepper.tag == baseTag + 17 {
+            // Quantity
+            quantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 16 {
+                    let textField = view as! UITextField
+                    textField.text = String(quantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 20 {
+            // Strength Requirement
+            strRequirementEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 18 {
+                    let textField = view as! UITextField
+                    textField.text = String(strRequirementEffectValue)
+                }
+            }
+        }
     }
     
     // UIPickerViewDelegate & UIPickerViewDataSource
