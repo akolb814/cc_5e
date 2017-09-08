@@ -23,6 +23,22 @@ class Types {
     
     static let RaceStrings = ["Aarakocra", "Aasimar", "Dragonborn", "Dwarf", "Elf", "Genasi", "Gnome", "Goliath", "Half-Elf", "Halfling", "Half-Orc", "Human", "Tiefling", "Custom"]
     
+    static let SimpleMeleeWeaponStrings = ["Club", "Dagger", "Greatclub", "Handaxe", "Javelin", "Light Hammer", "Mace", "Quarterstaff", "Sickle", "Spear", "Unarmed Strike"]
+    
+    static let SimpleRangedWeaponStrings = ["Crossbow, Light", "Dart", "Shortbow", "Sling"]
+    
+    static let MartialMeleeWeaponStrings = ["Battleaxe", "Flail", "Glaive", "Greataxe", "Greatsword", "Halberd", "Lance", "Longsword", "Maul", "Morningstar", "Pike", "Rapier", "Scimitar", "Shortsword", "Trident", "War Pick", "Warhammer", "Whip"]
+    
+    static let MartialRangedWeaponStrings = ["Blowgun", "Crossbow, Hand", "Crossbow, Heavy", "Longbow", "Net"]
+    
+    static let LightArmorStrings = ["Padded", "Leather", "Studded Leather"]
+    
+    static let MediumArmorStrings = ["Hide", "Chain Shirt", "Scale Shirt", "Breastplate", "Half Plate", "Spiked Armor"]
+    
+    static let HeavyArmorStrings = ["Ring Mail", "Chain mail", "Splint", "Plate"]
+    
+    static let ToolStrings = ["Alchemist’s supplies", "Bagpipes", "Brewer’s supplies", "Calligrapher's Supplies", "Carpenter’s tools", "Cartographer’s tools", "Cobbler’s tools", "Cook’s utensils", "Dice set", "Disguise kit", "Dragonchess set", "Drum", "Dulcimer", "Flute", "Forgery kit", "Glassblower’s tools", "Herbalism kit", "Horn", "Jeweler’s tools", "Leatherworker’s tools", "Lute", "Lyre", "Mason’s tools", "Navigator's tools", "Painter’s supplies", "Pan flute", "Playing card set", "Poisoner's kit", "Potter’s tools", "Shawm", "Smith’s tools", "Thieves' tools", "Three-Dragon Ante set", "Tinker’s tools", "Viol", "Vehicle(land)", "Vehicle(water)", "Weaver’s tools", "Woodcarver’s tools"]
+    
     static let SubraceToRaceDictionary: [String: [String]] = [
         "Aarakocra":[""],
         "Aasimar":[""],
