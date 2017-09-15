@@ -145,6 +145,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         self.setMiscDisplayData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.updateDeathSaves()
+    }
+    
     func setMiscDisplayData() {
         let firstClass: Class = Character.Selected.primaryClass
         let classStr = firstClass.name
@@ -421,50 +425,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         skillsTable.reloadData()
     }
     
-    func updateDeathSaves() {
-        print(Character.Selected.death_saves)
-        
-        var passes = 0
-        var fails = 0
-        
-        // Determine number of passes & fails
-        for counter in Character.Selected.death_saves {
-            if counter == "Pass" {
-                passes = passes + 1
-            }
-            else {
-                fails = fails + 1
-            }
-        }
-        
-        switch passes {
-        case 0:
-            dsPass1.backgroundColor = UIColor.clear
-            dsPass2.backgroundColor = UIColor.clear
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 1:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.clear
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 2:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 3:
-            // Stabalize
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.green
-            
-            Character.Selected.death_saves.removeAll()
-            Character.Selected.current_hp = 1
-            
+    func updateDeathSaves() {        
+        if Character.Selected.current_hp >= 1 {
             hpTitle.text = "HP"
             hpValue.isHidden = false
             hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
@@ -475,50 +437,103 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             dsFail1.isHidden = true
             dsFail2.isHidden = true
             dsFail3.isHidden = true
-            
-            updateDeathSaves()
-            break
-            
-        default:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.green
-            break
-            
         }
-        
-        switch fails {
-        case 0:
-            dsFail1.backgroundColor = UIColor.clear
-            dsFail2.backgroundColor = UIColor.clear
-            dsFail3.backgroundColor = UIColor.clear
-            break
+        else {
+            var passes = 0
+            var fails = 0
             
-        case 1:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.clear
-            dsFail3.backgroundColor = UIColor.clear
-            break
+            // Determine number of passes & fails
+            for counter in Character.Selected.death_saves {
+                if counter == "Pass" {
+                    passes = passes + 1
+                }
+                else {
+                    fails = fails + 1
+                }
+            }
             
-        case 2:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.clear
-            break
+            switch passes {
+            case 0:
+                dsPass1.backgroundColor = UIColor.clear
+                dsPass2.backgroundColor = UIColor.clear
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 1:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.clear
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 2:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 3:
+                // Stabalize
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.green
+                
+                Character.Selected.death_saves.removeAll()
+                Character.Selected.current_hp = 1
+                
+                hpTitle.text = "HP"
+                hpValue.isHidden = false
+                hpValue.text = String(Character.Selected.current_hp)+"\n/"+String(Character.Selected.max_hp)
+                
+                dsPass1.isHidden = true
+                dsPass2.isHidden = true
+                dsPass3.isHidden = true
+                dsFail1.isHidden = true
+                dsFail2.isHidden = true
+                dsFail3.isHidden = true
+                
+                updateDeathSaves()
+                break
+                
+            default:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.green
+                break
+                
+            }
             
-        case 3:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.red
-            break
-            
-        default:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.red
-            break
+            switch fails {
+            case 0:
+                dsFail1.backgroundColor = UIColor.clear
+                dsFail2.backgroundColor = UIColor.clear
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 1:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.clear
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 2:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 3:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.red
+                break
+                
+            default:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.red
+                break
+            }
         }
-        
     }
 
     override func didReceiveMemoryWarning() {

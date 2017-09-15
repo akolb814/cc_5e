@@ -55,6 +55,12 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // Weapon TableView
     @IBOutlet weak var weaponsTable: UITableView!
     
+    var newItem = false
+    var newWeaponCustom = false
+    var newWeaponMartial = true
+    var newWeaponRanged = true
+    var newWeaponQuantityEffectValue: Int32 = 1
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var hpEffectValue: Int32 = 0
@@ -67,6 +73,10 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         weaponsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
         self.setMiscDisplayData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.updateDeathSaves()
     }
     
     func hideKeyboardOnTap(_ selector: Selector) {
@@ -228,49 +238,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func updateDeathSaves() {
-        print(Character.Selected.death_saves)
-        
-        var passes = 0
-        var fails = 0
-        
-        // Determine number of passes & fails
-        for counter in Character.Selected.death_saves {
-            if counter == "Pass" {
-                passes = passes + 1
-            }
-            else {
-                fails = fails + 1
-            }
-        }
-        
-        switch passes {
-        case 0:
-            dsPass1.backgroundColor = UIColor.clear
-            dsPass2.backgroundColor = UIColor.clear
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 1:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.clear
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 2:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.clear
-            break
-            
-        case 3:
-            // Stabalize
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.green
-            
-            Character.Selected.death_saves.removeAll()
-            Character.Selected.current_hp = 1
-            
+        if Character.Selected.current_hp >= 1 {
             hpTitle.text = "HP"
             hpValue.isHidden = false
             hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
@@ -281,50 +249,103 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dsFail1.isHidden = true
             dsFail2.isHidden = true
             dsFail3.isHidden = true
-            
-            updateDeathSaves()
-            break
-            
-        default:
-            dsPass1.backgroundColor = UIColor.green
-            dsPass2.backgroundColor = UIColor.green
-            dsPass3.backgroundColor = UIColor.green
-            break
-            
         }
-        
-        switch fails {
-        case 0:
-            dsFail1.backgroundColor = UIColor.clear
-            dsFail2.backgroundColor = UIColor.clear
-            dsFail3.backgroundColor = UIColor.clear
-            break
+        else {
+            var passes = 0
+            var fails = 0
             
-        case 1:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.clear
-            dsFail3.backgroundColor = UIColor.clear
-            break
+            // Determine number of passes & fails
+            for counter in Character.Selected.death_saves {
+                if counter == "Pass" {
+                    passes = passes + 1
+                }
+                else {
+                    fails = fails + 1
+                }
+            }
             
-        case 2:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.clear
-            break
+            switch passes {
+            case 0:
+                dsPass1.backgroundColor = UIColor.clear
+                dsPass2.backgroundColor = UIColor.clear
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 1:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.clear
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 2:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.clear
+                break
+                
+            case 3:
+                // Stabalize
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.green
+                
+                Character.Selected.death_saves.removeAll()
+                Character.Selected.current_hp = 1
+                
+                hpTitle.text = "HP"
+                hpValue.isHidden = false
+                hpValue.text = String(Character.Selected.current_hp)+"/"+String(Character.Selected.max_hp)
+                
+                dsPass1.isHidden = true
+                dsPass2.isHidden = true
+                dsPass3.isHidden = true
+                dsFail1.isHidden = true
+                dsFail2.isHidden = true
+                dsFail3.isHidden = true
+                
+                updateDeathSaves()
+                break
+                
+            default:
+                dsPass1.backgroundColor = UIColor.green
+                dsPass2.backgroundColor = UIColor.green
+                dsPass3.backgroundColor = UIColor.green
+                break
+                
+            }
             
-        case 3:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.red
-            break
-            
-        default:
-            dsFail1.backgroundColor = UIColor.red
-            dsFail2.backgroundColor = UIColor.red
-            dsFail3.backgroundColor = UIColor.red
-            break
+            switch fails {
+            case 0:
+                dsFail1.backgroundColor = UIColor.clear
+                dsFail2.backgroundColor = UIColor.clear
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 1:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.clear
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 2:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.clear
+                break
+                
+            case 3:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.red
+                break
+                
+            default:
+                dsFail1.backgroundColor = UIColor.red
+                dsFail2.backgroundColor = UIColor.red
+                dsFail3.backgroundColor = UIColor.red
+                break
+            }
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -1964,7 +1985,657 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 view.addSubview(tempView)
             }
             else {
-                
+                createNewItem(baseTag: 700 + (indexPath.row * 100))
+            }
+        }
+    }
+    
+    // Create new Item
+    func createNewItem(baseTag: Int) {
+        let tempView = createBasicView()
+        tempView.tag = baseTag
+        
+        newItem = true
+        
+        let newLabel = UILabel(frame: CGRect.init(x: 10, y: 5, width: tempView.frame.size.width - 20, height: 30))
+        newLabel.text = "New Weapon"
+        newLabel.textAlignment = NSTextAlignment.center
+        newLabel.tag = baseTag + 1
+        newLabel.font = UIFont.systemFont(ofSize: 14)
+        tempView.addSubview(newLabel)
+        
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 45, width: tempView.frame.size.width, height: tempView.frame.size.height-50-50))
+        scrollView.tag = baseTag
+        tempView.addSubview(scrollView)
+        
+        createNewWeapon(baseTag: baseTag, scrollView: scrollView)
+        
+        view.addSubview(tempView)
+    }
+    
+    func createNewWeapon(baseTag: Int, scrollView: UIScrollView) {
+        let customLabel = UILabel(frame: CGRect(x: 10, y: 5, width: 70, height: 30))
+        customLabel.text = "Custom"
+        customLabel.textAlignment = .right
+        customLabel.tag = baseTag + 1
+        scrollView.addSubview(customLabel)
+        
+        let customSwitch = UISwitch(frame: CGRect(x: 85, y: 5, width: 51, height: 31))
+        customSwitch.isOn = newWeaponCustom
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        customSwitch.tag = baseTag + 2
+        scrollView.addSubview(customSwitch)
+        
+        let simpleLabel = UILabel(frame: CGRect(x: 10, y: 40, width: 55, height: 30))
+        simpleLabel.text = "Simple"
+        simpleLabel.textAlignment = .right
+        simpleLabel.tag = baseTag + 3
+        scrollView.addSubview(simpleLabel)
+        
+        let simpleSwitch = UISwitch(frame: CGRect(x: 70, y: 40, width: 51, height: 31))
+        simpleSwitch.isOn = newWeaponMartial
+        simpleSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        simpleSwitch.tag = baseTag + 4
+        scrollView.addSubview(simpleSwitch)
+        
+        let martialLabel = UILabel(frame: CGRect(x: 125, y: 40, width: 60, height: 30))
+        martialLabel.text = "Martial"
+        martialLabel.tag = baseTag + 5
+        scrollView.addSubview(martialLabel)
+        
+        let meleeLabel = UILabel(frame: CGRect(x: 190, y: 40, width: 50, height: 30))
+        meleeLabel.text = "Melee"
+        meleeLabel.textAlignment = .right
+        meleeLabel.tag = baseTag + 6
+        scrollView.addSubview(meleeLabel)
+        
+        let meleeSwitch = UISwitch(frame: CGRect(x: 245, y: 40, width: 51, height: 31))
+        meleeSwitch.isOn = newWeaponRanged
+        meleeSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        meleeSwitch.tag = baseTag + 7
+        scrollView.addSubview(meleeSwitch)
+        
+        let rangedLabel = UILabel(frame: CGRect(x: 300, y: 40, width: 70, height: 30))
+        rangedLabel.text = "Ranged"
+        rangedLabel.tag = baseTag + 8
+        scrollView.addSubview(rangedLabel)
+        
+        let weaponPickerView = UIPickerView.init(frame: CGRect.init(x: 10, y: 75, width: scrollView.frame.size.width-20, height: 60))
+        weaponPickerView.dataSource = self
+        weaponPickerView.delegate = self
+        weaponPickerView.layer.borderWidth = 1.0
+        weaponPickerView.layer.borderColor = UIColor.black.cgColor
+        weaponPickerView.isUserInteractionEnabled = !newWeaponCustom
+        weaponPickerView.tag = baseTag + 9
+//        weaponPickerView.selectRow(0, inComponent: 0, animated: false)
+        scrollView.addSubview(weaponPickerView)
+        
+        // TODO: Get Weapon/Damage based on selected picker view item
+//        let weapon = as Weapon
+//        let damage = weapon.damage! as Damage
+        
+        var attackBonus: Int32 = 0
+        var damageBonus: Int32 = 0
+        let modDamage = true//damage.mod_damage
+        let abilityType: String = "STR"//(weapon.ability?.name)!
+        switch abilityType {
+        case "STR":
+            attackBonus = attackBonus + Character.Selected.strBonus //Add STR bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.strBonus
+            }
+        case "DEX":
+            attackBonus = attackBonus + Character.Selected.dexBonus //Add DEX bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.dexBonus
+            }
+        case "CON":
+            attackBonus = attackBonus + Character.Selected.conBonus //Add CON bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.conBonus
+            }
+        case "INT":
+            attackBonus = attackBonus + Character.Selected.intBonus //Add INT bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.intBonus
+            }
+        case "WIS":
+            attackBonus = attackBonus + Character.Selected.wisBonus //Add WIS bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.wisBonus
+            }
+        case "CHA":
+            attackBonus = attackBonus + Character.Selected.chaBonus //Add CHA bonus
+            if modDamage {
+                damageBonus = damageBonus + Character.Selected.chaBonus
+            }
+        default: break
+        }
+        
+//        attackBonus = attackBonus + weapon.magic_bonus + weapon.misc_bonus
+//        damageBonus = damageBonus + damage.magic_bonus + damage.misc_bonus
+//
+//        var damageDieNumber = damage.die_number
+//        var damageDie = damage.die_type
+//        let extraDie = damage.extra_die
+//        if (extraDie) {
+//            damageDieNumber = damageDieNumber + damage.extra_die_number
+//            damageDie = damageDie + damage.extra_die_type
+//        }
+        
+        let reachLabel = UILabel.init(frame: CGRect.init(x: 10, y: 145, width: scrollView.frame.size.width/2-15, height: 30))
+        reachLabel.text = "Range"
+        reachLabel.textAlignment = NSTextAlignment.center
+        reachLabel.tag = baseTag + 10
+        scrollView.addSubview(reachLabel)
+        
+        let reachField = UITextField.init(frame: CGRect.init(x: 10, y: 175, width: scrollView.frame.size.width/2-15, height: 40))
+        reachField.text = ""
+        reachField.textAlignment = NSTextAlignment.center
+        reachField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            reachField.isEnabled = false
+            reachField.textColor = UIColor.darkGray
+            reachField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            reachField.isEnabled = true
+            reachField.textColor = UIColor.black
+            reachField.layer.borderColor = UIColor.black.cgColor
+        }
+        reachField.tag = baseTag + 11
+        scrollView.addSubview(reachField)
+        
+        let damageTypeLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2+5, y: 145, width: scrollView.frame.size.width/2-15, height: 30))
+        damageTypeLabel.text = "Damage Type"
+        damageTypeLabel.textAlignment = NSTextAlignment.center
+        damageTypeLabel.tag = baseTag + 12
+        scrollView.addSubview(damageTypeLabel)
+        
+        let damageTypePickerView = UIPickerView.init(frame: CGRect.init(x: scrollView.frame.size.width/2+5, y: 175, width: scrollView.frame.size.width/2-15, height: 40))
+        damageTypePickerView.dataSource = self
+        damageTypePickerView.delegate = self
+        damageTypePickerView.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            damageTypePickerView.isUserInteractionEnabled = false
+            damageTypePickerView.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            damageTypePickerView.isUserInteractionEnabled = true
+            damageTypePickerView.layer.borderColor = UIColor.black.cgColor
+        }
+        damageTypePickerView.layer.borderColor = UIColor.black.cgColor
+        damageTypePickerView.tag = baseTag + 13
+//        let row = Types.DamageStrings.index(of: damage.damage_type!.capitalized)
+//        damageTypePickerView.selectRow(row!, inComponent: 0, animated: false)
+        scrollView.addSubview(damageTypePickerView)
+        
+        let attackLabel = UILabel.init(frame: CGRect.init(x: 10, y: 210, width: scrollView.frame.size.width-20, height: 30))
+        attackLabel.text = "Attack Ability"
+        attackLabel.textAlignment = NSTextAlignment.center
+        attackLabel.tag = baseTag + 14
+        scrollView.addSubview(attackLabel)
+        
+        var aaIndex = 0
+        var abilityName = ""
+        var abilityMod: Int32 = 0
+        switch abilityType {
+        case "STR":
+            aaIndex = 0
+            abilityName = "Strength"
+            abilityMod = Character.Selected.strBonus
+        case "DEX":
+            aaIndex = 1
+            abilityName = "Dexterity"
+            abilityMod = Character.Selected.dexBonus
+        case "CON":
+            aaIndex = 2
+            abilityName = "Constitution"
+            abilityMod = Character.Selected.conBonus
+        case "INT":
+            aaIndex = 3
+            abilityName = "Intelligence"
+            abilityMod = Character.Selected.intBonus
+        case "WIS":
+            aaIndex = 4
+            abilityName = "Wisdom"
+            abilityMod = Character.Selected.wisBonus
+        case "CHA":
+            aaIndex = 5
+            abilityName = "Charisma"
+            abilityMod = Character.Selected.chaBonus
+        default: break
+        }
+        
+        let aa = UISegmentedControl.init(frame: CGRect.init(x:10, y:250, width:scrollView.frame.size.width-20, height:30))
+        aa.insertSegment(withTitle:"STR", at:0, animated:false)
+        aa.insertSegment(withTitle:"DEX", at:1, animated:false)
+        aa.insertSegment(withTitle:"CON", at:2, animated:false)
+        aa.insertSegment(withTitle:"INT", at:3, animated:false)
+        aa.insertSegment(withTitle:"WIS", at:4, animated:false)
+        aa.insertSegment(withTitle:"CHA", at:5, animated:false)
+        aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
+        aa.selectedSegmentIndex = aaIndex
+        aa.tag = baseTag + 15
+        if newWeaponCustom == false {
+            aa.isUserInteractionEnabled = false
+        }
+        else {
+            aa.isUserInteractionEnabled = true
+        }
+        scrollView.addSubview(aa)
+        
+        let profLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-135, y: 290, width: 90, height: 30))
+        profLabel.text = "Proficiency\nBonus"
+        profLabel.font = UIFont.systemFont(ofSize: 10)
+        profLabel.textAlignment = NSTextAlignment.center
+        profLabel.numberOfLines = 2
+        profLabel.tag = baseTag + 16
+        scrollView.addSubview(profLabel)
+        
+        let profField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2-110, y:320, width:40, height:30))
+        profField.text = String(Character.Selected.proficiency_bonus)
+        profField.textAlignment = NSTextAlignment.center
+        profField.isEnabled = false
+        profField.textColor = UIColor.darkGray
+        profField.layer.borderWidth = 1.0
+        profField.layer.borderColor = UIColor.darkGray.cgColor
+        profField.tag = baseTag + 17
+        scrollView.addSubview(profField)
+        
+        let abilityLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-75, y: 290, width: 90, height: 30))
+        abilityLabel.text = abilityName+"\nBonus"
+        abilityLabel.font = UIFont.systemFont(ofSize: 10)
+        abilityLabel.textAlignment = NSTextAlignment.center
+        abilityLabel.numberOfLines = 2
+        abilityLabel.tag = baseTag + 18
+        scrollView.addSubview(abilityLabel)
+        
+        let abilityField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2-50, y:320, width:40, height:30))
+        abilityField.text = String(abilityMod)
+        abilityField.textAlignment = NSTextAlignment.center
+        abilityField.isEnabled = false
+        abilityField.textColor = UIColor.darkGray
+        abilityField.layer.borderWidth = 1.0
+        abilityField.layer.borderColor = UIColor.black.cgColor
+        abilityField.tag = baseTag + 19
+        scrollView.addSubview(abilityField)
+        
+        let magicLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-10, y: 290, width: 90, height: 30))
+        magicLabel.text = "Magic Item\nAttack Bonus"
+        magicLabel.font = UIFont.systemFont(ofSize: 10)
+        magicLabel.textAlignment = NSTextAlignment.center
+        magicLabel.numberOfLines = 2
+        magicLabel.tag = baseTag + 20
+        scrollView.addSubview(magicLabel)
+        
+        let magicField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+15, y:320, width:40, height:30))
+        magicField.text = ""//String(weapon.magic_bonus)
+        magicField.textAlignment = NSTextAlignment.center
+        magicField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            magicField.isEnabled = false
+            magicField.textColor = UIColor.darkGray
+            magicField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            magicField.isEnabled = true
+            magicField.textColor = UIColor.black
+            magicField.layer.borderColor = UIColor.black.cgColor
+        }
+        magicField.tag = baseTag + 21
+        scrollView.addSubview(magicField)
+        
+        let miscLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2+55, y: 290, width: 90, height: 30))
+        miscLabel.text = "Misc\nAttack Bonus"
+        miscLabel.font = UIFont.systemFont(ofSize: 10)
+        miscLabel.textAlignment = NSTextAlignment.center
+        miscLabel.numberOfLines = 2
+        miscLabel.tag = baseTag + 22
+        scrollView.addSubview(miscLabel)
+        
+        let miscField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+80, y:320, width:40, height:30))
+        miscField.text = ""//String(weapon.misc_bonus)
+        miscField.textAlignment = NSTextAlignment.center
+        miscField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            miscField.isEnabled = false
+            miscField.textColor = UIColor.darkGray
+            miscField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            miscField.isEnabled = true
+            miscField.textColor = UIColor.black
+            miscField.layer.borderColor = UIColor.black.cgColor
+        }
+        miscField.tag = baseTag + 23
+        scrollView.addSubview(miscField)
+        
+        let profWithLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-135, y: 360, width: 90, height: 40))
+        profWithLabel.text = "Proficient\nWith\nWeapon"
+        profWithLabel.font = UIFont.systemFont(ofSize: 10)
+        profWithLabel.textAlignment = NSTextAlignment.center
+        profWithLabel.numberOfLines = 3
+        profWithLabel.tag = baseTag + 24
+        scrollView.addSubview(profWithLabel)
+        
+        let profWithSwitch = UISwitch.init(frame: CGRect.init(x: scrollView.frame.size.width/2-115, y: 400, width:51, height:31))
+//        if (Character.Selected.weapon_proficiencies?.lowercased().contains(weapon.category!))! {
+//            profWithSwitch.isOn = true
+//        }
+//        else {
+        profWithSwitch.isOn = false
+//        }
+        if newWeaponCustom == false {
+            profWithSwitch.isUserInteractionEnabled = false
+        }
+        else {
+            profWithSwitch.isUserInteractionEnabled = true
+        }
+        profWithSwitch.tag = baseTag + 25
+        scrollView.addSubview(profWithSwitch)
+        
+        let abilityDmgLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-75, y: 360, width: 90, height: 40))
+        abilityDmgLabel.text = "Ability\nMod to\nDamage"
+        abilityDmgLabel.font = UIFont.systemFont(ofSize: 10)
+        abilityDmgLabel.textAlignment = NSTextAlignment.center
+        abilityDmgLabel.numberOfLines = 3
+        abilityDmgLabel.tag = baseTag + 26
+        scrollView.addSubview(abilityDmgLabel)
+        
+        let abilityDmgSwitch = UISwitch.init(frame: CGRect.init(x: scrollView.frame.size.width/2-50, y: 400, width:51, height:31))
+        abilityDmgSwitch.isOn = true//damage.mod_damage
+        if newWeaponCustom == false {
+            abilityDmgSwitch.isUserInteractionEnabled = false
+        }
+        else {
+            abilityDmgSwitch.isUserInteractionEnabled = true
+        }
+        abilityDmgSwitch.tag = baseTag + 27
+        scrollView.addSubview(abilityDmgSwitch)
+        
+        let magicDmgLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2-10, y: 360, width: 90, height: 40))
+        magicDmgLabel.text = "Magic Item\nDamage\nBonus"
+        magicDmgLabel.font = UIFont.systemFont(ofSize: 10)
+        magicDmgLabel.textAlignment = NSTextAlignment.center
+        magicDmgLabel.numberOfLines = 3
+        magicDmgLabel.tag = baseTag + 28
+        scrollView.addSubview(magicDmgLabel)
+        
+        let magicDmgField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+15, y:400, width:40, height:30))
+        magicDmgField.text = ""//String(damage.magic_bonus)
+        magicDmgField.textAlignment = NSTextAlignment.center
+        magicDmgField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            magicDmgField.isEnabled = false
+            magicDmgField.textColor = UIColor.darkGray
+            magicDmgField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            magicDmgField.isEnabled = true
+            magicDmgField.textColor = UIColor.black
+            magicDmgField.layer.borderColor = UIColor.black.cgColor
+        }
+        magicDmgField.tag = baseTag + 29
+        scrollView.addSubview(magicDmgField)
+        
+        let miscDmgLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2+55, y: 360, width: 90, height: 40))
+        miscDmgLabel.text = "Misc\nDamage\nBonus"
+        miscDmgLabel.font = UIFont.systemFont(ofSize: 10)
+        miscDmgLabel.textAlignment = NSTextAlignment.center
+        miscDmgLabel.numberOfLines = 3
+        miscDmgLabel.tag = baseTag + 30
+        scrollView.addSubview(miscDmgLabel)
+        
+        let miscDmgField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+80, y:400, width:40, height:30))
+        miscDmgField.text = ""//String(damage.misc_bonus)
+        miscDmgField.textAlignment = NSTextAlignment.center
+        miscDmgField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            miscDmgField.isEnabled = false
+            miscDmgField.textColor = UIColor.darkGray
+            miscDmgField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            miscDmgField.isEnabled = true
+            miscDmgField.textColor = UIColor.black
+            miscDmgField.layer.borderColor = UIColor.black.cgColor
+        }
+        miscDmgField.tag = baseTag + 31
+        scrollView.addSubview(miscDmgField)
+        
+        let weaponDmgLabel = UILabel.init(frame: CGRect.init(x: 10, y: 440, width: scrollView.frame.size.width/2-20, height: 30))
+        weaponDmgLabel.text = "Weapon Damage Die"
+        weaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
+        weaponDmgLabel.textAlignment = NSTextAlignment.center
+        weaponDmgLabel.tag = baseTag + 32
+        scrollView.addSubview(weaponDmgLabel)
+        
+        let extraWeaponDmgLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2+10, y: 440, width: scrollView.frame.size.width/2-20, height: 30))
+        extraWeaponDmgLabel.text = "Extra Damage Die"
+        extraWeaponDmgLabel.font = UIFont.systemFont(ofSize: 10)
+        extraWeaponDmgLabel.textAlignment = NSTextAlignment.center
+        extraWeaponDmgLabel.tag = baseTag + 33
+        scrollView.addSubview(extraWeaponDmgLabel)
+        
+        let weaponDieAmount = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2-140, y:470, width:40, height:30))
+        weaponDieAmount.text = ""//String(damage.die_number)
+        weaponDieAmount.textAlignment = NSTextAlignment.center
+        weaponDieAmount.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            weaponDieAmount.isEnabled = false
+            weaponDieAmount.textColor = UIColor.darkGray
+            weaponDieAmount.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            weaponDieAmount.isEnabled = true
+            weaponDieAmount.textColor = UIColor.black
+            weaponDieAmount.layer.borderColor = UIColor.black.cgColor
+        }
+        weaponDieAmount.tag = baseTag + 34
+        scrollView.addSubview(weaponDieAmount)
+        
+        let weaponD = UILabel.init(frame: CGRect.init(x:scrollView.frame.size.width/2-100, y:470, width:20, height:30))
+        weaponD.text = "d"
+        weaponD.textAlignment = NSTextAlignment.center
+        weaponD.tag = baseTag + 35
+        scrollView.addSubview(weaponD)
+        
+        let weaponDie = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2-80, y:470, width:40, height:30))
+        weaponDie.text = ""//String(damage.die_type)
+        weaponDie.textAlignment = NSTextAlignment.center
+        weaponDie.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            weaponDie.isEnabled = false
+            weaponDie.textColor = UIColor.darkGray
+            weaponDie.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            weaponDie.isEnabled = true
+            weaponDie.textColor = UIColor.black
+            weaponDie.layer.borderColor = UIColor.black.cgColor
+        }
+        weaponDie.tag = baseTag + 36
+        scrollView.addSubview(weaponDie)
+        
+        let extraDieSwitch = UISwitch.init(frame: CGRect.init(x: scrollView.frame.size.width/2+40, y: 465, width:51, height:31))
+        extraDieSwitch.isOn = false//damage.extra_die
+        extraDieSwitch.tag = baseTag + 37
+        scrollView.addSubview(extraDieSwitch)
+        
+        let extraDieAmount = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+20, y:500, width:40, height:30))
+        extraDieAmount.text = ""//String(damage.extra_die_number)
+        extraDieAmount.textAlignment = NSTextAlignment.center
+        extraDieAmount.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            extraDieAmount.isEnabled = false
+            extraDieAmount.textColor = UIColor.darkGray
+            extraDieAmount.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            extraDieAmount.isEnabled = true
+            extraDieAmount.textColor = UIColor.black
+            extraDieAmount.layer.borderColor = UIColor.black.cgColor
+        }
+        extraDieAmount.tag = baseTag + 38
+        scrollView.addSubview(extraDieAmount)
+        
+        let extraD = UILabel.init(frame: CGRect.init(x:scrollView.frame.size.width/2+60, y:500, width:20, height:30))
+        extraD.text = "d"
+        extraD.textAlignment = NSTextAlignment.center
+        extraD.tag = baseTag + 39
+        scrollView.addSubview(extraD)
+        
+        let extraDieField = UITextField.init(frame: CGRect.init(x:scrollView.frame.size.width/2+80, y:500, width:40, height:30))
+        extraDieField.text = ""//String(damage.extra_die_type)
+        extraDieField.textAlignment = NSTextAlignment.center
+        extraDieField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            extraDieField.isEnabled = false
+            extraDieField.textColor = UIColor.darkGray
+            extraDieField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            extraDieField.isEnabled = true
+            extraDieField.textColor = UIColor.black
+            extraDieField.layer.borderColor = UIColor.black.cgColor
+        }
+        extraDieField.tag = baseTag + 40
+        scrollView.addSubview(extraDieField)
+        
+        let quantityLabel = UILabel.init(frame: CGRect.init(x: scrollView.frame.size.width/2+25, y: 540, width: 90, height: 30))
+        quantityLabel.text = "Quantity"
+        quantityLabel.textAlignment = NSTextAlignment.center
+        quantityLabel.tag = baseTag + 41
+        scrollView.addSubview(quantityLabel)
+        
+        let quantityField = UITextField.init(frame: CGRect.init(x: scrollView.frame.size.width/2+25, y: 570, width: 40, height: 30))
+        quantityField.text = "1"//String(weapon.quantity)
+        quantityField.textAlignment = NSTextAlignment.center
+        quantityField.layer.borderWidth = 1.0
+        quantityField.layer.borderColor = UIColor.black.cgColor
+        quantityField.tag = baseTag + 42
+        scrollView.addSubview(quantityField)
+        
+        let quantityStepper = UIStepper.init(frame: CGRect.init(x: scrollView.frame.size.width/2+75, y: 570, width: 94, height: 29))
+        quantityStepper.value = 0//Double(weapon.quantity)
+        quantityStepper.minimumValue = 0
+        quantityStepper.maximumValue = 9999
+        quantityStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        quantityStepper.tag = baseTag + 43
+        scrollView.addSubview(quantityStepper)
+        
+        let weightLabel = UILabel.init(frame: CGRect.init(x: 10, y: 610, width: scrollView.frame.size.width - 20, height: 30))
+        weightLabel.text = "Weight"
+        weightLabel.textAlignment = NSTextAlignment.center
+        weightLabel.tag = baseTag + 44
+        scrollView.addSubview(weightLabel)
+        
+        let weightField = UITextField.init(frame: CGRect.init(x: 10, y: 640, width: scrollView.frame.size.width - 20, height: 30))
+        weightField.text = ""//weapon.weight
+        weightField.textAlignment = NSTextAlignment.center
+        weightField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            weightField.isEnabled = false
+            weightField.textColor = UIColor.darkGray
+            weightField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            weightField.isEnabled = true
+            weightField.textColor = UIColor.black
+            weightField.layer.borderColor = UIColor.black.cgColor
+        }
+        weightField.tag = baseTag + 45
+        scrollView.addSubview(weightField)
+        
+        let costLabel = UILabel.init(frame: CGRect.init(x: 10, y: 680, width: scrollView.frame.size.width - 20, height: 30))
+        costLabel.text = "Cost"
+        costLabel.textAlignment = NSTextAlignment.center
+        costLabel.tag = baseTag + 46
+        scrollView.addSubview(costLabel)
+        
+        let costField = UITextField.init(frame: CGRect.init(x: 10, y: 710, width: scrollView.frame.size.width - 20, height: 30))
+        costField.text = ""//weapon.cost
+        costField.textAlignment = NSTextAlignment.center
+        costField.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            costField.isEnabled = false
+            costField.textColor = UIColor.darkGray
+            costField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            costField.isEnabled = true
+            costField.textColor = UIColor.black
+            costField.layer.borderColor = UIColor.black.cgColor
+        }
+        costField.tag = baseTag + 47
+        scrollView.addSubview(costField)
+        
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 10, y: 750, width: scrollView.frame.size.width - 20, height: 30))
+        infoLabel.text = "Description"
+        infoLabel.textAlignment = .center
+        infoLabel.tag = baseTag + 48
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 780, width: scrollView.frame.size.width - 20, height: 100))
+        infoView.text = ""//weapon.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        if newWeaponCustom == false {
+            infoView.isUserInteractionEnabled = false
+            infoView.textColor = UIColor.darkGray
+            infoView.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            infoView.isUserInteractionEnabled = true
+            infoView.textColor = UIColor.black
+            infoView.layer.borderColor = UIColor.black.cgColor
+        }
+        infoView.tag = baseTag + 49
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        scrollView.contentSize = CGSize.init(width: scrollView.frame.size.width, height: 780 + infoView.frame.size.height + 10)
+    }
+    
+    func switchChanged(sender: UISwitch) {
+        let parentView = sender.superview!
+        var baseTag = 0
+        if parentView is UIScrollView {
+            baseTag = parentView.superview!.tag
+        }
+        else {
+            baseTag = parentView.tag
+        }
+        
+        if sender.tag == baseTag + 2 {
+            // Custom
+            for case let view in parentView.subviews {
+                view.removeFromSuperview()
+            }
+            
+            newWeaponCustom = sender.isOn
+            createNewWeapon(baseTag: baseTag, scrollView: parentView as! UIScrollView)
+        }
+        else if sender.tag == baseTag + 4 {
+            // Simple - Martial Switch
+            newWeaponMartial = sender.isOn
+        }
+        else if sender.tag == baseTag + 7 {
+            // Melee - Ranged Switch
+            newWeaponRanged = sender.isOn
+        }
+        
+        for case let view in parentView.subviews {
+            if view.tag == baseTag + 9 {
+                // Update picker view
+                let pickerView = view as! UIPickerView
+                pickerView.reloadAllComponents()
             }
         }
     }
@@ -1975,11 +2646,67 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Types.DamageStrings.count
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            if pickerView.tag == (baseTag)! + 9 {
+                // Weapon Selection
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+                        return Types.MartialRangedWeaponStrings.count
+                    }
+                    else {
+                        return Types.MartialMeleeWeaponStrings.count
+                    }
+                }
+                else {
+                    if newWeaponRanged == true {
+                        return Types.SimpleRangedWeaponStrings.count
+                    }
+                    else {
+                        return Types.SimpleMeleeWeaponStrings.count
+                    }
+                }
+            }
+            else {
+                return Types.DamageStrings.count
+            }
+        }
+        else {
+            return Types.DamageStrings.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //appDelegate.character. = damageTypes[row] as? String
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            if pickerView.tag == baseTag! + 9 {
+                // Weapon Selection
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+//                    appDelegate.character. = Types.MartialRangedWeapons[row]
+                    }
+                    else {
+//                    appDelegate.character. = Types.MartialMeleeWeapons[row]
+                    }
+                }
+                else {
+                    if newWeaponRanged == true {
+//                    appDelegate.character. = Types.SimpleRangedWeapons[row]
+                    }
+                    else {
+//                    appDelegate.character. = Types.Types.SimpleMeleeWeapons[row]
+                    }
+                }
+            }
+            else {
+//                appDelegate.character. = damageTypes[row] as? String
+            }
+        }
+        else {
+//            appDelegate.character. = damageTypes[row] as? String
+        }
     }
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -1991,7 +2718,45 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         
-        pickerLabel?.text = Types.DamageStrings[row]
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            
+            if pickerView.tag == baseTag! + 9 {
+                if newWeaponCustom == true {
+                    pickerLabel?.textColor = UIColor.darkGray
+                }
+                else {
+                    pickerLabel?.textColor = UIColor.black
+                }
+                
+                // Weapon Selection
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+                        pickerLabel?.text = Types.MartialRangedWeaponStrings[row]
+                    }
+                    else {
+                        pickerLabel?.text = Types.MartialMeleeWeaponStrings[row]
+                    }
+                }
+                else {
+                    if newWeaponRanged == true {
+                        pickerLabel?.text = Types.SimpleRangedWeaponStrings[row]
+                    }
+                    else {
+                        pickerLabel?.text = Types.SimpleMeleeWeaponStrings[row]
+                    }
+                }
+            }
+            else {
+                pickerLabel?.textColor = UIColor.black
+                pickerLabel?.text = Types.DamageStrings[row]
+            }
+        }
+        else {
+            pickerLabel?.textColor = UIColor.black
+            pickerLabel?.text = Types.DamageStrings[row]
+        }
         return pickerLabel!
     }
     

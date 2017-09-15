@@ -14,7 +14,8 @@ class CharacterViewController: UITabBarController, UIPopoverPresentationControll
     @IBOutlet weak var rightButton: UIBarButtonItem!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+    var longRest = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,6 +24,10 @@ class CharacterViewController: UITabBarController, UIPopoverPresentationControll
         
         let nc = NotificationCenter.default
         nc.addObserver(forName: Notification.Name(rawValue:"ChangeName"), object: nil, queue: nil, using: changeName)
+        nc.addObserver(forName: Notification.Name(rawValue:"LevelUp"), object: nil, queue: nil, using: levelUp)
+        nc.addObserver(forName: Notification.Name(rawValue:"Rest"), object: nil, queue: nil, using: rest)
+        nc.addObserver(forName: Notification.Name(rawValue:"ExportCharacter"), object: nil, queue: nil, using: exportCharacter)
+        nc.addObserver(forName: Notification.Name(rawValue:"Help"), object: nil, queue: nil, using: help)
     }
     
     func changeName(notification: Notification) -> Void {
@@ -46,6 +51,57 @@ class CharacterViewController: UITabBarController, UIPopoverPresentationControll
         newName.becomeFirstResponder()
         
         view.addSubview(tempView)
+    }
+    
+    func levelUp(notification: Notification) -> Void {
+        let tempView = createBasicView()
+        tempView.tag = 200
+        
+        let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
+        title.text = "Level Up"
+        title.textAlignment = NSTextAlignment.center
+        title.tag = 201
+        tempView.addSubview(title)
+        
+        view.addSubview(tempView)
+    }
+    
+    func rest(notification: Notification) -> Void {
+        let tempView = createBasicView()
+        tempView.tag = 300
+        
+        let title = UILabel.init(frame: CGRect.init(x:10, y:10, width:tempView.frame.size.width-20, height:30))
+        title.text = "Rest"
+        title.textAlignment = NSTextAlignment.center
+        title.tag = 301
+        tempView.addSubview(title)
+        
+        let shortLabel = UILabel(frame: CGRect(x: tempView.frame.size.width/2-80, y: 50, width: 50, height: 30))
+        shortLabel.text = "Short"
+        shortLabel.textAlignment = .right
+        shortLabel.tag = 302
+        tempView.addSubview(shortLabel)
+        
+        let restSwitch = UISwitch(frame: CGRect(x: tempView.frame.size.width/2-25, y: 50, width: 51, height: 31))
+        restSwitch.isOn = longRest
+        restSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        restSwitch.tag = 303
+        tempView.addSubview(restSwitch)
+        
+        let longLabel = UILabel(frame: CGRect(x: tempView.frame.size.width/2+31, y: 50, width: 40, height: 30))
+        longLabel.text = "Long"
+        longLabel.tag = 304
+        tempView.addSubview(longLabel)
+        
+        view.addSubview(tempView)
+    }
+    
+    func exportCharacter(notification: Notification) -> Void {
+        
+    }
+    
+    func help(notification: Notification) -> Void {
+        
     }
     
     func createBasicView() -> UIView {
@@ -75,17 +131,34 @@ class CharacterViewController: UITabBarController, UIPopoverPresentationControll
         return tempView
     }
     
+    func switchChanged(sender: UISwitch) {
+        longRest = sender.isOn
+    }
+    
     func applyAction(button: UIButton) {
         let parentView:UIView = button.superview!
-        for case let view in parentView.subviews {
-            if view.tag == 102 {
-                let textField = view as! UITextField
-                Character.Selected.name = textField.text
+        if parentView.tag == 100 {
+            // Change Name
+            for case let view in parentView.subviews {
+                if view.tag == 102 {
+                    let textField = view as! UITextField
+                    Character.Selected.name = textField.text
+                }
+            }
+            navigationItem.title = Character.Selected.name
+        }
+        else if parentView.tag == 200 {
+            // Level Up
+        }
+        else if parentView.tag == 300 {
+            // Rest
+            if longRest == true {
+                // Long Rest; Reset all spell slots, hp, and hit dice
+            }
+            else {
+                // Short Rest; Spend Hit Dice to heal, reset class specific details
             }
         }
-        
-        navigationItem.title = Character.Selected.name
-        
         parentView.removeFromSuperview()
     }
     

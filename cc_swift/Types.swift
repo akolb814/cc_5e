@@ -39,6 +39,8 @@ class Types {
     
     static let ToolStrings = ["Alchemist’s supplies", "Bagpipes", "Brewer’s supplies", "Calligrapher's Supplies", "Carpenter’s tools", "Cartographer’s tools", "Cobbler’s tools", "Cook’s utensils", "Dice set", "Disguise kit", "Dragonchess set", "Drum", "Dulcimer", "Flute", "Forgery kit", "Glassblower’s tools", "Herbalism kit", "Horn", "Jeweler’s tools", "Leatherworker’s tools", "Lute", "Lyre", "Mason’s tools", "Navigator's tools", "Painter’s supplies", "Pan flute", "Playing card set", "Poisoner's kit", "Potter’s tools", "Shawm", "Smith’s tools", "Thieves' tools", "Three-Dragon Ante set", "Tinker’s tools", "Viol", "Vehicle(land)", "Vehicle(water)", "Weaver’s tools", "Woodcarver’s tools"]
     
+    static let SpellSchoolStrings = ["Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion", "Necromancy", "Transmutation"]
+    
     static let SubraceToRaceDictionary: [String: [String]] = [
         "Aarakocra":[""],
         "Aasimar":[""],

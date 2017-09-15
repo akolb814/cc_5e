@@ -47,12 +47,18 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
 
     var quantityEffectValue: Int32 = 0
     var strRequirementEffectValue: Int32 = 0
+    var newItem = false
     var newItemTypeIndex = 0
     var newWeaponCustom = false
-    var newWeaponSimple = true
-    var newWeaponMelee = true
+    var newWeaponMartial = true
+    var newWeaponRanged = true
     var newArmorCustom = false
     var newToolCustom = false
+    var newWeaponQuantityEffectValue: Int32 = 1
+    var newArmorQuantityEffectValue: Int32 = 1
+    var newArmorStrRequirementEffectValue: Int32 = 0
+    var newToolQuantityEffectValue: Int32 = 1
+    var newItemQuantityEffectValue: Int32 = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -874,6 +880,8 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     func applyAction(button: UIButton) {
         let parentView:UIView = button.superview!
         
+        newItem = false
+        
         if segControl.selectedSegmentIndex == 0 {
             // Weapons
             let baseTag = parentView.tag
@@ -1647,6 +1655,8 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func cancelAction(button: UIButton) {
+        newItem = false
+        
         let parentView = button.superview
         parentView?.removeFromSuperview()
     }
@@ -2046,7 +2056,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         infoLabel.tag = baseTag + 40
         scrollView.addSubview(infoLabel)
         
-        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 520, width: tempView.frame.size.width - 20, height: 100))
+        let infoView = UITextView.init(frame: CGRect.init(x: 10, y: 620, width: tempView.frame.size.width - 20, height: 100))
         infoView.text = weapon.info
         infoView.textColor = UIColor.black
         infoView.layer.borderWidth = 1.0
@@ -2060,7 +2070,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         scrollView.addSubview(infoView)
         
-        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 520 + infoView.frame.size.height + 10)
+        scrollView.contentSize = CGSize.init(width: tempView.frame.size.width, height: 620 + infoView.frame.size.height + 10)
         
         view.addSubview(tempView)
     }
@@ -2580,8 +2590,52 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func stepperChanged(stepper: UIStepper) {
         let baseTag = (stepper.superview?.tag)! / 100
-        if stepper.tag == baseTag + 17 {
-            // Quantity
+        if stepper.tag == baseTag + 8 {
+            // Item - Quantity
+            quantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 7 {
+                    let textField = view as! UITextField
+                    textField.text = String(quantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 14 {
+            // Tool - Quantity
+            quantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 13 {
+                    let textField = view as! UITextField
+                    textField.text = String(quantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 15 {
+            // New Item - Quantity
+            newItemQuantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 14 {
+                    let textField = view as! UITextField
+                    textField.text = String(newItemQuantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 16 {
+            // New Tool - Quantity
+            newToolQuantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 15 {
+                    let textField = view as! UITextField
+                    textField.text = String(newToolQuantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 17 {
+            // Armor - Quantity
             quantityEffectValue = Int32(stepper.value)
             let parentView = stepper.superview
             for case let view in (parentView?.subviews)! {
@@ -2592,13 +2646,59 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
         else if stepper.tag == baseTag + 20 {
-            // Strength Requirement
-            strRequirementEffectValue = Int32(stepper.value)
+            if newItem == true {
+                // New Armor - Quantity
+                newArmorQuantityEffectValue = Int32(stepper.value)
+                let parentView = stepper.superview
+                for case let view in (parentView?.subviews)! {
+                    if view.tag == baseTag + 19 {
+                        let textField = view as! UITextField
+                        textField.text = String(newArmorQuantityEffectValue)
+                    }
+                }
+            }
+            else {
+                // Armor - Strength Requirement
+                strRequirementEffectValue = Int32(stepper.value)
+                let parentView = stepper.superview
+                for case let view in (parentView?.subviews)! {
+                    if view.tag == baseTag + 19 {
+                        let textField = view as! UITextField
+                        textField.text = String(strRequirementEffectValue)
+                    }
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 23 {
+            // New Armor - Strength Requirement
+            newArmorStrRequirementEffectValue = Int32(stepper.value)
             let parentView = stepper.superview
             for case let view in (parentView?.subviews)! {
-                if view.tag == baseTag + 18 {
+                if view.tag == baseTag + 22 {
                     let textField = view as! UITextField
-                    textField.text = String(strRequirementEffectValue)
+                    textField.text = String(newArmorStrRequirementEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 35 {
+            // Weapon - Quantity
+            quantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 34 {
+                    let textField = view as! UITextField
+                    textField.text = String(quantityEffectValue)
+                }
+            }
+        }
+        else if stepper.tag == baseTag + 43 {
+            // New Weapon - Quantity
+            newWeaponQuantityEffectValue = Int32(stepper.value)
+            let parentView = stepper.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == baseTag + 42 {
+                    let textField = view as! UITextField
+                    textField.text = String(newWeaponQuantityEffectValue)
                 }
             }
         }
@@ -2615,20 +2715,20 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
             let baseTag = parentView?.tag
             if pickerView.tag == (baseTag)! + 9 {
                 // Weapon Selection
-                if newWeaponSimple == true {
-                    if newWeaponMelee == true {
-                        return Types.SimpleMeleeWeaponStrings.count
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+                        return Types.MartialRangedWeaponStrings.count
                     }
                     else {
-                        return Types.SimpleRangedWeaponStrings.count
+                        return Types.MartialMeleeWeaponStrings.count
                     }
                 }
                 else {
-                    if newWeaponMelee == true {
-                        return Types.MartialMeleeWeaponStrings.count
+                    if newWeaponRanged == true {
+                        return Types.SimpleRangedWeaponStrings.count
                     }
                     else {
-                        return Types.MartialRangedWeaponStrings.count
+                        return Types.SimpleMeleeWeaponStrings.count
                     }
                 }
             }
@@ -2674,20 +2774,20 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
             let baseTag = parentView?.tag
             if pickerView.tag == baseTag! + 9 {
                 // Weapon Selection
-                if newWeaponSimple == true {
-                    if newWeaponMelee == true {
-    //                    appDelegate.character. = Types.SimpleMeleeWeapons[row]
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+    //                    appDelegate.character. = Types.MartialRangedWeapons[row]
                     }
                     else {
-    //                    appDelegate.character. = Types.SimpleRangedWeapons[row]
+    //                    appDelegate.character. = Types.MartialMeleeWeapons[row]
                     }
                 }
                 else {
-                    if newWeaponMelee == true {
-    //                    appDelegate.character. = Types.MartialMeleeWeapons[row]
+                    if newWeaponRanged == true {
+    //                    appDelegate.character. = Types.SimpleRangedWeapons[row]
                     }
                     else {
-    //                    appDelegate.character. = Types.MartialRangedWeapons[row]
+    //                    appDelegate.character. = Types.Types.SimpleMeleeWeapons[row]
                     }
                 }
             }
@@ -2737,33 +2837,36 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
             let parentView = pickerView.superview
             let baseTag = parentView?.tag
             
-            if newWeaponCustom == true || newArmorCustom == true || newToolCustom == true {
-                pickerLabel?.textColor = UIColor.darkGray
-            }
-            else {
-                pickerLabel?.textColor = UIColor.black
-            }
-            
             if pickerView.tag == baseTag! + 9 {
+                if newWeaponCustom == true || newArmorCustom == true || newToolCustom == true {
+                    pickerLabel?.textColor = UIColor.darkGray
+                }
+                else {
+                    pickerLabel?.textColor = UIColor.black
+                }
+                
                 // Weapon Selection
-                if newWeaponSimple == true {
-                    if newWeaponMelee == true {
-                        pickerLabel?.text = Types.SimpleMeleeWeaponStrings[row]
+                if newWeaponMartial == true {
+                    if newWeaponRanged == true {
+                        pickerLabel?.text = Types.MartialRangedWeaponStrings[row]
                     }
                     else {
-                        pickerLabel?.text = Types.SimpleRangedWeaponStrings[row]
+                        pickerLabel?.text = Types.MartialMeleeWeaponStrings[row]
                     }
                 }
                 else {
-                    if newWeaponMelee == true {
-                        pickerLabel?.text = Types.MartialMeleeWeaponStrings[row]
+                    if newWeaponRanged == true {
+                        pickerLabel?.text = Types.SimpleRangedWeaponStrings[row]
                     }
                     else {
-                        pickerLabel?.text = Types.MartialRangedWeaponStrings[row]
+                        pickerLabel?.text = Types.SimpleMeleeWeaponStrings[row]
                     }
                 }
             }
             else if pickerView.tag == (baseTag)! + 4 {
+                
+                pickerLabel?.textColor = UIColor.black
+                
                 for case let view in (parentView?.subviews)! {
                     if view.tag == baseTag! + 3 {
                         // Armor Type - Segmented Control
@@ -2787,15 +2890,23 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
             else if pickerView.tag == baseTag! + 3 {
+                
+                pickerLabel?.textColor = UIColor.black
+                
                 // Tools
                 pickerLabel?.text = Types.ToolStrings[row]
             }
             else {
+                pickerLabel?.textColor = UIColor.black
+                
                 // Damage Types
                 pickerLabel?.text = Types.DamageStrings[row]
             }
         }
         else {
+            
+            pickerLabel?.textColor = UIColor.black
+            
             // Damage Types
             pickerLabel?.text = Types.DamageStrings[row]
         }
@@ -2815,10 +2926,95 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
+    func switchChanged(sender: UISwitch) {
+        let parentView = sender.superview!
+        var baseTag = 0
+        if parentView is UIScrollView {
+            baseTag = parentView.superview!.tag
+        }
+        else {
+            baseTag = parentView.tag
+        }
+        
+        if sender.tag == baseTag + 2 {
+            // Custom
+            let parentsParent = parentView.superview!
+            for case let view in parentsParent.subviews {
+                if view.tag == baseTag + 2 {
+                    for case let view in parentView.subviews {
+                        view.removeFromSuperview()
+                    }
+                    
+                    let typeSelector = view as! UISegmentedControl
+                    if typeSelector.selectedSegmentIndex == 0 {
+                        newWeaponCustom = sender.isOn
+                        createNewWeapon(baseTag: baseTag, scrollView: parentView as! UIScrollView)
+                    }
+                    else if typeSelector.selectedSegmentIndex == 1 {
+                        newArmorCustom = sender.isOn
+                        createNewArmor(baseTag: baseTag, scrollView: parentView as! UIScrollView)
+                    }
+                    else if typeSelector.selectedSegmentIndex == 2 {
+                        newToolCustom = sender.isOn
+                        createNewTool(baseTag: baseTag, scrollView: parentView as! UIScrollView)
+                    }
+                    else {
+                        // Item
+                        createNewItemDetails(baseTag: baseTag, scrollView: parentView as! UIScrollView)
+                    }
+                }
+            }
+        }
+        else if sender.tag == baseTag + 4 {
+            // Simple - Martial Switch
+            newWeaponMartial = sender.isOn
+        }
+        else if sender.tag == baseTag + 7 {
+            // Melee - Ranged Switch
+            newWeaponRanged = sender.isOn
+        }
+        
+        let parentsParent = parentView.superview!
+        for case let view in parentsParent.subviews {
+            if view.tag == baseTag + 2 {
+                let typeSelector = view as! UISegmentedControl
+                if typeSelector.selectedSegmentIndex == 0 {
+                    for case let view in parentView.subviews {
+                        if view.tag == baseTag + 9 {
+                            // Update picker view
+                            let pickerView = view as! UIPickerView
+                            pickerView.reloadAllComponents()
+                        }
+                    }
+                }
+                else if typeSelector.selectedSegmentIndex == 1 {
+                    for case let view in parentView.subviews {
+                        if view.tag == baseTag + 4 {
+                            // Update picker view
+                            let pickerView = view as! UIPickerView
+                            pickerView.reloadAllComponents()
+                        }
+                    }
+                }
+                else if typeSelector.selectedSegmentIndex == 2 {
+                    for case let view in parentView.subviews {
+                        if view.tag == baseTag + 3 {
+                            // Update picker view
+                            let pickerView = view as! UIPickerView
+                            pickerView.reloadAllComponents()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     // Create new Item
     func createNewItem(baseTag: Int) {
         let tempView = createBasicView()
         tempView.tag = baseTag
+        
+        newItem = true
         
         let title: String = segControl.titleForSegment(at: segControl.selectedSegmentIndex)!
         
@@ -2845,6 +3041,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         tempView.addSubview(typeSelector)
         
         let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 80, width: tempView.frame.size.width, height: tempView.frame.size.height-80-50))
+        scrollView.tag = baseTag
         tempView.addSubview(scrollView)
         
         if typeSelector.selectedSegmentIndex == 0 {
@@ -2872,6 +3069,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let customSwitch = UISwitch(frame: CGRect(x: 85, y: 5, width: 51, height: 31))
         customSwitch.isOn = newWeaponCustom
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         customSwitch.tag = baseTag + 2
         scrollView.addSubview(customSwitch)
         
@@ -2882,7 +3080,8 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         scrollView.addSubview(simpleLabel)
         
         let simpleSwitch = UISwitch(frame: CGRect(x: 70, y: 40, width: 51, height: 31))
-        simpleSwitch.isOn = newWeaponSimple
+        simpleSwitch.isOn = newWeaponMartial
+        simpleSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         simpleSwitch.tag = baseTag + 4
         scrollView.addSubview(simpleSwitch)
         
@@ -2898,7 +3097,8 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         scrollView.addSubview(meleeLabel)
         
         let meleeSwitch = UISwitch(frame: CGRect(x: 245, y: 40, width: 51, height: 31))
-        meleeSwitch.isOn = newWeaponMelee
+        meleeSwitch.isOn = newWeaponRanged
+        meleeSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         meleeSwitch.tag = baseTag + 7
         scrollView.addSubview(meleeSwitch)
         
@@ -2912,6 +3112,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         weaponPickerView.delegate = self
         weaponPickerView.layer.borderWidth = 1.0
         weaponPickerView.layer.borderColor = UIColor.black.cgColor
+        weaponPickerView.isUserInteractionEnabled = !newWeaponCustom
         weaponPickerView.tag = baseTag + 9
 //        weaponPickerView.selectRow(0, inComponent: 0, animated: false)
         scrollView.addSubview(weaponPickerView)
@@ -3458,6 +3659,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let customSwitch = UISwitch(frame: CGRect(x: 85, y: 5, width: 51, height: 31))
         customSwitch.isOn = newArmorCustom
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         customSwitch.tag = baseTag + 2
         scrollView.addSubview(customSwitch)
         
@@ -3568,7 +3770,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         magicField.text = ""//String(armor.magic_bonus)
         magicField.textAlignment = NSTextAlignment.center
         magicField.layer.borderWidth = 1.0
-        magicField.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            magicField.isEnabled = false
+            magicField.textColor = UIColor.darkGray
+            magicField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            magicField.isEnabled = true
+            magicField.textColor = UIColor.black
+            magicField.layer.borderColor = UIColor.black.cgColor
+        }
         magicField.tag = baseTag + 10
         scrollView.addSubview(magicField)
         
@@ -3584,7 +3795,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         miscField.text = ""//String(armor.misc_bonus)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
-        miscField.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            miscField.isEnabled = false
+            miscField.textColor = UIColor.darkGray
+            miscField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            miscField.isEnabled = true
+            miscField.textColor = UIColor.black
+            miscField.layer.borderColor = UIColor.black.cgColor
+        }
         miscField.tag = baseTag + 12
         scrollView.addSubview(miscField)
         
@@ -3597,6 +3817,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         aa.insertSegment(withTitle:"CHA", at:5, animated:false)
         aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         aa.selectedSegmentIndex = aaIndex
+        aa.isUserInteractionEnabled = newArmorCustom
         aa.tag = baseTag + 13
         scrollView.addSubview(aa)
         
@@ -3610,6 +3831,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let stealthDisadvantageSwitch = UISwitch.init(frame: CGRect.init(x: scrollView.frame.size.width/2-115, y: 290, width:51, height:31))
         stealthDisadvantageSwitch.isOn = false//armor.stealth_disadvantage
+        stealthDisadvantageSwitch.isUserInteractionEnabled = newArmorCustom
         stealthDisadvantageSwitch.tag = baseTag + 12
         scrollView.addSubview(stealthDisadvantageSwitch)
         
@@ -3633,7 +3855,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         scrollView.addSubview(quantityLabel)
         
         let quantityField = UITextField.init(frame: CGRect.init(x: scrollView.frame.size.width/2+25, y: 290, width: 40, height: 30))
-        quantityField.text = ""//String(armor.quantity)
+        quantityField.text = "1"//String(armor.quantity)
         quantityField.textAlignment = NSTextAlignment.center
         quantityField.layer.borderWidth = 1.0
         quantityField.layer.borderColor = UIColor.black.cgColor
@@ -3658,7 +3880,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         strRequirementField.text = ""//String(armor.str_requirement)
         strRequirementField.textAlignment = NSTextAlignment.center
         strRequirementField.layer.borderWidth = 1.0
-        strRequirementField.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            strRequirementField.isEnabled = false
+            strRequirementField.textColor = UIColor.darkGray
+            strRequirementField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            strRequirementField.isEnabled = true
+            strRequirementField.textColor = UIColor.black
+            strRequirementField.layer.borderColor = UIColor.black.cgColor
+        }
         strRequirementField.tag = baseTag + 22
         scrollView.addSubview(strRequirementField)
         
@@ -3667,6 +3898,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         strRequirementStepper.minimumValue = 0
         strRequirementStepper.maximumValue = 9999
         strRequirementStepper.addTarget(self, action:#selector(self.stepperChanged), for:UIControlEvents.valueChanged)
+        strRequirementStepper.isUserInteractionEnabled = newArmorCustom
         strRequirementStepper.tag = baseTag + 23
         scrollView.addSubview(strRequirementStepper)
         
@@ -3680,7 +3912,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         weightField.text = ""//armor.weight
         weightField.textAlignment = NSTextAlignment.center
         weightField.layer.borderWidth = 1.0
-        weightField.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            weightField.isEnabled = false
+            weightField.textColor = UIColor.darkGray
+            weightField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            weightField.isEnabled = true
+            weightField.textColor = UIColor.black
+            weightField.layer.borderColor = UIColor.black.cgColor
+        }
         weightField.tag = baseTag + 25
         scrollView.addSubview(weightField)
         
@@ -3694,7 +3935,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         costField.text = ""//armor.cost
         costField.textAlignment = NSTextAlignment.center
         costField.layer.borderWidth = 1.0
-        costField.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            costField.isEnabled = false
+            costField.textColor = UIColor.darkGray
+            costField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            costField.isEnabled = true
+            costField.textColor = UIColor.black
+            costField.layer.borderColor = UIColor.black.cgColor
+        }
         costField.tag = baseTag + 27
         scrollView.addSubview(costField)
         
@@ -3708,7 +3958,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         infoView.text = ""//armor.info
         infoView.textColor = UIColor.black
         infoView.layer.borderWidth = 1.0
-        infoView.layer.borderColor = UIColor.black.cgColor
+        if newArmorCustom == false {
+            infoView.isUserInteractionEnabled = false
+            infoView.textColor = UIColor.darkGray
+            infoView.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            infoView.isUserInteractionEnabled = true
+            infoView.textColor = UIColor.black
+            infoView.layer.borderColor = UIColor.black.cgColor
+        }
         infoView.tag = baseTag + 29
         
         let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
@@ -3730,6 +3989,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let customSwitch = UISwitch(frame: CGRect(x: 85, y: 5, width: 51, height: 31))
         customSwitch.isOn = newToolCustom
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         customSwitch.tag = baseTag + 2
         scrollView.addSubview(customSwitch)
         
@@ -3792,6 +4052,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let proficientSwitch = UISwitch.init(frame: CGRect.init(x: scrollView.frame.size.width/2 - 51 - 110, y: 140, width: 51, height: 31))
         proficientSwitch.isOn = true//tool.proficient
+        proficientSwitch.isUserInteractionEnabled = newToolCustom
         proficientSwitch.tag = baseTag + 5
         scrollView.addSubview(proficientSwitch)
         
@@ -3801,7 +4062,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         proficientField.isEnabled = false
         proficientField.textColor = UIColor.darkGray
         proficientField.layer.borderWidth = 1.0
-        proficientField.layer.borderColor = UIColor.darkGray.cgColor
+        if newToolCustom == false {
+            proficientField.isEnabled = false
+            proficientField.textColor = UIColor.darkGray
+            proficientField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            proficientField.isEnabled = true
+            proficientField.textColor = UIColor.black
+            proficientField.layer.borderColor = UIColor.black.cgColor
+        }
         proficientField.tag = baseTag + 6
         scrollView.addSubview(proficientField)
         
@@ -3818,7 +4088,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         abilityModField.isEnabled = false
         abilityModField.textColor = UIColor.darkGray
         abilityModField.layer.borderWidth = 1.0
-        abilityModField.layer.borderColor = UIColor.black.cgColor
+        if newToolCustom == false {
+            abilityModField.isEnabled = false
+            abilityModField.textColor = UIColor.darkGray
+            abilityModField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            abilityModField.isEnabled = true
+            abilityModField.textColor = UIColor.black
+            abilityModField.layer.borderColor = UIColor.black.cgColor
+        }
         abilityModField.tag = baseTag + 8
         scrollView.addSubview(abilityModField)
         
@@ -3831,6 +4110,7 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         aa.insertSegment(withTitle:"CHA", at:5, animated:false)
         aa.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
         aa.selectedSegmentIndex = aaIndex
+        aa.isUserInteractionEnabled = newToolCustom
         aa.tag = baseTag + 9
         scrollView.addSubview(aa)
         
@@ -3844,7 +4124,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         weightField.text = ""//tool.weight
         weightField.textAlignment = NSTextAlignment.center
         weightField.layer.borderWidth = 1.0
-        weightField.layer.borderColor = UIColor.black.cgColor
+        if newToolCustom == false {
+            weightField.isEnabled = false
+            weightField.textColor = UIColor.darkGray
+            weightField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            weightField.isEnabled = true
+            weightField.textColor = UIColor.black
+            weightField.layer.borderColor = UIColor.black.cgColor
+        }
         weightField.tag = baseTag + 11
         scrollView.addSubview(weightField)
         
@@ -3858,7 +4147,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         costField.text = ""//tool.cost
         costField.textAlignment = NSTextAlignment.center
         costField.layer.borderWidth = 1.0
-        costField.layer.borderColor = UIColor.black.cgColor
+        if newToolCustom == false {
+            costField.isEnabled = false
+            costField.textColor = UIColor.darkGray
+            costField.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            costField.isEnabled = true
+            costField.textColor = UIColor.black
+            costField.layer.borderColor = UIColor.black.cgColor
+        }
         costField.tag = baseTag + 13
         scrollView.addSubview(costField)
         
@@ -3872,7 +4170,6 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         quantityField.text = "1"//String(tool.quantity)
         quantityField.textAlignment = NSTextAlignment.center
         quantityField.layer.borderWidth = 1.0
-        quantityField.layer.borderColor = UIColor.black.cgColor
         quantityField.tag = baseTag + 15
         scrollView.addSubview(quantityField)
         
@@ -3894,7 +4191,16 @@ class EquipmentViewController: UIViewController, UITableViewDelegate, UITableVie
         infoView.text = ""//tool.info
         infoView.textColor = UIColor.black
         infoView.layer.borderWidth = 1.0
-        infoView.layer.borderColor = UIColor.black.cgColor
+        if newToolCustom == false {
+            infoView.isUserInteractionEnabled = false
+            infoView.textColor = UIColor.darkGray
+            infoView.layer.borderColor = UIColor.darkGray.cgColor
+        }
+        else {
+            infoView.isUserInteractionEnabled = true
+            infoView.textColor = UIColor.black
+            infoView.layer.borderColor = UIColor.black.cgColor
+        }
         infoView.tag = baseTag + 18
         
         let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)

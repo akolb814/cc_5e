@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class SpellcastingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
+class SpellcastingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // Spell Attack
     @IBOutlet weak var saView: UIView!
@@ -41,7 +41,8 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var spellcasting = Spellcasting()
-    
+    var newSpell = false
+    var newSpellCustom = false
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -140,15 +141,21 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             schoolLabel.tag = baseTag + 6
             scrollView.addSubview(schoolLabel)
             
-            let schoolField = UITextField.init(frame: CGRect.init(x:20, y:100, width:tempView.frame.size.width-120, height:30))
-            schoolField.text = spell.school
-            schoolField.textAlignment = NSTextAlignment.left
-            schoolField.isEnabled = true
-            schoolField.textColor = UIColor.black
-            schoolField.layer.borderWidth = 1.0
-            schoolField.layer.borderColor = UIColor.black.cgColor
-            schoolField.tag = baseTag + 7
-            scrollView.addSubview(schoolField)
+            var spellSchoolIndex = 0
+            for index in 0...Types.SpellSchoolStrings.count-1 {
+                if spell.school == Types.SpellSchoolStrings[index] {
+                    spellSchoolIndex = index
+                }
+            }
+            
+            let schoolPickerView = UIPickerView.init(frame: CGRect.init(x:20, y: 97, width:scrollView.frame.size.width-120, height:34))
+            schoolPickerView.dataSource = self
+            schoolPickerView.delegate = self
+            schoolPickerView.layer.borderWidth = 1.0
+            schoolPickerView.layer.borderColor = UIColor.black.cgColor
+            schoolPickerView.selectRow(spellSchoolIndex, inComponent: 0, animated: false)
+            schoolPickerView.tag = baseTag + 7
+            scrollView.addSubview(schoolPickerView)
             
             // Prepared - switch
             let preparedLabel = UILabel(frame: CGRect.init(x: tempView.frame.size.width - 100, y: 80, width: 80, height: 20))
@@ -1164,7 +1171,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
             let spellLevel = spellcasting.spells_by_level?.allObjects[section] as! Spells_by_Level
             let expanded = spellLevel.expanded
             if expanded {
-                return (spellLevel.spells?.allObjects.count ?? 0)!+1
+                return (spellLevel.spells?.allObjects.count ?? 0)!+1+1
             }
             else {
                 return 1
@@ -1182,53 +1189,59 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                 return 30
             }
             else {
-                // spell cell
                 let spellLevel = spellcasting.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
-                let spell = spellLevel.spells?.allObjects[indexPath.row-1] as! Spell
-                
-                let expanded = spell.expanded
-                if expanded {
-                    let nameHeight = spell.name?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold))
-                    let schoolHeight = spell.school?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17))
-                    let castingHeight = spell.casting_time?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let rangeHeight = spell.range?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let componentsHeight = spell.components?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    let durationHeight = spell.duration?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
-                    var descriptionHeight: CGFloat = 0
-                    if spell.higher_level == "" {
-                        descriptionHeight = (spell.info!.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17)))
-                        descriptionHeight += 70
-                    }
-                    else {
-                        let boldText = "At Higher Levels."
-                        let attrs = [NSFontAttributeName: UIFont.systemFont(ofSize: 17)]
-                        let attributedString = NSMutableAttributedString(string:spell.info!+"\n", attributes:attrs)
-                        let attributedHeight = attributedString.heightWithConstrainedWidth(width: view.frame.width-10)
-                        
-                        let boldAttrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17)]
-                        let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
-                        let boldHeight = boldString.heightWithConstrainedWidth(width: view.frame.width-10)
-                        
-                        attributedString.append(boldString)
-                        let attributedString2 = NSMutableAttributedString(string:"" + spell.higher_level!, attributes:attrs)
-                        let attributedHeight2 = attributedString2.heightWithConstrainedWidth(width: view.frame.width-10)
-                        attributedString.append(attributedString2)
-                        
-                        descriptionHeight = attributedHeight + boldHeight + attributedHeight2
-                    }
-                    
-                    var height = nameHeight! + schoolHeight!
-                    height += castingHeight!
-                    height += rangeHeight!
-                    height += componentsHeight!
-                    height += durationHeight!
-                    height += descriptionHeight
-                    height += 35
-                    
-                    return height
+                if indexPath.row == (spellLevel.spells?.allObjects.count)!+1 {
+                    // new spell cell
+                    return 30
                 }
                 else {
-                    return 35
+                    // spell cell
+                    let spell = spellLevel.spells?.allObjects[indexPath.row-1] as! Spell
+                    
+                    let expanded = spell.expanded
+                    if expanded {
+                        let nameHeight = spell.name?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold))
+                        let schoolHeight = spell.school?.heightWithConstrainedWidth(width: view.frame.width-40, font: UIFont.systemFont(ofSize: 17))
+                        let castingHeight = spell.casting_time?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                        let rangeHeight = spell.range?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                        let componentsHeight = spell.components?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                        let durationHeight = spell.duration?.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17))
+                        var descriptionHeight: CGFloat = 0
+                        if spell.higher_level == "" {
+                            descriptionHeight = (spell.info!.heightWithConstrainedWidth(width: view.frame.width-10, font: UIFont.systemFont(ofSize: 17)))
+                            descriptionHeight += 70
+                        }
+                        else {
+                            let boldText = "At Higher Levels."
+                            let attrs = [NSFontAttributeName: UIFont.systemFont(ofSize: 17)]
+                            let attributedString = NSMutableAttributedString(string:spell.info!+"\n", attributes:attrs)
+                            let attributedHeight = attributedString.heightWithConstrainedWidth(width: view.frame.width-10)
+                            
+                            let boldAttrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17)]
+                            let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
+                            let boldHeight = boldString.heightWithConstrainedWidth(width: view.frame.width-10)
+                            
+                            attributedString.append(boldString)
+                            let attributedString2 = NSMutableAttributedString(string:"" + spell.higher_level!, attributes:attrs)
+                            let attributedHeight2 = attributedString2.heightWithConstrainedWidth(width: view.frame.width-10)
+                            attributedString.append(attributedString2)
+                            
+                            descriptionHeight = attributedHeight + boldHeight + attributedHeight2
+                        }
+                        
+                        var height = nameHeight! + schoolHeight!
+                        height += castingHeight!
+                        height += rangeHeight!
+                        height += componentsHeight!
+                        height += durationHeight!
+                        height += descriptionHeight
+                        height += 35
+                        
+                        return height
+                    }
+                    else {
+                        return 35
+                    }
                 }
             }
         }
@@ -1270,6 +1283,10 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                 }
                 return cell
             }
+            else if indexPath.row == (spellLevel.spells?.allObjects.count)!+1 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "NewTableViewCell", for: indexPath) as! NewTableViewCell
+                    return cell
+            }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SpellTableViewCell", for: indexPath) as! SpellTableViewCell
                 
@@ -1309,7 +1326,7 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section != spellcasting.spells_by_level?.allObjects.count {
-            var spellLevel = spellcasting.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
+            let spellLevel = spellcasting.spells_by_level?.allObjects[indexPath.section] as! Spells_by_Level
             if indexPath.row == 0 {
                 // Spell Level
                 var expanded = spellLevel.expanded
@@ -1317,9 +1334,14 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
                 spellLevel.expanded = expanded
                 tableView.reloadData()
             }
+            else if indexPath.row == (spellLevel.spells?.allObjects.count)!+1 {
+                // New Spell
+                let baseTag = (1000 * ((indexPath.section)+1)) + (100*((indexPath.row)-1))
+                createNewSpell(spellLevel: spellLevel, baseTag: baseTag)
+            }
             else {
                 // Spell
-                var spell = spellLevel.spells?.allObjects[indexPath.row-1] as! Spell
+                let spell = spellLevel.spells?.allObjects[indexPath.row-1] as! Spell
                 var expanded = spell.expanded
                 expanded = !expanded
                 spell.expanded = expanded
@@ -1340,7 +1362,349 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // Create New Spell
+    func createNewSpell(spellLevel: Spells_by_Level, baseTag: Int) {
+        let tempView = createBasicView()
+        tempView.tag = baseTag
+        
+        newSpell = true
+        
+        // 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th, 9th
+        var spellLevelStr = ""
+        var suffix = ""
+        switch spellLevel.level {
+        case 1:
+            suffix = "st"
+        case 2:
+            suffix = "nd"
+        case 3:
+            suffix = "rd"
+        default:
+            suffix = "th"
+        }
+        if spellLevel.level == 0 {
+            spellLevelStr = "Cantrip"
+        }
+        else {
+            spellLevelStr = String(spellLevel.level)+suffix+" Level Spell"
+        }
+        
+        let newLabel = UILabel(frame: CGRect.init(x: 10, y: 5, width: tempView.frame.size.width - 20, height: 30))
+        newLabel.text = "New " + spellLevelStr
+        newLabel.textAlignment = NSTextAlignment.center
+        newLabel.font = UIFont.systemFont(ofSize: 14)
+        tempView.addSubview(newLabel)
+        
+        let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 45, width: tempView.frame.size.width, height: tempView.frame.size.height-50-50))
+        scrollView.tag = baseTag
+        tempView.addSubview(scrollView)
+        
+        createNewSpell(spellLevel: spellLevel, baseTag: baseTag, scrollView: scrollView)
+        
+        view.addSubview(tempView)
+    }
+    
+    func createNewSpell(spellLevel: Spells_by_Level, baseTag: Int, scrollView: UIScrollView) {
+        let customLabel = UILabel(frame: CGRect(x: 10, y: 5, width: 70, height: 30))
+        customLabel.text = "Custom"
+        customLabel.textAlignment = .right
+        customLabel.tag = baseTag + 1
+        scrollView.addSubview(customLabel)
+        
+        let customSwitch = UISwitch(frame: CGRect(x: 85, y: 5, width: 51, height: 31))
+        customSwitch.isOn = newSpellCustom
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        customSwitch.tag = baseTag + 2
+        scrollView.addSubview(customSwitch)
+        
+        let spellPickerView = UIPickerView.init(frame: CGRect.init(x: 10, y: 40, width: scrollView.frame.size.width-20, height: 60))
+        spellPickerView.dataSource = self
+        spellPickerView.delegate = self
+        spellPickerView.layer.borderWidth = 1.0
+        spellPickerView.layer.borderColor = UIColor.black.cgColor
+        spellPickerView.isUserInteractionEnabled = !newSpellCustom
+        spellPickerView.tag = baseTag + 3
+//        spellPickerView.selectRow(0, inComponent: 0, animated: false)
+        scrollView.addSubview(spellPickerView)
+        
+        // Concentration - switch
+        let concentrationLabel = UILabel(frame: CGRect.init(x: scrollView.frame.size.width - 100, y: 110, width: 80, height: 20))
+        concentrationLabel.text = "Concentration"
+        concentrationLabel.font = UIFont.systemFont(ofSize: 10)
+        concentrationLabel.textAlignment = NSTextAlignment.right
+        concentrationLabel.numberOfLines = 1
+        concentrationLabel.tag = baseTag + 4
+        scrollView.addSubview(concentrationLabel)
+        
+        let concentrationSwitch = UISwitch(frame: CGRect.init(x: scrollView.frame.size.width - 71, y: 130, width:51, height:31))
+        concentrationSwitch.isOn = true//spell.concentration
+        concentrationSwitch.tag = baseTag + 5
+        scrollView.addSubview(concentrationSwitch)
+        
+        // School - tf
+        let schoolLabel = UILabel.init(frame: CGRect.init(x: 20, y: 110, width: scrollView.frame.size.width-140, height: 20))
+        schoolLabel.text = "School"
+        schoolLabel.font = UIFont.systemFont(ofSize: 10)
+        schoolLabel.textAlignment = NSTextAlignment.left
+        schoolLabel.numberOfLines = 1
+        schoolLabel.tag = baseTag + 6
+        scrollView.addSubview(schoolLabel)
+        
+        let schoolPickerView = UIPickerView.init(frame: CGRect.init(x:20, y: 126, width:scrollView.frame.size.width-120, height:36))
+        schoolPickerView.dataSource = self
+        schoolPickerView.delegate = self
+        schoolPickerView.layer.borderWidth = 1.0
+        schoolPickerView.layer.borderColor = UIColor.black.cgColor
+        schoolPickerView.isUserInteractionEnabled = newSpellCustom
+//        schoolPickerView.selectRow(0, inComponent: 0, animated: false)
+        schoolPickerView.tag = baseTag + 7
+        scrollView.addSubview(schoolPickerView)
+        
+        // Prepared - switch
+        let preparedLabel = UILabel(frame: CGRect.init(x: scrollView.frame.size.width - 100, y: 170, width: 80, height: 20))
+        preparedLabel.text = "Prepared"
+        preparedLabel.font = UIFont.systemFont(ofSize: 10)
+        preparedLabel.textAlignment = NSTextAlignment.right
+        preparedLabel.numberOfLines = 1
+        preparedLabel.tag = baseTag + 8
+        scrollView.addSubview(preparedLabel)
+        
+        let preparedSwitch = UISwitch(frame: CGRect.init(x: scrollView.frame.size.width - 71, y: 190, width:51, height:31))
+        preparedSwitch.isOn = true//spell.prepared
+        preparedSwitch.tag = baseTag + 9
+        scrollView.addSubview(preparedSwitch)
+        
+        // Casting time - tf
+        let castingLabel = UILabel.init(frame: CGRect.init(x: 20, y: 170, width: scrollView.frame.size.width-140, height: 20))
+        castingLabel.text = "Casting Time"
+        castingLabel.font = UIFont.systemFont(ofSize: 10)
+        castingLabel.textAlignment = NSTextAlignment.left
+        castingLabel.numberOfLines = 1
+        castingLabel.tag = baseTag + 10
+        scrollView.addSubview(castingLabel)
+        
+        let castingField = UITextField.init(frame: CGRect.init(x:20, y:190, width: scrollView.frame.size.width-120, height: 30))
+        castingField.text = ""//spell.casting_time
+        castingField.textAlignment = NSTextAlignment.left
+        castingField.isEnabled = false
+        castingField.textColor = UIColor.black
+        castingField.layer.borderWidth = 1.0
+        castingField.layer.borderColor = UIColor.black.cgColor
+        castingField.tag = baseTag + 11
+        scrollView.addSubview(castingField)
+        
+        // Range - tf
+        let rangeLabel = UILabel.init(frame: CGRect.init(x: 20, y: 230, width: scrollView.frame.size.width-40, height: 20))
+        rangeLabel.text = "Range"
+        rangeLabel.font = UIFont.systemFont(ofSize: 10)
+        rangeLabel.textAlignment = NSTextAlignment.left
+        rangeLabel.numberOfLines = 1
+        rangeLabel.tag = baseTag + 12
+        scrollView.addSubview(rangeLabel)
+        
+        let rangeField = UITextField.init(frame: CGRect.init(x: 20, y: 250, width: scrollView.frame.size.width-40, height: 30))
+        rangeField.text = ""//spell.range
+        rangeField.textAlignment = NSTextAlignment.left
+        rangeField.isEnabled = true
+        rangeField.textColor = UIColor.black
+        rangeField.layer.borderWidth = 1.0
+        rangeField.layer.borderColor = UIColor.black.cgColor
+        rangeField.tag = baseTag + 13
+        scrollView.addSubview(rangeField)
+        
+        // Components - tf
+        let componentsLabel = UILabel.init(frame: CGRect.init(x: 20, y: 290, width: scrollView.frame.size.width-40, height: 20))
+        componentsLabel.text = "Components"
+        componentsLabel.font = UIFont.systemFont(ofSize: 10)
+        componentsLabel.textAlignment = NSTextAlignment.left
+        componentsLabel.numberOfLines = 1
+        componentsLabel.tag = baseTag + 14
+        scrollView.addSubview(componentsLabel)
+        
+        let componentsField = UITextField.init(frame: CGRect.init(x:20, y:310, width:scrollView.frame.size.width-40, height:30))
+        componentsField.text = ""//spell.components
+        componentsField.textAlignment = NSTextAlignment.left
+        componentsField.isEnabled = true
+        componentsField.textColor = UIColor.black
+        componentsField.layer.borderWidth = 1.0
+        componentsField.layer.borderColor = UIColor.black.cgColor
+        componentsField.tag = baseTag + 15
+        scrollView.addSubview(componentsField)
+        
+        // Duration - tf
+        let durationLabel = UILabel.init(frame: CGRect.init(x: 20, y: 350, width: scrollView.frame.size.width-40, height: 20))
+        durationLabel.text = "Duration"
+        durationLabel.font = UIFont.systemFont(ofSize: 10)
+        durationLabel.textAlignment = NSTextAlignment.left
+        durationLabel.numberOfLines = 1
+        durationLabel.tag = baseTag + 16
+        scrollView.addSubview(durationLabel)
+        
+        let durationField = UITextField.init(frame: CGRect.init(x:20, y:370, width:scrollView.frame.size.width-40, height:30))
+        durationField.text = ""//spell.duration
+        durationField.textAlignment = NSTextAlignment.left
+        durationField.isEnabled = true
+        durationField.textColor = UIColor.black
+        durationField.layer.borderWidth = 1.0
+        durationField.layer.borderColor = UIColor.black.cgColor
+        durationField.tag = baseTag + 17
+        scrollView.addSubview(durationField)
+        
+        // Info - tv
+        let infoLabel = UILabel.init(frame: CGRect.init(x: 20, y: 410, width: scrollView.frame.size.width-40, height: 20))
+        infoLabel.text = "Description"
+        infoLabel.font = UIFont.systemFont(ofSize: 10)
+        infoLabel.textAlignment = NSTextAlignment.left
+        infoLabel.numberOfLines = 1
+        infoLabel.tag = baseTag + 18
+        scrollView.addSubview(infoLabel)
+        
+        let infoView = UITextView.init(frame: CGRect.init(x: 20, y: 430, width: scrollView.frame.size.width-40, height: 100))
+        infoView.text = ""//spell.info
+        infoView.textColor = UIColor.black
+        infoView.layer.borderWidth = 1.0
+        infoView.layer.borderColor = UIColor.black.cgColor
+        infoView.tag = baseTag + 19
+        
+        let infoContentSize = infoView.sizeThatFits(infoView.bounds.size)
+        var infoFrame = infoView.frame
+        infoFrame.size.height = infoContentSize.height
+        infoView.frame = infoFrame
+        
+        scrollView.addSubview(infoView)
+        
+        // Higher level - tv
+        let hlLabel = UILabel.init(frame: CGRect.init(x: 20, y: infoView.frame.origin.y + infoView.frame.size.height, width: scrollView.frame.size.width-40, height: 20))
+        hlLabel.text = "Higher Level"
+        hlLabel.font = UIFont.systemFont(ofSize: 10)
+        hlLabel.textAlignment = NSTextAlignment.left
+        hlLabel.numberOfLines = 1
+        hlLabel.tag = baseTag + 20
+        scrollView.addSubview(hlLabel)
+        
+        let hlView = UITextView.init(frame: CGRect.init(x: 20, y: hlLabel.frame.origin.y + hlLabel.frame.size.height, width: scrollView.frame.size.width-40, height: 50))
+        hlView.text = ""//spell.higher_level
+        hlView.textColor = UIColor.black
+        hlView.layer.borderWidth = 1.0
+        hlView.layer.borderColor = UIColor.black.cgColor
+        hlView.tag = baseTag + 21
+        
+        let hlContentSize = hlView.sizeThatFits(hlView.bounds.size)
+        var hlFrame = hlView.frame
+        hlFrame.size.height = hlContentSize.height
+        hlView.frame = hlFrame
+        
+        scrollView.addSubview(hlView)
+        
+        scrollView.contentSize = CGSize.init(width: scrollView.frame.size.width, height: hlView.frame.origin.y + hlView.frame.size.height + 10)
+    }
 
+    func switchChanged(sender: UISwitch) {
+        let parentView = sender.superview!
+        var baseTag = 0
+        if parentView is UIScrollView {
+            baseTag = parentView.superview!.tag
+        }
+        else {
+            baseTag = parentView.tag
+        }
+        
+        if sender.tag == baseTag + 2 {
+            // Custom
+            for case let view in parentView.subviews {
+                view.removeFromSuperview()
+            }
+            
+            newSpellCustom = sender.isOn
+            let spellLevel = spellcasting.spells_by_level?.allObjects[baseTag/1000] as! Spells_by_Level
+            createNewSpell(spellLevel: spellLevel, baseTag: baseTag, scrollView: parentView as! UIScrollView)
+        }
+    }
+    
+    // UIPickerViewDelegate & UIPickerViewDataSource
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            if pickerView.tag == (baseTag)! + 3 {
+                return Types.SpellSchoolStrings.count
+            }
+            else {
+                return Types.SpellSchoolStrings.count
+            }
+        }
+        else {
+            return Types.SpellSchoolStrings.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            if pickerView.tag == baseTag! + 9 {
+//                appDelegate.character. = Types.SpellSchoolStrings[row] as? String
+            }
+            else {
+//                appDelegate.character. = Types.SpellSchoolStrings[row] as? String
+            }
+        }
+        else {
+//            appDelegate.character. = Types.SpellSchoolStrings[row] as? String
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var pickerLabel = view as? UILabel
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            
+            pickerLabel?.font = UIFont.systemFont(ofSize: 17)
+            pickerLabel?.textAlignment = NSTextAlignment.center
+        }
+        
+        if pickerView.superview != nil {
+            let parentView = pickerView.superview
+            let baseTag = parentView?.tag
+            
+            if pickerView.tag == baseTag! + 3 {
+                if newSpellCustom == true {
+                    pickerLabel?.textColor = UIColor.darkGray
+                }
+                else {
+                    pickerLabel?.textColor = UIColor.black
+                }
+                
+                pickerLabel?.text = Types.SpellSchoolStrings[row]
+            }
+            else {
+                pickerLabel?.textColor = UIColor.black
+                pickerLabel?.text = Types.SpellSchoolStrings[row]
+            }
+        }
+        else {
+            pickerLabel?.textColor = UIColor.black
+            pickerLabel?.text = Types.SpellSchoolStrings[row]
+        }
+        return pickerLabel!
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return pickerView.frame.size.width-20
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 21.0
+    }
+    
+    @IBAction func typePickerViewSelected(sender: AnyObject) {
+        
+    }
 }
 
 extension String {

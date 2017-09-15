@@ -48,15 +48,27 @@ class SettingsPopoverViewController: UIViewController, UITableViewDelegate, UITa
             break
         case 1:
             // Level Up
+            let nc = NotificationCenter.default
+            nc.post(name:Notification.Name(rawValue:"LevelUp"), object: nil, userInfo: nil)
+            self.dismiss(animated: true, completion: nil)
             break
         case 2:
             // Short/Long Rest
+            let nc = NotificationCenter.default
+            nc.post(name:Notification.Name(rawValue:"Rest"), object: nil, userInfo: nil)
+            self.dismiss(animated: true, completion: nil)
             break
         case 3:
             // Export
+            let nc = NotificationCenter.default
+            nc.post(name:Notification.Name(rawValue:"ExportCharacter"), object: nil, userInfo: nil)
+            self.dismiss(animated: true, completion: nil)
             break
         case 4:
             // Help
+            let nc = NotificationCenter.default
+            nc.post(name:Notification.Name(rawValue:"Help"), object: nil, userInfo: nil)
+            self.dismiss(animated: true, completion: nil)
             break
         default:
             break
