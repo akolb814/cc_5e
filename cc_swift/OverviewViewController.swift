@@ -143,10 +143,15 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         self.setAbilityScores()
         self.setMiscDisplayData()
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: Notification.Name(rawValue:"shortRest"), object: nil, queue: nil, using: updateFromRest)
+        nc.addObserver(forName: Notification.Name(rawValue:"longRest"), object: nil, queue: nil, using: updateFromRest)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.updateDeathSaves()
+        self.setMiscDisplayData()
     }
     
     func setMiscDisplayData() {
@@ -535,7 +540,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-
+    
+    func updateFromRest(notification: Notification) -> Void {
+        self.setMiscDisplayData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -826,7 +835,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         let expertiseSwitch = parentView.viewWithTag(tag+11) as! UISwitch
         Character.Selected.updateSkill(name: skillName.text ?? "", proficient: profSwitch.isOn, expertise: expertiseSwitch.isOn)
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
-
     }
     
     func cancelAction(button: UIButton) {
@@ -1072,37 +1080,68 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else if sender.tag == 504 {
             // Strength Save Proficiency
-            
+            Character.Selected.getAbility(abilityIn: Types.Abilities.STR).save_proficiency = sender.isOn
         }
         else if sender.tag == 604 {
             // Dexterity Save Proficiency
-            
+            Character.Selected.getAbility(abilityIn: Types.Abilities.DEX).save_proficiency = sender.isOn
         }
         else if sender.tag == 704 {
             // Constitution Save Proficiency
-            
+            Character.Selected.getAbility(abilityIn: Types.Abilities.CON).save_proficiency = sender.isOn
         }
         else if sender.tag == 804 {
             // Intelligence Save Proficiency
-            
+            Character.Selected.getAbility(abilityIn: Types.Abilities.INT).save_proficiency = sender.isOn
         }
         else if sender.tag == 904 {
             // Wisdom Save Proficiency
+            Character.Selected.getAbility(abilityIn: Types.Abilities.WIS).save_proficiency = sender.isOn
         }
         else if sender.tag == 1004 {
             // Charisma Save Proficiency
+            Character.Selected.getAbility(abilityIn: Types.Abilities.CHA).save_proficiency = sender.isOn
         }
         else if sender.tag == 1109 {
             // Initiative Alert Feat
-            
+            Character.Selected.alert_feat = sender.isOn
         }
         else if sender.tag == 1111 {
-            // Initiative Half Proficiency
+            // Initiative Proficiency
+            Character.Selected.initiative_proficiency = sender.isOn
             
+            // Show round up switch
+            let parentView = sender.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == 1114 {
+                    let roundUpSwitch = view as! UILabel
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+                else if view.tag == 1115 {
+                    let roundUpSwitch = view as! UISwitch
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+            }
         }
         else if sender.tag == 1113 {
+            // Initiative Half Proficiency
+            Character.Selected.initiative_half_proficiency = sender.isOn
+            // Show round up switch
+            let parentView = sender.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == 1114 {
+                    let roundUpSwitch = view as! UILabel
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+                else if view.tag == 1115 {
+                    let roundUpSwitch = view as! UISwitch
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+            }
+        }
+        else if sender.tag == 1115 {
             // Initiative Round Up
-            
+            Character.Selected.initiative_round_up = sender.isOn
         }
         else if sender.tag >= 4000{
             // Skills
@@ -2052,29 +2091,44 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         
         let alertSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
         alertSwitch.isOn = Character.Selected.alert_feat
+        alertSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
         alertSwitch.tag = 1109
         tempView.addSubview(alertSwitch)
         
-        let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
+        let hasProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
+        hasProfLabel.text = "Proficiency"
+        hasProfLabel.textAlignment = NSTextAlignment.right
+        hasProfLabel.tag = 1110
+        tempView.addSubview(hasProfLabel)
+        
+        let profSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
+        profSwitch.isOn = Character.Selected.initiative_proficiency
+        profSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        profSwitch.tag = 1111
+        tempView.addSubview(profSwitch)
+        
+        let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
         halfProfLabel.text = "Half Proficiency"
         halfProfLabel.textAlignment = NSTextAlignment.right
-        halfProfLabel.tag = 1110
+        halfProfLabel.tag = 1112
         tempView.addSubview(halfProfLabel)
         
-        let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
+        let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
         halfProfSwitch.isOn = Character.Selected.initiative_half_proficiency
-        halfProfSwitch.tag = 1111
+        halfProfSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        halfProfSwitch.tag = 1113
         tempView.addSubview(halfProfSwitch)
         
-        let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
+        let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:190, width:150, height:30))
         roundUpLabel.text = "Round Up"
         roundUpLabel.textAlignment = NSTextAlignment.right
-        roundUpLabel.tag = 1112
+        roundUpLabel.tag = 1114
         tempView.addSubview(roundUpLabel)
         
-        let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
+        let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:190, width:51, height:31))
         roundUpSwitch.isOn = Character.Selected.initiative_round_up
-        roundUpSwitch.tag = 1113
+        roundUpSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        roundUpSwitch.tag = 1115
         tempView.addSubview(roundUpSwitch)
         
         if halfProfSwitch.isOn {

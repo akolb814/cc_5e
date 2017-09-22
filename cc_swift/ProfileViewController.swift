@@ -101,6 +101,14 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
         
         self.setMiscDisplayData()
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: Notification.Name(rawValue:"shortRest"), object: nil, queue: nil, using: updateFromRest)
+        nc.addObserver(forName: Notification.Name(rawValue:"longRest"), object: nil, queue: nil, using: updateFromRest)
+    }
+    
+    func updateFromRest(notification: Notification) -> Void {
+        
     }
 
     func hideKeyboardOnTap(_ selector: Selector) {

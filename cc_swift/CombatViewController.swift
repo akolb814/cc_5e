@@ -73,10 +73,19 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         weaponsTable.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         
         self.setMiscDisplayData()
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: Notification.Name(rawValue:"shortRest"), object: nil, queue: nil, using: updateFromRest)
+        nc.addObserver(forName: Notification.Name(rawValue:"longRest"), object: nil, queue: nil, using: updateFromRest)
+    }
+    
+    func updateFromRest(notification: Notification) -> Void {
+        setMiscDisplayData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.updateDeathSaves()
+        self.setMiscDisplayData()
     }
     
     func hideKeyboardOnTap(_ selector: Selector) {
@@ -510,6 +519,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         case 600:
             // Initiative
+            Character.Selected.calcInitiative()
             if Character.Selected.initiative < 0 {
                 initValue.text = String(Character.Selected.initiative)
             }
@@ -704,56 +714,135 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func segmentChanged(segControl: UISegmentedControl) {
-        let parentView:UIScrollView = segControl.superview! as! UIScrollView
-        let baseTag = parentView.superview!.tag
-        
-        var bonus = ""
-        var title = ""
-        switch segControl.selectedSegmentIndex {
-        case 0:
-            // STR
-            bonus = String(Character.Selected.strBonus)
-            title = "Strength"
-            break
-        case 1:
-            // DEX
-            bonus = String(Character.Selected.dexBonus)
-            title = "Dexterity"
-            break
-        case 2:
-            // CON
-            bonus = String(Character.Selected.conBonus)
-            title = "Constitution"
-            break
-        case 3:
-            // INT
-            bonus = String(Character.Selected.intBonus)
-            title = "Intelligence"
-            break
-        case 4:
-            // WIS
-            bonus = String(Character.Selected.wisBonus)
-            title = "Wisdom"
-            break
-        case 5:
-            // CHA
-            bonus = String(Character.Selected.chaBonus)
-            title = "Charisma"
-            break
-        default:
-            break
-        }
-        
-        for case let view in parentView.subviews {
-            if view.tag == baseTag + 10 {
-                // Attribute Label
-                let attributeLabel = view as! UILabel
-                attributeLabel.text = title+"\nBonus"
+        if segControl.tag == 507 {
+            let parentView:UIView = segControl.superview! as UIView
+            let baseTag = parentView.tag
+            // Speed Type
+            Character.Selected.speed_type = Int32(segControl.selectedSegmentIndex)
+            
+            for case let view in parentView.subviews {
+                switch segControl.selectedSegmentIndex {
+                case 0:
+                    // Walk
+                    if view.tag == baseTag + 3 {
+                        // Base Speed
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_walk)
+                    }
+                    else if view.tag == baseTag + 5 {
+                        // Misc Bonus
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_walk_misc)
+                    }
+                    break
+                case 1:
+                    // Burrow
+                    if view.tag == baseTag + 3 {
+                        // Base Speed
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_burrow)
+                    }
+                    else if view.tag == baseTag + 5 {
+                        // Misc Bonus
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_burrow_misc)
+                    }
+                    break
+                case 2:
+                    // Climb
+                    if view.tag == baseTag + 3 {
+                        // Base Speed
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_climb)
+                    }
+                    else if view.tag == baseTag + 5 {
+                        // Misc Bonus
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_climb_misc)
+                    }
+                    break
+                case 3:
+                    // Fly
+                    if view.tag == baseTag + 3 {
+                        // Base Speed
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_fly)
+                    }
+                    else if view.tag == baseTag + 5 {
+                        // Misc Bonus
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_fly_misc)
+                    }
+                    break
+                case 4:
+                    // Swim
+                    if view.tag == baseTag + 3 {
+                        // Base Speed
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_swim)
+                    }
+                    else if view.tag == baseTag + 5 {
+                        // Misc Bonus
+                        let textField = view as! UITextField
+                        textField.text = String(Character.Selected.speed_swim_misc)
+                    }
+                    break
+                default: break
+                }
             }
-            else if view.tag == baseTag + 11 {
-                // Attribute Textfield
-                let attributeTextField = view as! UITextField
-                attributeTextField.text = bonus
+        }
+        else {
+            let parentView:UIScrollView = segControl.superview! as! UIScrollView
+            let baseTag = parentView.superview!.tag
+            
+            var bonus = ""
+            var title = ""
+            switch segControl.selectedSegmentIndex {
+            case 0:
+                // STR
+                bonus = String(Character.Selected.strBonus)
+                title = "Strength"
+                break
+            case 1:
+                // DEX
+                bonus = String(Character.Selected.dexBonus)
+                title = "Dexterity"
+                break
+            case 2:
+                // CON
+                bonus = String(Character.Selected.conBonus)
+                title = "Constitution"
+                break
+            case 3:
+                // INT
+                bonus = String(Character.Selected.intBonus)
+                title = "Intelligence"
+                break
+            case 4:
+                // WIS
+                bonus = String(Character.Selected.wisBonus)
+                title = "Wisdom"
+                break
+            case 5:
+                // CHA
+                bonus = String(Character.Selected.chaBonus)
+                title = "Charisma"
+                break
+            default:
+                break
+            }
+            
+            for case let view in parentView.subviews {
+                if view.tag == baseTag + 10 {
+                    // Attribute Label
+                    let attributeLabel = view as! UILabel
+                    attributeLabel.text = title+"\nBonus"
+                }
+                else if view.tag == baseTag + 11 {
+                    // Attribute Textfield
+                    let attributeTextField = view as! UITextField
+                    attributeTextField.text = bonus
+                }
             }
         }
     }
@@ -1327,7 +1416,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         movementType.insertSegment(withTitle:"Fly", at:3, animated:false)
         movementType.insertSegment(withTitle:"Swim", at:4, animated:false)
         movementType.addTarget(self, action:#selector(self.segmentChanged), for:UIControlEvents.valueChanged)
-        movementType.selectedSegmentIndex = 0
+        movementType.selectedSegmentIndex = Int(Character.Selected.speed_type)
         movementType.tag = 507
         tempView.addSubview(movementType)
         
@@ -1389,7 +1478,7 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(miscLabel)
         
         let miscField = UITextField.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:50, width:40, height:30))
-        miscField.text = String(0)//String(Character.Selected.miscInitBonus)
+        miscField.text = String(Character.Selected.initiative_misc)
         miscField.textAlignment = NSTextAlignment.center
         miscField.layer.borderWidth = 1.0
         miscField.layer.borderColor = UIColor.black.cgColor
@@ -1403,30 +1492,45 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tempView.addSubview(alertLabel)
         
         let alertSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:85, width:51, height:31))
-        alertSwitch.isOn = false
+        alertSwitch.isOn = Character.Selected.alert_feat
+        alertSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
         alertSwitch.tag = 609
         tempView.addSubview(alertSwitch)
         
-        let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
+        let hasProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:120, width:150, height:30))
+        hasProfLabel.text = "Proficiency"
+        hasProfLabel.textAlignment = NSTextAlignment.right
+        hasProfLabel.tag = 610
+        tempView.addSubview(hasProfLabel)
+        
+        let profSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
+        profSwitch.isOn = Character.Selected.initiative_proficiency
+        profSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        profSwitch.tag = 611
+        tempView.addSubview(profSwitch)
+        
+        let halfProfLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
         halfProfLabel.text = "Half Proficiency"
         halfProfLabel.textAlignment = NSTextAlignment.right
-        halfProfLabel.tag = 610
+        halfProfLabel.tag = 612
         tempView.addSubview(halfProfLabel)
         
-        let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:120, width:51, height:31))
-        halfProfSwitch.isOn = false
-        halfProfSwitch.tag = 611
+        let halfProfSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
+        halfProfSwitch.isOn = Character.Selected.initiative_half_proficiency
+        halfProfSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        halfProfSwitch.tag = 613
         tempView.addSubview(halfProfSwitch)
         
-        let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:155, width:150, height:30))
+        let roundUpLabel = UILabel.init(frame: CGRect.init(x:tempView.frame.size.width/2-120, y:190, width:150, height:30))
         roundUpLabel.text = "Round Up"
         roundUpLabel.textAlignment = NSTextAlignment.right
-        roundUpLabel.tag = 612
+        roundUpLabel.tag = 614
         tempView.addSubview(roundUpLabel)
         
-        let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:155, width:51, height:31))
-        roundUpSwitch.isOn = false
-        roundUpSwitch.tag = 613
+        let roundUpSwitch = UISwitch.init(frame: CGRect.init(x:tempView.frame.size.width/2+40, y:190, width:51, height:31))
+        roundUpSwitch.isOn = Character.Selected.initiative_round_up
+        roundUpSwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+        roundUpSwitch.tag = 615
         tempView.addSubview(roundUpSwitch)
         
         if halfProfSwitch.isOn {
@@ -1439,6 +1543,50 @@ class CombatViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         view.addSubview(tempView)
+    }
+    
+    func switchAction(sender: UISwitch) {
+        if sender.tag == 609 {
+            // Initiative Alert Feat
+            Character.Selected.alert_feat = sender.isOn
+        }
+        else if sender.tag == 611 {
+            // Initiative Proficiency
+            Character.Selected.initiative_proficiency = sender.isOn
+            
+            // Show round up switch
+            let parentView = sender.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == 614 {
+                    let roundUpSwitch = view as! UILabel
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+                else if view.tag == 615 {
+                    let roundUpSwitch = view as! UISwitch
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+            }
+        }
+        else if sender.tag == 613 {
+            // Initiative Half Proficiency
+            Character.Selected.initiative_half_proficiency = sender.isOn
+            // Show round up switch
+            let parentView = sender.superview
+            for case let view in (parentView?.subviews)! {
+                if view.tag == 614 {
+                    let roundUpSwitch = view as! UILabel
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+                else if view.tag == 615 {
+                    let roundUpSwitch = view as! UISwitch
+                    roundUpSwitch.isHidden = !sender.isOn
+                }
+            }
+        }
+        else if sender.tag == 615 {
+            // Initiative Round Up
+            Character.Selected.initiative_round_up = sender.isOn
+        }
     }
     
     // UITableView Delegate & Data Source

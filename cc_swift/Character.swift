@@ -163,7 +163,10 @@ extension Character {
     }
     
     func calcInitiative() {
-        var initiative = Int32(self.proficiency_bonus + self.dexBonus + self.initiative_misc)
+        var initiative = Int32(self.dexBonus + self.initiative_misc)
+        if self.initiative_proficiency == true {
+            initiative = initiative + self.proficiency_bonus
+        }
         if self.alert_feat == true {
             initiative = initiative + 5
         }

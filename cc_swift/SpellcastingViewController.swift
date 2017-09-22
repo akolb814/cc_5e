@@ -61,6 +61,17 @@ class SpellcastingViewController: UIViewController, UITableViewDelegate, UITable
         
         let nc = NotificationCenter.default
         nc.addObserver(forName: Notification.Name(rawValue:"SpellSlotUpdate"), object: nil, queue: nil, using: spellSlotUpdate)
+        nc.addObserver(forName: Notification.Name(rawValue:"shortRest"), object: nil, queue: nil, using: updateFromRest)
+        nc.addObserver(forName: Notification.Name(rawValue:"longRest"), object: nil, queue: nil, using: updateFromRest)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        spellsTable.reloadData()
+    }
+    
+    func updateFromRest(notification: Notification) -> Void {
+        setMiscDisplayData()
+        spellsTable.reloadData()
     }
     
     func spellSlotUpdate(notification: Notification) -> Void {
